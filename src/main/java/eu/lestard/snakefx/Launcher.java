@@ -1,10 +1,9 @@
 package eu.lestard.snakefx;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import eu.lestard.snakefx.inject.MainInjector;
+import eu.lestard.snakefx.view.ApplicationStarter;
 
 public class Launcher extends Application{
 
@@ -15,15 +14,12 @@ public class Launcher extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("SnakeFX");
+		MainInjector mainInjector = new MainInjector();
+		mainInjector.createObjectGraph();
 
-		VBox vBox = new VBox();
+		ApplicationStarter starter = mainInjector.getApplicationStarter();
 
-		vBox.getChildren().add(new Label("hello world"));
-
-		primaryStage.setScene(new Scene(vBox));
-
-		primaryStage.show();
+		starter.start(primaryStage);
 	}
 
 }

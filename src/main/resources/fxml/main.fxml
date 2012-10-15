@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml">
+
+	<top>
+		<MenuBar>
+			<Menu text="SnakeFX">
+				<MenuItem text="New Game" onAction="#newGame" />
+				<MenuItem text="High Score" onAction="#showHighScore" />
+
+				<MenuItem text="Exit" onAction="#exit" />
+			</Menu>
+		</MenuBar>
+	</top>
+
+	<left>
+		<VBox spacing="10">
+			<padding>
+				<Insets top="10" right="10" bottom="10" left="10" />
+			</padding>
+
+			<Label text="Points: 0"/>
+
+			<Button text="Start" onAction="#playPause">
+				<maxWidth>
+					<Double fx:constant="MAX_VALUE"/>
+				</maxWidth>
+			</Button>
+		</VBox>
+	</left>
+
+	<center>
+		<Group fx:id="gridContainer"/>
+	</center>
+
+</BorderPane>
