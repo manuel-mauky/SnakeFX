@@ -14,6 +14,7 @@ public class ApplicationStarter{
 
 	private Scene mainScene;
 
+
 	/**
 	 * @param mainScene the root scene element for the application
 	 */

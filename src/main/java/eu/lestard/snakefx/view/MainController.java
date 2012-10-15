@@ -3,6 +3,7 @@ package eu.lestard.snakefx.view;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import eu.lestard.snakefx.core.Field;
+import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
 import eu.lestard.snakefx.core.Snake;
 
@@ -20,9 +21,12 @@ public class MainController {
 
 	private Grid grid;
 
-	public MainController(Grid grid, Snake snake){
+	private GameLoop gameLoop;
+
+	public MainController(Grid grid, Snake snake, GameLoop gameLoop){
 		this.grid = grid;
 		this.snake = snake;
+		this.gameLoop = gameLoop;
 	}
 
 	@FXML
@@ -30,6 +34,8 @@ public class MainController {
 		grid.init();
 
 		snake.init();
+
+		gameLoop.init();
 
 		for(Field f : grid.getFields()){
 			gridContainer.getChildren().add(f.getRectangle());
@@ -45,6 +51,7 @@ public class MainController {
 	@FXML
 	public void playPause(){
 		System.out.println("Play Pause");
+		gameLoop.play();
 	}
 
 	@FXML

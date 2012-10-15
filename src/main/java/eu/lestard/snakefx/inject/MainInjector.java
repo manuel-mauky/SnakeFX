@@ -5,9 +5,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import eu.lestard.snakefx.config.Configurator;
 import eu.lestard.snakefx.config.IntegerKey;
+import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
 import eu.lestard.snakefx.core.Snake;
 import eu.lestard.snakefx.view.ApplicationStarter;
+import eu.lestard.snakefx.view.Keyboard;
 import eu.lestard.snakefx.view.MainController;
 
 /**
@@ -39,13 +41,20 @@ public class MainInjector {
 		int snakeStartY = configurator.getValue(IntegerKey.SNAKE_START_Y);
 		Snake snake = new Snake(grid,snakeStartX, snakeStartY);
 
-		MainController mainController = new MainController(grid, snake);
+		GameLoop gameLoop = new GameLoop(snake);
+
+		MainController mainController = new MainController(grid, snake,gameLoop);
+
+
 
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		FxmlFactory fxmlFactory = new FxmlFactory(fxmlLoader);
 		Parent root = fxmlFactory.getFxmlRoot(MAIN_FXML_FILENAME, mainController);
 
+		Keyboard keyboard = new Keyboard(snake);
 		Scene mainScene = new Scene(root);
+		mainScene.setOnKeyPressed(keyboard);
+
 		starter = new ApplicationStarter(mainScene);
 	}
 

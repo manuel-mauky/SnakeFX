@@ -71,4 +71,39 @@ public class Grid {
 		}
 		return null;
 	}
+
+	/**
+	* returns the field that is located next to the given field in the given
+	* direction.
+	*
+	* @param field
+	* @param direction
+	* @return the field in the given direction
+	*/
+	public Field getFromDirection(final Field field, final Direction direction) {
+		int x = field.getX();
+		int y = field.getY();
+
+		switch (direction) {
+		case DOWN:
+			y += 1;
+			break;
+		case LEFT:
+			x -= 1;
+			break;
+		case RIGHT:
+			x += 1;
+			break;
+		case UP:
+			y -= 1;
+			break;
+		}
+
+		x += rowAndColumnCount;
+		y += rowAndColumnCount;
+		x = x % rowAndColumnCount;
+		y = y % rowAndColumnCount;
+
+		return getXY(x, y);
+	}
 }

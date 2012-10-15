@@ -1,6 +1,5 @@
 package eu.lestard.snakefx.core;
 
-
 /**
  * This class represents the snake.
  *
@@ -15,6 +14,8 @@ public class Snake {
 
 	private final int x;
 	private final int y;
+
+	private Direction direction;
 
 	/**
 	 * @param grid
@@ -35,6 +36,8 @@ public class Snake {
 	 */
 	public void init() {
 		setHead(grid.getXY(x, y));
+
+		direction = Direction.UP;
 	}
 
 	private void setHead(final Field head) {
@@ -44,6 +47,35 @@ public class Snake {
 
 	public Field getHead() {
 		return head;
+	}
+
+	/**
+	* Change the direction of the snake. The direction is only changed when the
+	* new direction has <bold>not</bold> the same orientation as the old one.
+	*
+	* For example, when the snake currently has the direction UP and the new
+	* direction should be DOWN, nothing will happend because both directions
+	* are vertical.
+	*
+	* This is to prevent the snake from moving directly into its own tail.
+	*
+	* @param newDirection
+	*/
+	public void changeDirection(final Direction newDirection) {
+		if (!newDirection.hasSameOrientation(direction)) {
+			direction = newDirection;
+		}
+	}
+
+	/**
+	* Move the snake by one field.
+	*/
+	public void move() {
+		Field newHead = grid.getFromDirection(head, direction);
+
+		head.changeState(State.EMPTY);
+
+		setHead(newHead);
 	}
 
 }
