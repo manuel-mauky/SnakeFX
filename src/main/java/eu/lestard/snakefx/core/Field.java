@@ -1,12 +1,13 @@
 package eu.lestard.snakefx.core;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
  * This class represents a single field in the {@link Grid} of the game.
- * 
+ *
  * @author manuel.mauky
- * 
+ *
  */
 public class Field {
 
@@ -18,14 +19,14 @@ public class Field {
 	/**
 	 * Creates a new Field with the given sizeInPixel at the location specified
 	 * by x and y coordinate.
-	 * 
+	 *
 	 * x and y are coordinates in the coordinate system of the game {@link Grid}
 	 * . They are <bold>not</bold> representing the coordinates in pixel of the
 	 * underlying rectangle in the JavaFX canvas.
-	 * 
+	 *
 	 * The pixel-x and pixel-y coordinates of the underlying rectangle is
 	 * calculated from the given x and y coordinate and the sizeInPixel.
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param sizeInPixel
@@ -36,6 +37,9 @@ public class Field {
 
 		rectangle = new Rectangle(x * sizeInPixel, y * sizeInPixel,
 				sizeInPixel, sizeInPixel);
+
+		rectangle.setStroke(Color.LIGHTGRAY);
+		rectangle.setFill(Color.WHITE);
 
 	}
 
@@ -48,7 +52,7 @@ public class Field {
 
 	/**
 	 * The x coordinate of the field in the game's grid.
-	 * 
+	 *
 	 * @return the x coordinate.
 	 */
 	public int getX() {
@@ -57,7 +61,7 @@ public class Field {
 
 	/**
 	 * The y coordinate of the field in the game's grid.
-	 * 
+	 *
 	 * @return y coordinate.
 	 */
 	public int getY() {

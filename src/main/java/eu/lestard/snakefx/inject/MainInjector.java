@@ -3,6 +3,9 @@ package eu.lestard.snakefx.inject;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import eu.lestard.snakefx.config.Configurator;
+import eu.lestard.snakefx.config.IntegerKey;
+import eu.lestard.snakefx.core.Grid;
 import eu.lestard.snakefx.view.ApplicationStarter;
 import eu.lestard.snakefx.view.MainController;
 
@@ -23,10 +26,19 @@ public class MainInjector {
 	 * Creates the object graph for the application with Dependency Injection.
 	 */
 	public void createObjectGraph() {
+		Configurator configurator = new Configurator();
+
+		int gridSizeInPixel = configurator.getValue(IntegerKey.GRID_SIZE_IN_PIXEL);
+		int rowAndColumnCount = configurator.getValue(IntegerKey.ROW_AND_COLUMN_COUNT);
+
+		Grid grid = new Grid(rowAndColumnCount, gridSizeInPixel);
+
+		MainController mainController = new MainController(grid);
+
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		FxmlFactory fxmlFactory = new FxmlFactory(fxmlLoader);
-		MainController mainController = new MainController();
 		Parent root = fxmlFactory.getFxmlRoot(MAIN_FXML_FILENAME, mainController);
+
 		Scene mainScene = new Scene(root);
 		starter = new ApplicationStarter(mainScene);
 	}

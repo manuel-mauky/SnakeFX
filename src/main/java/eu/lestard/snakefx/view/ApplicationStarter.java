@@ -28,6 +28,8 @@ public class ApplicationStarter{
 		primaryStage.setTitle("SnakeFX");
 
 		primaryStage.setScene(mainScene);
+
+		primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 
