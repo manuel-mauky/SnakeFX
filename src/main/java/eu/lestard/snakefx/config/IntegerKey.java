@@ -24,12 +24,16 @@ public enum IntegerKey {
 	 * The number of rows and columns of the grid. In this game the grid is a
 	 * square and so the number of rows and columns are equal.
 	 */
-	ROW_AND_COLUMN_COUNT(15),
+	ROW_AND_COLUMN_COUNT(20),
 
 	/**
 	 * The size of the grid in pixel.
 	 */
-	GRID_SIZE_IN_PIXEL(500)
+	GRID_SIZE_IN_PIXEL(500),
+
+	SNAKE_START_X(10),
+
+	SNAKE_START_Y(10)
 
 	;
 

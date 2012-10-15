@@ -16,6 +16,8 @@ public class Field {
 	private final int x;
 	private final int y;
 
+	private State state;
+
 	/**
 	 * Creates a new Field with the given sizeInPixel at the location specified
 	 * by x and y coordinate.
@@ -35,12 +37,33 @@ public class Field {
 		this.x = x;
 		this.y = y;
 
+		state = State.EMPTY;
+
 		rectangle = new Rectangle(x * sizeInPixel, y * sizeInPixel,
 				sizeInPixel, sizeInPixel);
 
 		rectangle.setStroke(Color.LIGHTGRAY);
 		rectangle.setFill(Color.WHITE);
 
+	}
+
+	/**
+	 * @return the current state of the field.
+	 */
+	public State getState() {
+		return state;
+	}
+
+	/**
+	 * The given state is set as the state of the field and the fill color of
+	 * the rectangle of this field is changed to the color of the given state.
+	 *
+	 * @param newState
+	 */
+	public void changeState(final State newState) {
+		state = newState;
+
+		rectangle.setFill(newState.getColor());
 	}
 
 	/**

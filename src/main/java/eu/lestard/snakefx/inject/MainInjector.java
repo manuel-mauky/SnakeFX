@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import eu.lestard.snakefx.config.Configurator;
 import eu.lestard.snakefx.config.IntegerKey;
 import eu.lestard.snakefx.core.Grid;
+import eu.lestard.snakefx.core.Snake;
 import eu.lestard.snakefx.view.ApplicationStarter;
 import eu.lestard.snakefx.view.MainController;
 
@@ -33,7 +34,12 @@ public class MainInjector {
 
 		Grid grid = new Grid(rowAndColumnCount, gridSizeInPixel);
 
-		MainController mainController = new MainController(grid);
+
+		int snakeStartX = configurator.getValue(IntegerKey.SNAKE_START_X);
+		int snakeStartY = configurator.getValue(IntegerKey.SNAKE_START_Y);
+		Snake snake = new Snake(grid,snakeStartX, snakeStartY);
+
+		MainController mainController = new MainController(grid, snake);
 
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		FxmlFactory fxmlFactory = new FxmlFactory(fxmlLoader);

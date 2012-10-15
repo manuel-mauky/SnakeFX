@@ -10,7 +10,6 @@ import org.junit.Test;
  */
 public class FieldTest {
 
-
 	/**
 	 * When the Field is initialized, the rectangle inside of the field has to
 	 * be created and the state has to be set to the default (empty).
@@ -25,7 +24,6 @@ public class FieldTest {
 
 		Field field = new Field(x, y, sizeInPixel);
 
-
 		Rectangle rectangle = field.getRectangle();
 
 		assertThat(rectangle.getWidth()).isEqualTo(sizeInPixel);
@@ -39,11 +37,28 @@ public class FieldTest {
 		assertThat(rectangle.getX()).isEqualTo(300);
 		assertThat(rectangle.getY()).isEqualTo(500);
 
-
 		assertThat(field.getX()).isEqualTo(x);
 		assertThat(field.getY()).isEqualTo(y);
 
+		assertThat(field.getState()).isEqualTo(State.EMPTY);
+
+		assertThat(rectangle.getFill()).isEqualTo(State.EMPTY.getColor());
+
 	}
 
+	/**
+	 * Test the behavior of the method {@link Field#changeState}.
+	 */
+	@Test
+	public void testChangeState() {
+
+		Field field = new Field(1, 1, 10);
+
+		field.changeState(State.HEAD);
+
+		assertThat(field.getState()).isEqualTo(State.HEAD);
+		assertThat(field.getRectangle().getFill()).isEqualTo(
+				State.HEAD.getColor());
+	}
 
 }

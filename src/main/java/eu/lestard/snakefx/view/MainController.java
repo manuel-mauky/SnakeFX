@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import eu.lestard.snakefx.core.Field;
 import eu.lestard.snakefx.core.Grid;
+import eu.lestard.snakefx.core.Snake;
 
 /**
  * Controller class for the main.fxml file.
@@ -15,15 +16,21 @@ public class MainController {
 	@FXML
 	private Group gridContainer;
 
+	private Snake snake;
+
 	private Grid grid;
 
-	public MainController(Grid grid){
+	public MainController(Grid grid, Snake snake){
 		this.grid = grid;
+		this.snake = snake;
 	}
 
 	@FXML
 	public void initialize(){
 		grid.init();
+
+		snake.init();
+
 		for(Field f : grid.getFields()){
 			gridContainer.getChildren().add(f.getRectangle());
 		}
@@ -48,6 +55,7 @@ public class MainController {
 	@FXML
 	public void exit(){
 		System.out.println("Exit");
+		System.exit(0);
 	}
 
 }

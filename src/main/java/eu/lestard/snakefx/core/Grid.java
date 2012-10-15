@@ -54,4 +54,21 @@ public class Grid {
 		return Collections.unmodifiableList(fields);
 	}
 
+	/**
+	 *
+	 * @param x
+	 *            the x coordinate
+	 * @param y
+	 *            the y coordinate
+	 * @return the field with the given coordinates or null if no field with
+	 *         this coordinates is available.
+	 */
+	public Field getXY(final int x, final int y) {
+		for (Field f : fields) {
+			if (f.getX() == x && f.getY() == y) {
+				return f;
+			}
+		}
+		return null;
+	}
 }
