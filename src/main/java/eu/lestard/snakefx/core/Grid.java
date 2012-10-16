@@ -127,4 +127,10 @@ public class Grid {
 		}
 	}
 
+	public void newGame() {
+		for (Field f : fields) {
+			f.changeState(State.EMPTY);
+		}
+	}
+
 }

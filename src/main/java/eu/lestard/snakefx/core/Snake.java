@@ -74,12 +74,6 @@ public class Snake {
 		tail.add(field);
 	}
 
-	/**
-	* @return the head of the snake.
-	*/
-	public Field getHead() {
-		return head;
-	}
 
 	/**
 	* Change the direction of the snake. The direction is only changed when the
@@ -105,14 +99,12 @@ public class Snake {
 	public void move() {
 		currentDirection = nextDirection;
 
-
 		Field newHead = grid.getFromDirection(head, currentDirection);
 
-		if(newHead.getState().equals(State.TAIL)){
+		if (newHead.getState().equals(State.TAIL)) {
 			callCollisionEventListener();
 			return;
 		}
-
 
 		boolean grow = false;
 		if (newHead.getState().equals(State.FOOD)) {
@@ -140,22 +132,27 @@ public class Snake {
 		setHead(newHead);
 	}
 
+	public void newGame() {
+		tail.clear();
+		init();
+	}
+
 	public void addPointsEventListener(Callback callback) {
 		pointsListener.add(callback);
 	}
 
-	private void callPointsEventListener(){
-		for(Callback c : pointsListener){
+	private void callPointsEventListener() {
+		for (Callback c : pointsListener) {
 			c.call();
 		}
 	}
 
-	public void addCollisionEventListener(Callback callback){
+	public void addCollisionEventListener(Callback callback) {
 		collisionListener.add(callback);
 	}
 
-	private void callCollisionEventListener(){
-		for(Callback c : collisionListener){
+	private void callCollisionEventListener() {
+		for (Callback c : collisionListener) {
 			c.call();
 		}
 	}

@@ -6,6 +6,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
@@ -48,7 +50,7 @@ public class SnakeTest {
 		verify(gridMock, times(1)).getXY(X, Y);
 		verify(field, times(1)).changeState(State.HEAD);
 
-		assertThat(snake.getHead()).isEqualTo(field);
+		assertThat(getHead()).isEqualTo(field);
 
 		// The direction of the snake is UP on start.
 		Direction direction = currentDirectionFromSnake();
@@ -141,7 +143,7 @@ public class SnakeTest {
 
 		snake.move();
 
-		assertThat(snake.getHead()).isEqualTo(newHead);
+		assertThat(getHead()).isEqualTo(newHead);
 
 		verify(oldHead).changeState(State.EMPTY);
 	}
@@ -172,7 +174,7 @@ public class SnakeTest {
 		snake.move();
 
 		// the head of the snake is now on field2
-		assertThat(snake.getHead()).isEqualTo(field2);
+		assertThat(getHead()).isEqualTo(field2);
 
 		// field1 is now a part of the tail
 		assertThat(field1.getState()).isEqualTo(State.TAIL);
@@ -187,7 +189,7 @@ public class SnakeTest {
 		snake.move();
 
 		// field3 becomes the new head
-		assertThat(snake.getHead()).isEqualTo(field3);
+		assertThat(getHead()).isEqualTo(field3);
 
 		// field2 becomes the tail
 		assertThat(field2.getState()).isEqualTo(State.TAIL);
@@ -213,6 +215,45 @@ public class SnakeTest {
 
 		verify(collisionEventCallback).call();
 
+	}
+
+	/**
+	* When the newGame method is called, the head must be set to null and the
+	* tails arraylist has to be reset.
+	*
+	* The init method has to be called too.
+	*/
+	@Test
+	public void testNewGame() {
+		Field head = mock(Field.class);
+		when(head.getState()).thenReturn(State.EMPTY);
+		when(gridMock.getXY(X, Y)).thenReturn(head);
+
+		Field food = mock(Field.class);
+		when(food.getState()).thenReturn(State.FOOD);
+		when(gridMock.getFromDirection(head, Direction.UP)).thenReturn(food);
+
+		snake.init();
+		snake.move();
+
+		assertThat(getHead()).isEqualTo(food);
+		assertThat(getTail()).hasSize(1);
+		assertThat(getTail().contains(head));
+
+		snake.newGame();
+
+		// the head is reset and the tail is empty
+		assertThat(getHead()).isEqualTo(head);
+		assertThat(getTail()).isEmpty();
+
+	}
+
+	private List<Field> getTail(){
+		return (List<Field>) Whitebox.getInternalState(snake, "tail");
+	}
+
+	private Field getHead() {
+		return (Field) Whitebox.getInternalState(snake, "head");
 	}
 
 	private Direction nextDirectionFromSnake() {

@@ -142,4 +142,38 @@ public class GridTest {
 		assertThat(x2y0.getX()).isEqualTo(2);
 		assertThat(x2y0.getY()).isEqualTo(0);
 	}
+
+	/**
+	* When the newGame method is called, all fields must be reset to status
+	* EMPTY.
+	*/
+	@Test
+	public void testNewGame() {
+
+		// First change the state of some fields
+
+		Field x2y1 = grid.getXY(2, 1);
+		x2y1.changeState(State.FOOD);
+
+		Field x3y3 = grid.getXY(3, 3);
+
+		x3y3.changeState(State.HEAD);
+
+		Field x0y2 = grid.getXY(0, 2);
+		x0y2.changeState(State.TAIL);
+
+		grid.newGame();
+
+		// now the fields must be EMPTY
+		assertThat(x2y1.getState()).isEqualTo(State.EMPTY);
+		assertThat(x3y3.getState()).isEqualTo(State.EMPTY);
+		assertThat(x0y2.getState()).isEqualTo(State.EMPTY);
+
+		// All other fields must be empty too
+		List<Field> fields = grid.getFields();
+		for (Field field : fields) {
+			assertThat(field.getState()).isEqualTo(State.EMPTY);
+		}
+
+	}
 }
