@@ -47,14 +47,14 @@ public class SnakeTest {
 		assertThat(snake.getHead()).isEqualTo(field);
 
 		// The direction of the snake is UP on start.
-		Direction direction = getDirectionFromSnake();
+		Direction direction = currentDirectionFromSnake();
 		assertThat(direction).isEqualTo(Direction.UP);
 	}
 
 	@Test
 	public void testChangeDirection() {
 		snake.changeDirection(Direction.LEFT);
-		Direction direction = getDirectionFromSnake();
+		Direction direction = nextDirectionFromSnake();
 
 		assertThat(direction).isEqualTo(Direction.LEFT);
 	}
@@ -65,23 +65,65 @@ public class SnakeTest {
 	* made.
 	*
 	* Otherwise the head of the snake would move directly into the tail.
+	*
+	*
+	* But if the player pressed LEFT and then DOWN faster then the gap between
+	* two frames, then the Snake would make a 180 degree turnaround. The LEFT
+	* keypress wouldn't be filtered out because LEFT has another orientation
+	* then UP and the DOWN keypress wouldn't be filtered out because LEFT
+	* (which is the "next direction" now) has another orientation then DOWN.
+	*
+	* To prevend this we have two variables for the direction: "nextDirection"
+	* and "currentDirection". When the player likes to change the direction,
+	* only nextDirection is changed but he test whether the orientation is the
+	* same is done with the "currentDirection". When the snake moves, the
+	* "currentDirection" variable gets the value from "nextDirection".
+	*
 	*/
 	@Test
 	public void testChangeDirectionNewHasSameOrientationAsOld() {
+		Field head = mock(Field.class);
+		when(gridMock.getXY(X, Y)).thenReturn(head);
+
+		Field newHead = mock(Field.class);
+		when(newHead.getState()).thenReturn(State.EMPTY);
+		when(gridMock.getFromDirection(head, Direction.LEFT)).thenReturn(
+		newHead);
+
+		// Snake is initialized with currentDirection=UP and nextDirection=UP
+		snake.init();
+
+
 		snake.changeDirection(Direction.DOWN);
 
-		assertThat(getDirectionFromSnake()).isEqualTo(Direction.DOWN);
+		// currentDirection and nextDirection is still UP because the
+		// orientation is the same
+		assertThat(nextDirectionFromSnake()).isEqualTo(Direction.UP);
+		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
 
-		// Both old and new directions are vertical.
-		snake.changeDirection(Direction.UP);
-		assertThat(getDirectionFromSnake()).isEqualTo(Direction.DOWN);
 
 		snake.changeDirection(Direction.LEFT);
-		assertThat(getDirectionFromSnake()).isEqualTo(Direction.LEFT);
+		// the nextDirection is now changed...
+		assertThat(nextDirectionFromSnake()).isEqualsToByComparingFields(
+		Direction.LEFT);
+		// ... the currentDirection is still the old one. It is only changed
+		// when the
+		// snake moves.
+		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
 
-		// this time both old and new directions are horizontal
-		snake.changeDirection(Direction.RIGHT);
-		assertThat(getDirectionFromSnake()).isEqualTo(Direction.LEFT);
+
+		snake.changeDirection(Direction.DOWN);
+		// nextDirection is not changed as the currentDirection is still UP and
+		// has the same orientation as DOWN
+		assertThat(nextDirectionFromSnake()).isEqualTo(Direction.LEFT);
+		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
+
+
+		snake.move();
+
+		assertThat(nextDirectionFromSnake()).isEqualTo(Direction.LEFT);
+		// now the currentDirection has changed.
+		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.LEFT);
 	}
 
 	@Test
@@ -155,7 +197,11 @@ public class SnakeTest {
 
 	}
 
-	private Direction getDirectionFromSnake() {
-		return (Direction) Whitebox.getInternalState(snake, "direction");
+	private Direction nextDirectionFromSnake() {
+		return (Direction) Whitebox.getInternalState(snake, "nextDirection");
+	}
+
+	private Direction currentDirectionFromSnake() {
+		return (Direction) Whitebox.getInternalState(snake, "currentDirection");
 	}
 }

@@ -20,7 +20,9 @@ public class Snake {
 	private final int x;
 	private final int y;
 
-	private Direction direction;
+	private Direction currentDirection;
+
+	private Direction nextDirection;
 
 	private final List<Field> tail;
 
@@ -49,7 +51,8 @@ public class Snake {
 	public void init() {
 		setHead(grid.getXY(x, y));
 
-		direction = Direction.UP;
+		currentDirection = Direction.UP;
+		nextDirection = Direction.UP;
 	}
 
 	private void setHead(final Field head) {
@@ -88,8 +91,8 @@ public class Snake {
 	* @param newDirection
 	*/
 	public void changeDirection(final Direction newDirection) {
-		if (!newDirection.hasSameOrientation(direction)) {
-			direction = newDirection;
+		if (!newDirection.hasSameOrientation(currentDirection)) {
+			nextDirection = newDirection;
 		}
 	}
 
@@ -97,7 +100,10 @@ public class Snake {
 	* Move the snake by one field.
 	*/
 	public void move() {
-		Field newHead = grid.getFromDirection(head, direction);
+		currentDirection = nextDirection;
+
+
+		Field newHead = grid.getFromDirection(head, currentDirection);
 
 		boolean grow = false;
 		if (newHead.getState().equals(State.FOOD)) {
