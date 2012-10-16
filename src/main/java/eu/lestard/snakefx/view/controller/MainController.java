@@ -1,16 +1,12 @@
-package eu.lestard.snakefx.view;
+package eu.lestard.snakefx.view.controller;
 
-import javafx.animation.Animation.Status;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import eu.lestard.snakefx.core.Field;
-import eu.lestard.snakefx.core.FoodGenerator;
-import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
-import eu.lestard.snakefx.core.PointsManager;
 import eu.lestard.snakefx.core.Snake;
 import eu.lestard.snakefx.core.SpeedLevel;
 import eu.lestard.snakefx.util.Callback;
@@ -34,35 +30,38 @@ public class MainController {
 	@FXML
 	private Label pointsLabel;
 
-	private Snake snake;
-
 	private Grid grid;
 
-	private GameLoop gameLoop;
+	private Snake snake;
 
 	private SpeedChangeController speedChangeController;
 
-	private FoodGenerator foodGenerator;
+	private PointsController pointsController;
 
-	private PointsManager pointsManager;
+	private NewGameController newGameController;
 
-	public MainController(Grid grid, Snake snake, GameLoop gameLoop,
+	private PlayPauseController playPauseController;
+
+	public MainController(Grid grid, Snake snake,
 			SpeedChangeController speedChangeController,
-			FoodGenerator foodGenerator,
-			PointsManager pointsManager) {
+			PointsController pointsManager,
+			NewGameController newGameController,
+			PlayPauseController playPauseController) {
 		this.grid = grid;
 		this.snake = snake;
-		this.gameLoop = gameLoop;
 		this.speedChangeController = speedChangeController;
-		this.foodGenerator = foodGenerator;
-		this.pointsManager = pointsManager;
+		this.pointsController = pointsManager;
+		this.newGameController = newGameController;
+		this.playPauseController = playPauseController;
 	}
 
 	@FXML
 	public void initialize() {
 		grid.init();
 
-		snake.init();
+		for (Field f : grid.getFields()) {
+			gridContainer.getChildren().add(f.getRectangle());
+		}
 
 		snake.addCollisionEventListener(new Callback() {
 			@Override
@@ -71,63 +70,33 @@ public class MainController {
 			}
 		});
 
-		gameLoop.init();
-
 		speedChangeController.init(speedChoiceBox);
 
-		foodGenerator.generateFood();
+		playPauseController.init(playPauseButton);
 
-		for (Field f : grid.getFields()) {
-			gridContainer.getChildren().add(f.getRectangle());
-		}
-
-		pointsManager.init(pointsLabel);
+		pointsController.init(pointsLabel);
 
 		snake.addPointsEventListener(new Callback(){
 			@Override
 			public void call() {
-				pointsManager.addPoint();
+				pointsController.addPoint();
 			}
 		});
 
+		newGame();
 	}
 
 	@FXML
 	public void newGame() {
 		System.out.println("New Game");
 
-		playPauseButton.setDisable(false);
-		playPauseButton.setText("Pause");
-
-		grid.newGame();
-		snake.newGame();
-
-		foodGenerator.generateFood();
-
-		gameLoop.play();
-
-		pointsManager.newGame();
-
+		newGameController.newGame();
 	}
 
 	@FXML
 	public void playPause() {
 		System.out.println("Play Pause");
-		Status status = gameLoop.getStatus();
-		switch (status) {
-		case PAUSED:
-			playPauseButton.setText("Pause");
-			gameLoop.play();
-			break;
-		case RUNNING:
-			playPauseButton.setText("Resume");
-			gameLoop.pause();
-			break;
-		case STOPPED:
-			playPauseButton.setText("Pause");
-			gameLoop.play();
-			break;
-		}
+		playPauseController.togglePlayPause();
 	}
 
 	@FXML

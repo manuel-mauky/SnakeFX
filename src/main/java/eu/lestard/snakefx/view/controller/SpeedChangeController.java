@@ -1,4 +1,4 @@
-package eu.lestard.snakefx.view;
+package eu.lestard.snakefx.view.controller;
 
 import javafx.animation.Animation.Status;
 import javafx.beans.value.ChangeListener;

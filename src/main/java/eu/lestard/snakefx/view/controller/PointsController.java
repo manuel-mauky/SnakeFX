@@ -1,8 +1,8 @@
-package eu.lestard.snakefx.core;
+package eu.lestard.snakefx.view.controller;
 
 import javafx.scene.control.Label;
 
-public class PointsManager {
+public class PointsController {
 
 	private static final String LABEL = "Points: ";
 

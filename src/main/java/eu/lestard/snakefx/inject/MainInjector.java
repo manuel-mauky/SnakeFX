@@ -8,12 +8,14 @@ import eu.lestard.snakefx.config.IntegerKey;
 import eu.lestard.snakefx.core.FoodGenerator;
 import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
-import eu.lestard.snakefx.core.PointsManager;
 import eu.lestard.snakefx.core.Snake;
 import eu.lestard.snakefx.view.ApplicationStarter;
 import eu.lestard.snakefx.view.Keyboard;
-import eu.lestard.snakefx.view.MainController;
-import eu.lestard.snakefx.view.SpeedChangeController;
+import eu.lestard.snakefx.view.controller.MainController;
+import eu.lestard.snakefx.view.controller.NewGameController;
+import eu.lestard.snakefx.view.controller.PlayPauseController;
+import eu.lestard.snakefx.view.controller.PointsController;
+import eu.lestard.snakefx.view.controller.SpeedChangeController;
 
 /**
  * The MainInjector is the Class that manages all instances of all classes and
@@ -52,10 +54,13 @@ public class MainInjector {
 
 		FoodGenerator foodGenerator = new FoodGenerator(grid, snake);
 
-		PointsManager pointsManager = new PointsManager();
+		PointsController pointsManager = new PointsController();
 
-		MainController mainController = new MainController(grid, snake,
-				gameLoop, speedChangeController, foodGenerator, pointsManager);
+		PlayPauseController playPauseController = new PlayPauseController(gameLoop);
+
+		NewGameController newGameController = new NewGameController(grid, snake, foodGenerator, gameLoop, playPauseController);
+
+		MainController mainController = new MainController(grid, snake, speedChangeController, pointsManager, newGameController, playPauseController);
 
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		FxmlFactory fxmlFactory = new FxmlFactory(fxmlLoader);

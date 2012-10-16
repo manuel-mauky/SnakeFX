@@ -1,4 +1,4 @@
-package eu.lestard.snakefx.view;
+package eu.lestard.snakefx.view.controller;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.SpeedLevel;
+import eu.lestard.snakefx.view.controller.SpeedChangeController;
 
 public class SpeedChangeControllerTest {
 
