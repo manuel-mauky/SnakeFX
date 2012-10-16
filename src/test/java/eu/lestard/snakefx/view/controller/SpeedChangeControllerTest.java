@@ -19,11 +19,12 @@ public class SpeedChangeControllerTest {
 
 	private SpeedChangeController controller;
 
+
 	@Before
 	public void setup() {
 		gameLoopMock = mock(GameLoop.class);
 
-		controller = new SpeedChangeController(gameLoopMock);
+		controller = new SpeedChangeController(gameLoopMock, null);
 	}
 
 	@Test

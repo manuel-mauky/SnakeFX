@@ -19,9 +19,8 @@ public class PointsControllerTest {
 
 		pointsLabel = new Label();
 
-		controller = new PointsController();
+		controller = new PointsController(pointsLabel);
 
-		controller.init(pointsLabel);
 	}
 
 	@Test

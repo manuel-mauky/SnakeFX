@@ -1,48 +1,62 @@
 package eu.lestard.snakefx.view.controller;
 
 import javafx.animation.Animation.Status;
-import javafx.scene.control.Button;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import eu.lestard.snakefx.core.GameLoop;
 
 public class PlayPauseController {
 
 	private GameLoop gameLoop;
 
-	private Button button;
+	private StringProperty buttonLabel;
+
+	private BooleanProperty disabled;
 
 	public PlayPauseController(GameLoop gameLoop){
 		this.gameLoop = gameLoop;
+
+		buttonLabel = new SimpleStringProperty();
+		disabled = new SimpleBooleanProperty();
 	}
 
-	public void init(final Button playPauseButton) {
-		button = playPauseButton;
+	public StringProperty buttonLabelProperty(){
+		return buttonLabel;
+	}
+
+	public BooleanProperty disabledProperty(){
+		return disabled;
 	}
 
 	public void enableButton() {
-		button.setDisable(false);
-		button.setText("Play");
+		disabled.set(false);
+		buttonLabel.set("Play");
 	}
+
+
 
 	public void togglePlayPause() {
 		Status status = gameLoop.getStatus();
 		switch (status) {
 		case PAUSED:
-			button.setText("Pause");
+			buttonLabel.set("Pause");
 			gameLoop.play();
 			break;
 		case RUNNING:
-			button.setText("Resume");
+			buttonLabel.set("Resume");
 			gameLoop.pause();
 			break;
 		case STOPPED:
-			button.setText("Pause");
+			buttonLabel.set("Pause");
 			gameLoop.play();
 			break;
 		}
 	}
 
 	public void onCollision() {
-		button.setDisable(true);
+		disabled.set(true);
 	}
 
 }

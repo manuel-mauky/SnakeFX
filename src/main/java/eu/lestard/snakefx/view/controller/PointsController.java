@@ -10,7 +10,7 @@ public class PointsController {
 
 	private Label pointsLabel;
 
-	public void init(final Label pointsLabel) {
+	public PointsController(Label pointsLabel){
 		this.pointsLabel = pointsLabel;
 		update();
 	}

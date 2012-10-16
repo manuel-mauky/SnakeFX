@@ -28,7 +28,7 @@
 
 			<Label fx:id="pointsLabel" />
 
-			<Button fx:id="playPauseButton" text="Start" onAction="#playPause" focusTraversable="false">
+			<Button fx:id="playPauseButton" text="Start" focusTraversable="false">
 				<maxWidth>
 					<Double fx:constant="MAX_VALUE" />
 				</maxWidth>

@@ -17,17 +17,15 @@ import eu.lestard.snakefx.core.SpeedLevel;
 public class SpeedChangeController {
 	private final GameLoop gameLoop;
 
-	public SpeedChangeController(final GameLoop gameLoop) {
+	private ChoiceBox<SpeedLevel> choiceBox;
+
+	public SpeedChangeController(final GameLoop gameLoop,
+			ChoiceBox<SpeedLevel> choiceBox) {
 		this.gameLoop = gameLoop;
+		this.choiceBox = choiceBox;
 	}
 
-	/**
-	* Initialize the Choicebox with a selection listener that fires a
-	* {@link SpeedChangeEvent} with the new fps value.
-	*
-	* @param choiceBox
-	*/
-	public void init(final ChoiceBox<SpeedLevel> choiceBox) {
+	public void init() {
 
 		choiceBox.getSelectionModel().selectFirst();
 

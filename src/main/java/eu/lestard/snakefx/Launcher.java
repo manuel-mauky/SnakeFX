@@ -2,7 +2,7 @@ package eu.lestard.snakefx;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import eu.lestard.snakefx.inject.MainInjector;
+import eu.lestard.snakefx.inject.DependencyInjector;
 import eu.lestard.snakefx.view.ApplicationStarter;
 
 public class Launcher extends Application{
@@ -14,7 +14,7 @@ public class Launcher extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		MainInjector mainInjector = new MainInjector();
+		DependencyInjector mainInjector = new DependencyInjector();
 		mainInjector.createObjectGraph();
 
 		ApplicationStarter starter = mainInjector.getApplicationStarter();
