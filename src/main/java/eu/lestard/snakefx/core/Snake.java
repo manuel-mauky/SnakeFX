@@ -1,5 +1,10 @@
 package eu.lestard.snakefx.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import eu.lestard.snakefx.util.Callback;
+
 /**
  * This class represents the snake.
  *
@@ -17,6 +22,10 @@ public class Snake {
 
 	private Direction direction;
 
+	private final List<Field> tail;
+
+	private List<Callback> pointsEventListener;
+
 	/**
 	 * @param grid
 	 *            the grid on which the snake is created
@@ -29,6 +38,9 @@ public class Snake {
 		this.grid = grid;
 		this.x = x;
 		this.y = y;
+		tail = new ArrayList<Field>();
+
+		pointsEventListener = new ArrayList<Callback>();
 	}
 
 	/**
@@ -45,6 +57,20 @@ public class Snake {
 		head.changeState(State.HEAD);
 	}
 
+	/**
+	* The given field is added to the tail of the snake and gets the state
+	* TAIL.
+	*
+	* @param field
+	*/
+	private void grow(final Field field) {
+		field.changeState(State.TAIL);
+		tail.add(field);
+	}
+
+	/**
+	* @return the head of the snake.
+	*/
 	public Field getHead() {
 		return head;
 	}
@@ -73,9 +99,40 @@ public class Snake {
 	public void move() {
 		Field newHead = grid.getFromDirection(head, direction);
 
-		head.changeState(State.EMPTY);
+		boolean grow = false;
+		if (newHead.getState().equals(State.FOOD)) {
+			grow = true;
+		}
+
+		Field lastField = head;
+
+		for (int i = 0; i < tail.size(); i++) {
+			Field f = tail.get(i);
+
+			lastField.changeState(State.TAIL);
+			tail.set(i, lastField);
+
+			lastField = f;
+		}
+
+		if (grow) {
+			grow(lastField);
+			callPointsEventListener();
+		} else {
+			lastField.changeState(State.EMPTY);
+		}
 
 		setHead(newHead);
+	}
+
+	public void addPointsEventListener(Callback callback) {
+		pointsEventListener.add(callback);
+	}
+
+	private void callPointsEventListener(){
+		for(Callback c : pointsEventListener){
+			c.call();
+		}
 	}
 
 }

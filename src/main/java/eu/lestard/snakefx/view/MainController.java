@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.ChoiceBox;
 import eu.lestard.snakefx.core.Field;
+import eu.lestard.snakefx.core.FoodGenerator;
 import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
 import eu.lestard.snakefx.core.Snake;
@@ -30,11 +31,18 @@ public class MainController {
 
 	private SpeedChangeController speedChangeController;
 
-	public MainController(Grid grid, Snake snake, GameLoop gameLoop, SpeedChangeController speedChangeController){
+	private FoodGenerator foodGenerator;
+
+	public MainController(Grid grid,
+				Snake snake,
+				GameLoop gameLoop,
+				SpeedChangeController speedChangeController,
+				FoodGenerator foodGenerator){
 		this.grid = grid;
 		this.snake = snake;
 		this.gameLoop = gameLoop;
 		this.speedChangeController = speedChangeController;
+		this.foodGenerator = foodGenerator;
 	}
 
 	@FXML
@@ -46,6 +54,8 @@ public class MainController {
 		gameLoop.init();
 
 		speedChangeController.init(speedChoiceBox);
+
+		foodGenerator.generateFood();
 
 		for(Field f : grid.getFields()){
 			gridContainer.getChildren().add(f.getRectangle());

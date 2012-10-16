@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import eu.lestard.snakefx.config.Configurator;
 import eu.lestard.snakefx.config.IntegerKey;
+import eu.lestard.snakefx.core.FoodGenerator;
 import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
 import eu.lestard.snakefx.core.Snake;
@@ -47,7 +48,10 @@ public class MainInjector {
 
 		SpeedChangeController speedChangeController = new SpeedChangeController(gameLoop);
 
-		MainController mainController = new MainController(grid, snake,gameLoop, speedChangeController);
+
+		FoodGenerator foodGenerator = new FoodGenerator(grid, snake);
+
+		MainController mainController = new MainController(grid, snake,gameLoop, speedChangeController, foodGenerator);
 
 
 

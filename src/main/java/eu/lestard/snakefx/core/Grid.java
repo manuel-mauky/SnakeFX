@@ -3,6 +3,7 @@ package eu.lestard.snakefx.core;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class is the grid of the game. It contains a collection of {@link Field}
@@ -106,4 +107,24 @@ public class Grid {
 
 		return getXY(x, y);
 	}
+
+	public Field getRandomEmptyField() {
+
+		List<Field> temp = new ArrayList<Field>();
+
+		// Get all empty fields
+		for (Field f : fields) {
+			if (f.getState().equals(State.EMPTY)) {
+				temp.add(f);
+			}
+		}
+
+		if (temp.isEmpty()) {
+			return null;
+		} else {
+			int nextInt = new Random().nextInt(temp.size());
+			return temp.get(nextInt);
+		}
+	}
+
 }
