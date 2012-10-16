@@ -26,7 +26,9 @@ public class Snake {
 
 	private final List<Field> tail;
 
-	private List<Callback> pointsEventListener;
+	private List<Callback> pointsListener;
+
+	private List<Callback> collisionListener;
 
 	/**
 	 * @param grid
@@ -42,7 +44,8 @@ public class Snake {
 		this.y = y;
 		tail = new ArrayList<Field>();
 
-		pointsEventListener = new ArrayList<Callback>();
+		pointsListener = new ArrayList<Callback>();
+		collisionListener = new ArrayList<Callback>();
 	}
 
 	/**
@@ -105,6 +108,12 @@ public class Snake {
 
 		Field newHead = grid.getFromDirection(head, currentDirection);
 
+		if(newHead.getState().equals(State.TAIL)){
+			callCollisionEventListener();
+			return;
+		}
+
+
 		boolean grow = false;
 		if (newHead.getState().equals(State.FOOD)) {
 			grow = true;
@@ -132,11 +141,21 @@ public class Snake {
 	}
 
 	public void addPointsEventListener(Callback callback) {
-		pointsEventListener.add(callback);
+		pointsListener.add(callback);
 	}
 
 	private void callPointsEventListener(){
-		for(Callback c : pointsEventListener){
+		for(Callback c : pointsListener){
+			c.call();
+		}
+	}
+
+	public void addCollisionEventListener(Callback callback){
+		collisionListener.add(callback);
+	}
+
+	private void callCollisionEventListener(){
+		for(Callback c : collisionListener){
 			c.call();
 		}
 	}

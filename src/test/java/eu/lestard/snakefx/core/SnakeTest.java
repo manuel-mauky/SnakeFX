@@ -22,15 +22,19 @@ public class SnakeTest {
 
 	private Callback pointsEventCallback;
 
+	private Callback collisionEventCallback;
+
 	@Before
 	public void setUp() {
 		gridMock = mock(Grid.class);
 
 		pointsEventCallback = mock(Callback.class);
+		collisionEventCallback = mock(Callback.class);
 
 		snake = new Snake(gridMock, X, Y);
 
 		snake.addPointsEventListener(pointsEventCallback);
+		snake.addCollisionEventListener(collisionEventCallback);
 	}
 
 	@Test
@@ -88,11 +92,10 @@ public class SnakeTest {
 		Field newHead = mock(Field.class);
 		when(newHead.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getFromDirection(head, Direction.LEFT)).thenReturn(
-		newHead);
+				newHead);
 
 		// Snake is initialized with currentDirection=UP and nextDirection=UP
 		snake.init();
-
 
 		snake.changeDirection(Direction.DOWN);
 
@@ -101,23 +104,20 @@ public class SnakeTest {
 		assertThat(nextDirectionFromSnake()).isEqualTo(Direction.UP);
 		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
 
-
 		snake.changeDirection(Direction.LEFT);
 		// the nextDirection is now changed...
 		assertThat(nextDirectionFromSnake()).isEqualsToByComparingFields(
-		Direction.LEFT);
+				Direction.LEFT);
 		// ... the currentDirection is still the old one. It is only changed
 		// when the
 		// snake moves.
 		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
-
 
 		snake.changeDirection(Direction.DOWN);
 		// nextDirection is not changed as the currentDirection is still UP and
 		// has the same orientation as DOWN
 		assertThat(nextDirectionFromSnake()).isEqualTo(Direction.LEFT);
 		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
-
 
 		snake.move();
 
@@ -194,6 +194,24 @@ public class SnakeTest {
 
 		// field1 is now empty
 		assertThat(field1.getState()).isEqualTo(State.EMPTY);
+	}
+
+	@Test
+	public void testCollision() {
+
+		Field oldHead = mock(Field.class);
+		when(oldHead.getState()).thenReturn(State.EMPTY);
+		when(gridMock.getXY(X, Y)).thenReturn(oldHead);
+
+		snake.init();
+
+		Field tail = mock(Field.class);
+		when(tail.getState()).thenReturn(State.TAIL);
+		when(gridMock.getFromDirection(oldHead, Direction.UP)).thenReturn(tail);
+
+		snake.move();
+
+		verify(collisionEventCallback).call();
 
 	}
 

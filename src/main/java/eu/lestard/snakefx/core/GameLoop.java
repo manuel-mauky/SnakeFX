@@ -1,5 +1,6 @@
 package eu.lestard.snakefx.core;
 
+import eu.lestard.snakefx.util.Callback;
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -27,6 +28,14 @@ public class GameLoop {
 
 	public GameLoop(Snake snake) {
 		this.snake = snake;
+
+		snake.addCollisionEventListener(new Callback(){
+			@Override
+			public void call() {
+				timeline.stop();
+			}
+		});
+
 	}
 
 	/**
