@@ -14,18 +14,20 @@ public class ApplicationStarter{
 
 	private Scene mainScene;
 
+	private Stage primaryStage;
 
 	/**
 	 * @param mainScene the root scene element for the application
 	 */
-	public ApplicationStarter(Scene mainScene){
+	public ApplicationStarter(Scene mainScene, Stage primaryStage){
 		this.mainScene = mainScene;
+		this.primaryStage = primaryStage;
 	}
 
 	/**
 	 * @param primaryStage the primary stage for the JavaFx application.
 	 */
-	public void start(Stage primaryStage) {
+	public void start() {
 		primaryStage.setTitle("SnakeFX");
 
 		primaryStage.setScene(mainScene);

@@ -2,6 +2,7 @@ package eu.lestard.snakefx.view.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.stage.Stage;
 import eu.lestard.snakefx.core.Field;
 import eu.lestard.snakefx.core.Grid;
 
@@ -19,10 +20,14 @@ public class MainController {
 
 	private NewGameController newGameController;
 
+	private Stage highScoreStage;
+
 	public MainController(Grid grid,
-			NewGameController newGameController) {
+			NewGameController newGameController,
+			Stage highScoreStage) {
 		this.grid = grid;
 		this.newGameController = newGameController;
+		this.highScoreStage = highScoreStage;
 	}
 
 
@@ -44,6 +49,7 @@ public class MainController {
 	@FXML
 	public void showHighScore() {
 		System.out.println("Show High Score");
+		highScoreStage.show();
 	}
 
 	@FXML

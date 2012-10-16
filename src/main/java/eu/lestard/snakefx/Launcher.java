@@ -14,12 +14,12 @@ public class Launcher extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		DependencyInjector mainInjector = new DependencyInjector();
+		DependencyInjector mainInjector = new DependencyInjector(primaryStage);
 		mainInjector.createObjectGraph();
 
 		ApplicationStarter starter = mainInjector.getApplicationStarter();
 
-		starter.start(primaryStage);
+		starter.start();
 	}
 
 }

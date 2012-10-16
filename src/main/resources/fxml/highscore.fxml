@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml">
+	<children>
+		<Label text="Hello world"/>
+		<Button text="OK" onAction="#handle"/>
+	</children>
+
+</VBox>
