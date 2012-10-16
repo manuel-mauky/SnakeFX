@@ -26,7 +26,7 @@
 				<Insets top="10" right="10" bottom="10" left="10" />
 			</padding>
 
-			<Label text="Points: 0" />
+			<Label fx:id="pointsLabel" />
 
 			<Button fx:id="playPauseButton" text="Start" onAction="#playPause" focusTraversable="false">
 				<maxWidth>

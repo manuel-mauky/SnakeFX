@@ -5,10 +5,12 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import eu.lestard.snakefx.core.Field;
 import eu.lestard.snakefx.core.FoodGenerator;
 import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
+import eu.lestard.snakefx.core.PointsManager;
 import eu.lestard.snakefx.core.Snake;
 import eu.lestard.snakefx.core.SpeedLevel;
 import eu.lestard.snakefx.util.Callback;
@@ -29,6 +31,9 @@ public class MainController {
 	@FXML
 	private Button playPauseButton;
 
+	@FXML
+	private Label pointsLabel;
+
 	private Snake snake;
 
 	private Grid grid;
@@ -39,14 +44,18 @@ public class MainController {
 
 	private FoodGenerator foodGenerator;
 
+	private PointsManager pointsManager;
+
 	public MainController(Grid grid, Snake snake, GameLoop gameLoop,
 			SpeedChangeController speedChangeController,
-			FoodGenerator foodGenerator) {
+			FoodGenerator foodGenerator,
+			PointsManager pointsManager) {
 		this.grid = grid;
 		this.snake = snake;
 		this.gameLoop = gameLoop;
 		this.speedChangeController = speedChangeController;
 		this.foodGenerator = foodGenerator;
+		this.pointsManager = pointsManager;
 	}
 
 	@FXML
@@ -71,6 +80,16 @@ public class MainController {
 		for (Field f : grid.getFields()) {
 			gridContainer.getChildren().add(f.getRectangle());
 		}
+
+		pointsManager.init(pointsLabel);
+
+		snake.addPointsEventListener(new Callback(){
+			@Override
+			public void call() {
+				pointsManager.addPoint();
+			}
+		});
+
 	}
 
 	@FXML
@@ -86,6 +105,8 @@ public class MainController {
 		foodGenerator.generateFood();
 
 		gameLoop.play();
+
+		pointsManager.newGame();
 
 	}
 

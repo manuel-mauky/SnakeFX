@@ -8,6 +8,7 @@ import eu.lestard.snakefx.config.IntegerKey;
 import eu.lestard.snakefx.core.FoodGenerator;
 import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
+import eu.lestard.snakefx.core.PointsManager;
 import eu.lestard.snakefx.core.Snake;
 import eu.lestard.snakefx.view.ApplicationStarter;
 import eu.lestard.snakefx.view.Keyboard;
@@ -33,31 +34,33 @@ public class MainInjector {
 	public void createObjectGraph() {
 		Configurator configurator = new Configurator();
 
-		int gridSizeInPixel = configurator.getValue(IntegerKey.GRID_SIZE_IN_PIXEL);
-		int rowAndColumnCount = configurator.getValue(IntegerKey.ROW_AND_COLUMN_COUNT);
+		int gridSizeInPixel = configurator
+				.getValue(IntegerKey.GRID_SIZE_IN_PIXEL);
+		int rowAndColumnCount = configurator
+				.getValue(IntegerKey.ROW_AND_COLUMN_COUNT);
 
 		Grid grid = new Grid(rowAndColumnCount, gridSizeInPixel);
 
-
 		int snakeStartX = configurator.getValue(IntegerKey.SNAKE_START_X);
 		int snakeStartY = configurator.getValue(IntegerKey.SNAKE_START_Y);
-		Snake snake = new Snake(grid,snakeStartX, snakeStartY);
+		Snake snake = new Snake(grid, snakeStartX, snakeStartY);
 
 		GameLoop gameLoop = new GameLoop(snake);
 
-
-		SpeedChangeController speedChangeController = new SpeedChangeController(gameLoop);
-
+		SpeedChangeController speedChangeController = new SpeedChangeController(
+				gameLoop);
 
 		FoodGenerator foodGenerator = new FoodGenerator(grid, snake);
 
-		MainController mainController = new MainController(grid, snake,gameLoop, speedChangeController, foodGenerator);
+		PointsManager pointsManager = new PointsManager();
 
-
+		MainController mainController = new MainController(grid, snake,
+				gameLoop, speedChangeController, foodGenerator, pointsManager);
 
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		FxmlFactory fxmlFactory = new FxmlFactory(fxmlLoader);
-		Parent root = fxmlFactory.getFxmlRoot(MAIN_FXML_FILENAME, mainController);
+		Parent root = fxmlFactory.getFxmlRoot(MAIN_FXML_FILENAME,
+				mainController);
 
 		Keyboard keyboard = new Keyboard(snake);
 		Scene mainScene = new Scene(root);
@@ -66,11 +69,8 @@ public class MainInjector {
 		starter = new ApplicationStarter(mainScene);
 	}
 
-	public ApplicationStarter getApplicationStarter(){
+	public ApplicationStarter getApplicationStarter() {
 		return starter;
 	}
-
-
-
 
 }
