@@ -11,6 +11,7 @@ import eu.lestard.snakefx.core.Snake;
 import eu.lestard.snakefx.view.ApplicationStarter;
 import eu.lestard.snakefx.view.Keyboard;
 import eu.lestard.snakefx.view.MainController;
+import eu.lestard.snakefx.view.SpeedChangeController;
 
 /**
  * The MainInjector is the Class that manages all instances of all classes and
@@ -43,7 +44,10 @@ public class MainInjector {
 
 		GameLoop gameLoop = new GameLoop(snake);
 
-		MainController mainController = new MainController(grid, snake,gameLoop);
+
+		SpeedChangeController speedChangeController = new SpeedChangeController(gameLoop);
+
+		MainController mainController = new MainController(grid, snake,gameLoop, speedChangeController);
 
 
 
