@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Pos ?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
+	<padding>
+		<Insets top="5" right="5" bottom="5" left="5" />
+	</padding>
+	<Label text="Please Enter your Name" />
+	<TextField fx:id="playername" promptText="Your Name" />
+
+	<Label text="You have not entered a Name" visible="false" />
+
+	<Button text="OK" onAction="#addEntry"/>
+
+</VBox>

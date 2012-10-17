@@ -1,5 +1,6 @@
 package eu.lestard.snakefx.view.controller;
 
+import javafx.beans.property.IntegerProperty;
 import eu.lestard.snakefx.core.FoodGenerator;
 import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
@@ -17,14 +18,18 @@ public class NewGameController {
 
 	private PlayPauseController playPauseController;
 
+	private IntegerProperty pointsProperty;
+
 	public NewGameController(Grid grid, Snake snake,
 			FoodGenerator foodGenerator, GameLoop gameLoop,
-			PlayPauseController playPauseController) {
+			PlayPauseController playPauseController,
+			IntegerProperty pointsProperty) {
 		this.grid = grid;
 		this.snake = snake;
 		this.foodGenerator = foodGenerator;
 		this.gameLoop = gameLoop;
 		this.playPauseController = playPauseController;
+		this.pointsProperty = pointsProperty;
 	}
 
 	public void newGame() {
@@ -37,6 +42,8 @@ public class NewGameController {
 		snake.newGame();
 
 		foodGenerator.generateFood();
+
+		pointsProperty.setValue(0);
 
 		gameLoop.pause();
 	}

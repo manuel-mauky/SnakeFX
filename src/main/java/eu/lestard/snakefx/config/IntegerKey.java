@@ -33,7 +33,10 @@ public enum IntegerKey {
 
 	SNAKE_START_X(10),
 
-	SNAKE_START_Y(10)
+	SNAKE_START_Y(10),
+
+	SCORE_COUNT(10)
+
 
 	;
 

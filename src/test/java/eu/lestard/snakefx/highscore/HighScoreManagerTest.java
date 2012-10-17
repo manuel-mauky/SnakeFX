@@ -1,0 +1,42 @@
+package eu.lestard.snakefx.highscore;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.extractProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import org.junit.Before;
+import org.junit.Test;
+
+public class HighScoreManagerTest {
+	private HighScoreManager scoreManager;
+
+	private ObservableList<HighScoreEntry> highScoreEntries;
+
+	private final static int MAX_SCORE_COUNT = 3;
+
+	@Before
+	public void setup(){
+		highScoreEntries = FXCollections.observableArrayList();
+
+		scoreManager = new HighScoreManager(highScoreEntries, MAX_SCORE_COUNT);
+	}
+
+	@Test
+	public void testScores(){
+		scoreManager.addScore("yoda", 100);
+		scoreManager.addScore("yoda", 213);
+		scoreManager.addScore("luke", 143);
+
+		assertThat(highScoreEntries).hasSize(3);
+
+		assertThat(extractProperty("points", Integer.class).from(highScoreEntries)).containsSequence(213,143,100);
+		assertThat(extractProperty("playername", String.class).from(highScoreEntries)).containsSequence("yoda","luke", "yoda");
+
+		scoreManager.addScore("jabba", 215);
+
+		assertThat(highScoreEntries).hasSize(3);
+		assertThat(extractProperty("points", Integer.class).from(highScoreEntries)).containsSequence(215, 213,143).doesNotContain(100);
+		assertThat(extractProperty("playername", String.class).from(highScoreEntries)).containsSequence("jabba","yoda","luke");
+	}
+}

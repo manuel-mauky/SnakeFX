@@ -42,19 +42,16 @@ public class MainController {
 
 	@FXML
 	public void newGame() {
-		System.out.println("New Game");
 		newGameController.newGame();
 	}
 
 	@FXML
 	public void showHighScore() {
-		System.out.println("Show High Score");
 		highScoreStage.show();
 	}
 
 	@FXML
 	public void exit() {
-		System.out.println("Exit");
 		System.exit(0);
 	}
 

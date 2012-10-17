@@ -2,11 +2,26 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.collections.*?>
+<?import eu.lestard.snakefx.highscore.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml">
-	<children>
-		<Label text="Hello world"/>
-		<Button text="OK" onAction="#handle"/>
-	</children>
+	<Label text="High Scores"/>
+
+	<TableView fx:id="tableView">
+		<columns>
+			<TableColumn text="#">
+				<cellValueFactory><PropertyValueFactory property="ranking"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Name">
+				<cellValueFactory><PropertyValueFactory property="playername"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Points">
+				<cellValueFactory><PropertyValueFactory property="points"/></cellValueFactory>
+			</TableColumn>
+
+		</columns>
+	</TableView>
 
 </VBox>

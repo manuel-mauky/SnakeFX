@@ -26,7 +26,10 @@
 				<Insets top="10" right="10" bottom="10" left="10" />
 			</padding>
 
-			<Label fx:id="pointsLabel" />
+			<HBox>
+				<Label text="Points: "/>
+				<Label fx:id="pointsLabel" />
+			</HBox>
 
 			<Button fx:id="playPauseButton" text="Start" focusTraversable="false">
 				<maxWidth>
