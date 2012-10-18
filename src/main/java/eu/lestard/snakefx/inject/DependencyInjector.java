@@ -1,5 +1,8 @@
 package eu.lestard.snakefx.inject;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -24,6 +27,7 @@ import eu.lestard.snakefx.core.Snake;
 import eu.lestard.snakefx.core.SpeedLevel;
 import eu.lestard.snakefx.highscore.HighScoreEntry;
 import eu.lestard.snakefx.highscore.HighScoreManager;
+import eu.lestard.snakefx.highscore.HighScorePersistence;
 import eu.lestard.snakefx.util.Callback;
 import eu.lestard.snakefx.view.ApplicationStarter;
 import eu.lestard.snakefx.view.Keyboard;
@@ -49,6 +53,7 @@ public class DependencyInjector {
 	private static final String FXML_FILENAME_MAIN = "/fxml/main.fxml";
 	private static final String FXML_FILENAME_HIGHSCORE = "/fxml/highscore.fxml";
 	private static final String FXML_FILENAME_NEW_SCORE_ENTRY = "/fxml/newScoreEntry.fxml";
+	private static final String HIGH_SCORE_FILEPATH = "highscores";
 
 
 	private ApplicationStarter starter;
@@ -90,7 +95,11 @@ public class DependencyInjector {
 
 		int scoreCount = configurator.getValue(IntegerKey.SCORE_COUNT);
 
-		HighScoreManager highScoreManager = new HighScoreManager(highScoreEntries,scoreCount);
+		Path highScoreFilepath = Paths.get(HIGH_SCORE_FILEPATH);
+
+		HighScorePersistence highScorePersistence = new HighScorePersistence(highScoreFilepath);
+
+		HighScoreManager highScoreManager = new HighScoreManager(highScoreEntries,scoreCount, highScorePersistence);
 
 		NewScoreEntryController newScoreEntryController = new NewScoreEntryController(highScoreManager, pointsProperty);
 

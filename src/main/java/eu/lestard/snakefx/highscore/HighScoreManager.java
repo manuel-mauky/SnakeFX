@@ -9,9 +9,15 @@ public class HighScoreManager {
 
 	private int scoreCount;
 
-	public HighScoreManager(ObservableList<HighScoreEntry> highScoreEntries, int scoreCount){
+	private HighScorePersistence persistence;
+
+	public HighScoreManager(ObservableList<HighScoreEntry> highScoreEntries, int scoreCount, HighScorePersistence highScorePersistence){
 		this.highScoreEntries= highScoreEntries;
 		this.scoreCount = scoreCount;
+
+		this.persistence = highScorePersistence;
+
+		this.highScoreEntries.setAll(persistence.loadHighScores());
 	}
 
 	public void addScore(String name, int points){
@@ -32,5 +38,7 @@ public class HighScoreManager {
 				highScoreEntries.remove(i);
 			}
 		}
+
+		persistence.persistHighScores(highScoreEntries);
 	}
 }

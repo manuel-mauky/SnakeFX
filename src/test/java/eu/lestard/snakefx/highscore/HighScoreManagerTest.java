@@ -2,6 +2,14 @@ package eu.lestard.snakefx.highscore;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.fest.assertions.api.Assertions.extractProperty;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -15,11 +23,30 @@ public class HighScoreManagerTest {
 
 	private final static int MAX_SCORE_COUNT = 3;
 
+	private HighScorePersistence persistenceMock;
+
 	@Before
 	public void setup(){
 		highScoreEntries = FXCollections.observableArrayList();
 
-		scoreManager = new HighScoreManager(highScoreEntries, MAX_SCORE_COUNT);
+		persistenceMock = mock(HighScorePersistence.class);
+
+		scoreManager = new HighScoreManager(highScoreEntries, MAX_SCORE_COUNT, persistenceMock);
+	}
+
+	@Test
+	public void testConstructor(){
+
+		List<HighScoreEntry> existingEntries = new ArrayList<HighScoreEntry>();
+		HighScoreEntry highScoreEntry = new HighScoreEntry(1,"yoda,", 14);
+		existingEntries.add(highScoreEntry);
+
+		when(persistenceMock.loadHighScores()).thenReturn(existingEntries);
+
+		scoreManager = new HighScoreManager(highScoreEntries, MAX_SCORE_COUNT, persistenceMock);
+
+		assertThat(highScoreEntries).hasSize(1);
+		assertThat(highScoreEntries).contains(highScoreEntry);
 	}
 
 	@Test
@@ -38,5 +65,8 @@ public class HighScoreManagerTest {
 		assertThat(highScoreEntries).hasSize(3);
 		assertThat(extractProperty("points", Integer.class).from(highScoreEntries)).containsSequence(215, 213,143).doesNotContain(100);
 		assertThat(extractProperty("playername", String.class).from(highScoreEntries)).containsSequence("jabba","yoda","luke");
+
+		verify(persistenceMock, times(4)).persistHighScores(highScoreEntries);
+
 	}
 }
