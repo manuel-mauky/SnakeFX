@@ -5,23 +5,66 @@
 <?import javafx.scene.control.cell.*?>
 <?import javafx.collections.*?>
 <?import eu.lestard.snakefx.highscore.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml">
-	<Label text="High Scores"/>
+<VBox
+	xmlns:fx="http://javafx.com/fxml"
+	stylesheets="css/highscore.css"
+	alignment="center"
+	spacing="10">
+	<padding>
+		<Insets
+			top="10"
+			right="10"
+			bottom="10"
+			left="10" />
+	</padding>
 
-	<TableView fx:id="tableView">
+	<Label
+		id="titleLabel"
+		text="High Score" />
+
+	<TableView
+		fx:id="tableView"
+		prefHeight="450"
+		prefWidth="300">
 		<columns>
-			<TableColumn text="#">
-				<cellValueFactory><PropertyValueFactory property="ranking"/></cellValueFactory>
+			<TableColumn
+				text="#"
+				fx:id="rankingColumn"
+				sortable="false"
+				resizable="false"
+				prefWidth="48">
+				<cellValueFactory>
+					<PropertyValueFactory property="ranking" />
+				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Name">
-				<cellValueFactory><PropertyValueFactory property="playername"/></cellValueFactory>
+			<TableColumn
+				text="Name"
+				fx:id="nameColumn"
+				sortable="false"
+				resizable="false"
+				prefWidth="180">
+				<cellValueFactory>
+					<PropertyValueFactory property="playername" />
+				</cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Points">
-				<cellValueFactory><PropertyValueFactory property="points"/></cellValueFactory>
-			</TableColumn>
+			<TableColumn
+				text="Points"
+				fx:id="pointsColumn"
+				sortable="false"
+				resizable="false"
+				prefWidth="70">
+				<cellValueFactory>
+					<PropertyValueFactory property="points" />
+				</cellValueFactory>
 
+			</TableColumn>
 		</columns>
+
+		<placeholder>
+			<Label text="No Highscore yet" />
+		</placeholder>
 	</TableView>
 
 </VBox>

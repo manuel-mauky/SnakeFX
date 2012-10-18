@@ -1,59 +1,65 @@
 package eu.lestard.snakefx.view.controller;
 
+import java.util.Collections;
+import java.util.List;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import eu.lestard.snakefx.highscore.HighScoreEntry;
 
 public class HighScoreController {
 
-	private int scoreCount;
+	private final int scoreCount;
 
 	@FXML
 	private TableView<HighScoreEntry> tableView;
 
-	private IntegerProperty pointsProperty;
+	private final IntegerProperty pointsProperty;
 
-	private Stage newScoreEntryStage;
+	private final Stage newScoreEntryStage;
 
-	private ObservableList<HighScoreEntry> highScoreEntries = FXCollections.observableArrayList();
+	private ObservableList<HighScoreEntry> highScoreEntries = FXCollections
+			.observableArrayList();
 
 
 
-	public HighScoreController( Stage newScoreEntryStage,
-				IntegerProperty pointsProperty,
-				ObservableList<HighScoreEntry> highScoreEntries,
-				int scoreCount){
+	public HighScoreController(final Stage newScoreEntryStage,
+			final IntegerProperty pointsProperty,
+			final ObservableList<HighScoreEntry> highScoreEntries,
+			final int scoreCount) {
 		this.newScoreEntryStage = newScoreEntryStage;
 		this.pointsProperty = pointsProperty;
 		this.highScoreEntries = highScoreEntries;
 		this.scoreCount = scoreCount;
 	}
 
-	public void gameFinished(){
+	public void gameFinished() {
 		int points = pointsProperty.get();
 
 		int size = highScoreEntries.size();
 
-		if(size < scoreCount){
+		if (size < scoreCount) {
 			newScoreEntryStage.show();
-		}else{
-			// check whether the last entry on the list has more points then the current game
+		} else {
+			// check whether the last entry on the list has more points then the
+			// current game
 
-			if(highScoreEntries.get(size - 1).getPoints() < points){
+			if (highScoreEntries.get(size - 1).getPoints() < points) {
 				newScoreEntryStage.show();
 			}
 		}
 	}
 
 	@FXML
-	public void initialize(){
+	public void initialize() {
 		tableView.setItems(highScoreEntries);
 	}
-
 
 
 }
