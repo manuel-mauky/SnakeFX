@@ -15,8 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
 
-import eu.lestard.snakefx.util.Callback;
-
 public class SnakeTest {
 	private Snake snake;
 
@@ -25,21 +23,15 @@ public class SnakeTest {
 	private static final int X = 4;
 	private static final int Y = 2;
 
-	private Callback collisionEventCallback;
-
 	private IntegerProperty pointsProperty;
 
 	@Before
 	public void setUp() {
 		gridMock = mock(Grid.class);
 
-		collisionEventCallback = mock(Callback.class);
-
 		pointsProperty = new SimpleIntegerProperty(0);
 
 		snake = new Snake(gridMock, X, Y, pointsProperty);
-
-		snake.addCollisionEventListener(collisionEventCallback);
 	}
 
 	@Test
@@ -216,8 +208,7 @@ public class SnakeTest {
 
 		snake.move();
 
-		verify(collisionEventCallback).call();
-
+		assertThat(snake.collisionProperty().get()).isTrue();
 	}
 
 	/**

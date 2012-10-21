@@ -5,7 +5,10 @@ import java.nio.file.Paths;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +31,6 @@ import eu.lestard.snakefx.core.SpeedLevel;
 import eu.lestard.snakefx.highscore.HighScoreEntry;
 import eu.lestard.snakefx.highscore.HighScoreManager;
 import eu.lestard.snakefx.highscore.HighScorePersistence;
-import eu.lestard.snakefx.util.Callback;
 import eu.lestard.snakefx.view.ApplicationStarter;
 import eu.lestard.snakefx.view.Keyboard;
 import eu.lestard.snakefx.view.controller.HighScoreController;
@@ -174,11 +176,18 @@ public class DependencyInjector {
 	private void initHighScoreController(final Snake snake,
 			final HighScoreController highScoreController,
 			final Stage highScoreStage) {
-		snake.addCollisionEventListener(new Callback() {
+
+		ReadOnlyBooleanProperty collisionProperty = snake.collisionProperty();
+
+		collisionProperty.addListener(new ChangeListener<Boolean>() {
+
 			@Override
-			public void call() {
-				highScoreStage.show();
-				highScoreController.gameFinished();
+			public void changed(final ObservableValue<? extends Boolean> arg0,
+					final Boolean oldValue, final Boolean newValue) {
+				if (newValue) {
+					highScoreStage.show();
+					highScoreController.gameFinished();
+				}
 			}
 		});
 	}
@@ -224,10 +233,15 @@ public class DependencyInjector {
 		playPauseController.disabledProperty().bindBidirectional(
 				playPauseButton.disableProperty());
 
-		snake.addCollisionEventListener(new Callback() {
+		ReadOnlyBooleanProperty collisionProperty = snake.collisionProperty();
+
+		collisionProperty.addListener(new ChangeListener<Boolean>() {
 			@Override
-			public void call() {
-				playPauseController.onCollision();
+			public void changed(final ObservableValue<? extends Boolean> arg0,
+					final Boolean oldValue, final Boolean newValue) {
+				if (newValue) {
+					playPauseController.onCollision();
+				}
 			}
 		});
 	}

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.beans.property.IntegerProperty;
-import eu.lestard.snakefx.util.Callback;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
 
 /**
  * This class represents the snake.
@@ -27,9 +28,9 @@ public class Snake {
 
 	private final List<Field> tail;
 
-	private final List<Callback> collisionListener;
-
 	private final IntegerProperty pointsProperty;
+
+	private final ReadOnlyBooleanWrapper collision;
 
 	/**
 	 * @param grid
@@ -49,9 +50,9 @@ public class Snake {
 
 		this.pointsProperty = pointsProperty;
 
-		tail = new ArrayList<Field>();
+		collision = new ReadOnlyBooleanWrapper(false);
 
-		collisionListener = new ArrayList<Callback>();
+		tail = new ArrayList<Field>();
 	}
 
 	/**
@@ -59,6 +60,9 @@ public class Snake {
 	 */
 	public void init() {
 		setHead(grid.getXY(x, y));
+
+		collision.set(false);
+
 
 		currentDirection = Direction.UP;
 		nextDirection = Direction.UP;
@@ -108,7 +112,7 @@ public class Snake {
 		Field newHead = grid.getFromDirection(head, currentDirection);
 
 		if (newHead.getState().equals(State.TAIL)) {
-			callCollisionEventListener();
+			collision.set(true);
 			return;
 		}
 
@@ -149,14 +153,7 @@ public class Snake {
 		init();
 	}
 
-	public void addCollisionEventListener(final Callback callback) {
-		collisionListener.add(callback);
+	public ReadOnlyBooleanProperty collisionProperty() {
+		return collision.getReadOnlyProperty();
 	}
-
-	private void callCollisionEventListener() {
-		for (Callback c : collisionListener) {
-			c.call();
-		}
-	}
-
 }
