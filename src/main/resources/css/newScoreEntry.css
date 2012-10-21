@@ -1,0 +1,11 @@
+#newEntryPointsLabel > Label {
+	-fx-font-size:20px;
+	-fx-text-fill:#333;
+}
+
+#errorMessage{
+	-fx-text-fill:red;
+	-fx-font-weight:600;
+}
+
+

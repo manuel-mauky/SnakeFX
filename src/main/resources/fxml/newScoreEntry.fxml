@@ -5,15 +5,42 @@
 <?import javafx.geometry.Pos ?>
 <?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
+<VBox
+	xmlns:fx="http://javafx.com/fxml"
+	stylesheets="css/newScoreEntry.css"
+	spacing="5"
+	alignment="CENTER">
 	<padding>
-		<Insets top="5" right="5" bottom="5" left="5" />
+		<Insets
+			top="5"
+			right="5"
+			bottom="5"
+			left="5" />
 	</padding>
+	<HBox
+		alignment="CENTER"
+		id="newEntryPointsLabel">
+		<Label
+			fx:id="points"
+			text="0" />
+		<Label text=" Points" />
+	</HBox>
+
 	<Label text="Please Enter your Name" />
-	<TextField fx:id="playername" promptText="Your Name" />
+	<TextField
+		fx:id="playername"
+		promptText="Your Name" />
 
-	<Label text="You have not entered a Name" visible="false" />
+	<Label
+		id="errorMessage"
+		fx:id="errorMessage"
+		maxWidth="150"
+		wrapText="true"
+		text="Invalid Name. Must not be empty or contain ',' or ';'"
+		visible="false" />
 
-	<Button text="OK" onAction="#addEntry"/>
+	<Button
+		text="OK"
+		onAction="#addEntry" />
 
 </VBox>

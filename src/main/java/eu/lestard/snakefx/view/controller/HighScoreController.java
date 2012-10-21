@@ -1,14 +1,9 @@
 package eu.lestard.snakefx.view.controller;
 
-import java.util.Collections;
-import java.util.List;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import eu.lestard.snakefx.highscore.HighScoreEntry;
