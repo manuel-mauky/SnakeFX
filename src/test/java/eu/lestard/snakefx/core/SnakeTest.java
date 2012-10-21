@@ -8,6 +8,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
@@ -22,20 +25,20 @@ public class SnakeTest {
 	private static final int X = 4;
 	private static final int Y = 2;
 
-	private Callback pointsEventCallback;
-
 	private Callback collisionEventCallback;
+
+	private IntegerProperty pointsProperty;
 
 	@Before
 	public void setUp() {
 		gridMock = mock(Grid.class);
 
-		pointsEventCallback = mock(Callback.class);
 		collisionEventCallback = mock(Callback.class);
 
-		snake = new Snake(gridMock, X, Y);
+		pointsProperty = new SimpleIntegerProperty(0);
 
-		snake.addPointsEventListener(pointsEventCallback);
+		snake = new Snake(gridMock, X, Y, pointsProperty);
+
 		snake.addCollisionEventListener(collisionEventCallback);
 	}
 
@@ -66,26 +69,26 @@ public class SnakeTest {
 	}
 
 	/**
-	* When the new direction has the same orientation as the old one ( both are
-	* horizontal or both are vertical) no change of the direction should be
-	* made.
-	*
-	* Otherwise the head of the snake would move directly into the tail.
-	*
-	*
-	* But if the player pressed LEFT and then DOWN faster then the gap between
-	* two frames, then the Snake would make a 180 degree turnaround. The LEFT
-	* keypress wouldn't be filtered out because LEFT has another orientation
-	* then UP and the DOWN keypress wouldn't be filtered out because LEFT
-	* (which is the "next direction" now) has another orientation then DOWN.
-	*
-	* To prevend this we have two variables for the direction: "nextDirection"
-	* and "currentDirection". When the player likes to change the direction,
-	* only nextDirection is changed but he test whether the orientation is the
-	* same is done with the "currentDirection". When the snake moves, the
-	* "currentDirection" variable gets the value from "nextDirection".
-	*
-	*/
+	 * When the new direction has the same orientation as the old one ( both are
+	 * horizontal or both are vertical) no change of the direction should be
+	 * made.
+	 * 
+	 * Otherwise the head of the snake would move directly into the tail.
+	 * 
+	 * 
+	 * But if the player pressed LEFT and then DOWN faster then the gap between
+	 * two frames, then the Snake would make a 180 degree turnaround. The LEFT
+	 * keypress wouldn't be filtered out because LEFT has another orientation
+	 * then UP and the DOWN keypress wouldn't be filtered out because LEFT
+	 * (which is the "next direction" now) has another orientation then DOWN.
+	 * 
+	 * To prevend this we have two variables for the direction: "nextDirection"
+	 * and "currentDirection". When the player likes to change the direction,
+	 * only nextDirection is changed but he test whether the orientation is the
+	 * same is done with the "currentDirection". When the snake moves, the
+	 * "currentDirection" variable gets the value from "nextDirection".
+	 * 
+	 */
 	@Test
 	public void testChangeDirectionNewHasSameOrientationAsOld() {
 		Field head = mock(Field.class);
@@ -149,9 +152,9 @@ public class SnakeTest {
 	}
 
 	/**
-	* When the snake moves to a field that has the state "FOOD" the snake
-	* should grow by 1 field.
-	*/
+	 * When the snake moves to a field that has the state "FOOD" the snake
+	 * should grow by 1 field.
+	 */
 	@Test
 	public void testGrow() {
 		Field field1 = new Field(0, 3, 10);
@@ -179,8 +182,8 @@ public class SnakeTest {
 		// field1 is now a part of the tail
 		assertThat(field1.getState()).isEqualTo(State.TAIL);
 
-		// The pointsEvent has to be fired
-		verify(pointsEventCallback, times(1)).call();
+		// One Point has to be added.
+		assertThat(pointsProperty.get()).isEqualTo(1);
 
 		// Now the snake is moving another field forward. This time the new
 		// field (field3)
@@ -218,11 +221,11 @@ public class SnakeTest {
 	}
 
 	/**
-	* When the newGame method is called, the head must be set to null and the
-	* tails arraylist has to be reset.
-	*
-	* The init method has to be called too.
-	*/
+	 * When the newGame method is called, the head must be set to null and the
+	 * tails arraylist has to be reset.
+	 * 
+	 * The init method has to be called too.
+	 */
 	@Test
 	public void testNewGame() {
 		Field head = mock(Field.class);
@@ -248,7 +251,7 @@ public class SnakeTest {
 
 	}
 
-	private List<Field> getTail(){
+	private List<Field> getTail() {
 		return (List<Field>) Whitebox.getInternalState(snake, "tail");
 	}
 

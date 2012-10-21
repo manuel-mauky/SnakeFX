@@ -3,13 +3,14 @@ package eu.lestard.snakefx.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.property.IntegerProperty;
 import eu.lestard.snakefx.util.Callback;
 
 /**
  * This class represents the snake.
- *
+ * 
  * @author manuel.mauky
- *
+ * 
  */
 public class Snake {
 
@@ -26,9 +27,9 @@ public class Snake {
 
 	private final List<Field> tail;
 
-	private List<Callback> pointsListener;
+	private final List<Callback> collisionListener;
 
-	private List<Callback> collisionListener;
+	private final IntegerProperty pointsProperty;
 
 	/**
 	 * @param grid
@@ -37,14 +38,19 @@ public class Snake {
 	 *            the x coordinate where the snake is created
 	 * @param y
 	 *            the y coordinate where the snake is created
+	 * @param pointsProperty
+	 *            the property for the points
 	 */
-	public Snake(final Grid grid, final int x, int y) {
+	public Snake(final Grid grid, final int x, final int y,
+			final IntegerProperty pointsProperty) {
 		this.grid = grid;
 		this.x = x;
 		this.y = y;
+
+		this.pointsProperty = pointsProperty;
+
 		tail = new ArrayList<Field>();
 
-		pointsListener = new ArrayList<Callback>();
 		collisionListener = new ArrayList<Callback>();
 	}
 
@@ -64,11 +70,11 @@ public class Snake {
 	}
 
 	/**
-	* The given field is added to the tail of the snake and gets the state
-	* TAIL.
-	*
-	* @param field
-	*/
+	 * The given field is added to the tail of the snake and gets the state
+	 * TAIL.
+	 * 
+	 * @param field
+	 */
 	private void grow(final Field field) {
 		field.changeState(State.TAIL);
 		tail.add(field);
@@ -76,17 +82,17 @@ public class Snake {
 
 
 	/**
-	* Change the direction of the snake. The direction is only changed when the
-	* new direction has <bold>not</bold> the same orientation as the old one.
-	*
-	* For example, when the snake currently has the direction UP and the new
-	* direction should be DOWN, nothing will happend because both directions
-	* are vertical.
-	*
-	* This is to prevent the snake from moving directly into its own tail.
-	*
-	* @param newDirection
-	*/
+	 * Change the direction of the snake. The direction is only changed when the
+	 * new direction has <bold>not</bold> the same orientation as the old one.
+	 * 
+	 * For example, when the snake currently has the direction UP and the new
+	 * direction should be DOWN, nothing will happend because both directions
+	 * are vertical.
+	 * 
+	 * This is to prevent the snake from moving directly into its own tail.
+	 * 
+	 * @param newDirection
+	 */
 	public void changeDirection(final Direction newDirection) {
 		if (!newDirection.hasSameOrientation(currentDirection)) {
 			nextDirection = newDirection;
@@ -94,8 +100,8 @@ public class Snake {
 	}
 
 	/**
-	* Move the snake by one field.
-	*/
+	 * Move the snake by one field.
+	 */
 	public void move() {
 		currentDirection = nextDirection;
 
@@ -124,7 +130,8 @@ public class Snake {
 
 		if (grow) {
 			grow(lastField);
-			callPointsEventListener();
+			addPoints();
+			// callPointsEventListener();
 		} else {
 			lastField.changeState(State.EMPTY);
 		}
@@ -132,22 +139,17 @@ public class Snake {
 		setHead(newHead);
 	}
 
+	private void addPoints() {
+		int current = pointsProperty.get();
+		pointsProperty.setValue(current + 1);
+	}
+
 	public void newGame() {
 		tail.clear();
 		init();
 	}
 
-	public void addPointsEventListener(Callback callback) {
-		pointsListener.add(callback);
-	}
-
-	private void callPointsEventListener() {
-		for (Callback c : pointsListener) {
-			c.call();
-		}
-	}
-
-	public void addCollisionEventListener(Callback callback) {
+	public void addCollisionEventListener(final Callback callback) {
 		collisionListener.add(callback);
 	}
 

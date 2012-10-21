@@ -80,7 +80,7 @@ public class DependencyInjector {
 		int snakeStartX = configurator.getValue(IntegerKey.SNAKE_START_X);
 		int snakeStartY = configurator.getValue(IntegerKey.SNAKE_START_Y);
 
-		Snake snake = new Snake(grid, snakeStartX, snakeStartY);
+		Snake snake = new Snake(grid, snakeStartX, snakeStartY, pointsProperty);
 
 		GameLoop gameLoop = new GameLoop(snake);
 
@@ -152,15 +152,6 @@ public class DependencyInjector {
 		Label pointsLabel = (Label) root.lookup(FXML_ID_POINTS_LABEL);
 
 		pointsLabel.textProperty().bind(Bindings.convert(pointsProperty));
-
-		snake.addPointsEventListener(new Callback() {
-			@Override
-			public void call() {
-				int current = pointsProperty.get();
-				pointsProperty.setValue(current + 1);
-			}
-		});
-
 
 		initPlayPauseController(playPauseController, snake, root);
 
