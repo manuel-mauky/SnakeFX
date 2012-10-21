@@ -1,6 +1,6 @@
 package eu.lestard.snakefx.view.controller;
 
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -19,10 +19,10 @@ public class NewScoreEntryController {
 
 	private final HighScoreManager highScoreManager;
 
-	private final IntegerProperty pointsProperty;
+	private final ReadOnlyIntegerProperty pointsProperty;
 
 	public NewScoreEntryController(final HighScoreManager highScoreManager,
-			final IntegerProperty pointsProperty) {
+			final ReadOnlyIntegerProperty pointsProperty) {
 		this.highScoreManager = highScoreManager;
 		this.pointsProperty = pointsProperty;
 	}

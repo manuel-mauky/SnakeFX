@@ -3,9 +3,10 @@ package eu.lestard.snakefx.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
 
 /**
  * This class represents the snake.
@@ -28,9 +29,10 @@ public class Snake {
 
 	private final List<Field> tail;
 
-	private final IntegerProperty pointsProperty;
-
 	private final ReadOnlyBooleanWrapper collision;
+
+	private final ReadOnlyIntegerWrapper points;
+
 
 	/**
 	 * @param grid
@@ -42,15 +44,13 @@ public class Snake {
 	 * @param pointsProperty
 	 *            the property for the points
 	 */
-	public Snake(final Grid grid, final int x, final int y,
-			final IntegerProperty pointsProperty) {
+	public Snake(final Grid grid, final int x, final int y) {
 		this.grid = grid;
 		this.x = x;
 		this.y = y;
 
-		this.pointsProperty = pointsProperty;
-
 		collision = new ReadOnlyBooleanWrapper(false);
+		points = new ReadOnlyIntegerWrapper();
 
 		tail = new ArrayList<Field>();
 	}
@@ -63,6 +63,7 @@ public class Snake {
 
 		collision.set(false);
 
+		points.set(0);
 
 		currentDirection = Direction.UP;
 		nextDirection = Direction.UP;
@@ -135,7 +136,6 @@ public class Snake {
 		if (grow) {
 			grow(lastField);
 			addPoints();
-			// callPointsEventListener();
 		} else {
 			lastField.changeState(State.EMPTY);
 		}
@@ -144,13 +144,17 @@ public class Snake {
 	}
 
 	private void addPoints() {
-		int current = pointsProperty.get();
-		pointsProperty.setValue(current + 1);
+		int current = points.get();
+		points.set(current + 1);
 	}
 
 	public void newGame() {
 		tail.clear();
 		init();
+	}
+
+	public ReadOnlyIntegerProperty pointsProperty() {
+		return points.getReadOnlyProperty();
 	}
 
 	public ReadOnlyBooleanProperty collisionProperty() {

@@ -1,6 +1,6 @@
 package eu.lestard.snakefx.core;
 
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
@@ -21,7 +21,8 @@ public class FoodGenerator {
 
 	private final Grid grid;
 
-	public FoodGenerator(final Grid grid, final IntegerProperty pointsProperty) {
+	public FoodGenerator(final Grid grid,
+			final ReadOnlyIntegerProperty pointsProperty) {
 		this.grid = grid;
 
 		pointsProperty.addListener(new ChangeListener<Number>() {

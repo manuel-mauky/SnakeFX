@@ -1,6 +1,6 @@
 package eu.lestard.snakefx.view.controller;
 
-import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,7 +15,7 @@ public class HighScoreController {
 	@FXML
 	private TableView<HighScoreEntry> tableView;
 
-	private final IntegerProperty pointsProperty;
+	private final ReadOnlyIntegerProperty pointsProperty;
 
 	private final Stage newScoreEntryStage;
 
@@ -25,7 +25,7 @@ public class HighScoreController {
 
 
 	public HighScoreController(final Stage newScoreEntryStage,
-			final IntegerProperty pointsProperty,
+			final ReadOnlyIntegerProperty pointsProperty,
 			final ObservableList<HighScoreEntry> highScoreEntries,
 			final int scoreCount) {
 		this.newScoreEntryStage = newScoreEntryStage;

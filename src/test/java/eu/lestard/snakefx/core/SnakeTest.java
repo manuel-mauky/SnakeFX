@@ -8,9 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
@@ -23,15 +20,11 @@ public class SnakeTest {
 	private static final int X = 4;
 	private static final int Y = 2;
 
-	private IntegerProperty pointsProperty;
-
 	@Before
 	public void setUp() {
 		gridMock = mock(Grid.class);
 
-		pointsProperty = new SimpleIntegerProperty(0);
-
-		snake = new Snake(gridMock, X, Y, pointsProperty);
+		snake = new Snake(gridMock, X, Y);
 	}
 
 	@Test
@@ -175,7 +168,7 @@ public class SnakeTest {
 		assertThat(field1.getState()).isEqualTo(State.TAIL);
 
 		// One Point has to be added.
-		assertThat(pointsProperty.get()).isEqualTo(1);
+		assertThat(snake.pointsProperty().get()).isEqualTo(1);
 
 		// Now the snake is moving another field forward. This time the new
 		// field (field3)

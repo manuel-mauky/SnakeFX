@@ -4,9 +4,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -70,7 +69,6 @@ public class DependencyInjector {
 	 * Creates the object graph for the application with Dependency Injection.
 	 */
 	public void createObjectGraph() {
-		final IntegerProperty pointsProperty = new SimpleIntegerProperty(0);
 
 		Configurator configurator = new Configurator();
 		int gridSizeInPixel = configurator
@@ -82,7 +80,9 @@ public class DependencyInjector {
 		int snakeStartX = configurator.getValue(IntegerKey.SNAKE_START_X);
 		int snakeStartY = configurator.getValue(IntegerKey.SNAKE_START_Y);
 
-		Snake snake = new Snake(grid, snakeStartX, snakeStartY, pointsProperty);
+		Snake snake = new Snake(grid, snakeStartX, snakeStartY);
+
+		ReadOnlyIntegerProperty pointsProperty = snake.pointsProperty();
 
 		GameLoop gameLoop = new GameLoop(snake);
 
@@ -92,8 +92,7 @@ public class DependencyInjector {
 				gameLoop);
 
 		NewGameController newGameController = new NewGameController(grid,
-				snake, foodGenerator, gameLoop, playPauseController,
-				pointsProperty);
+				snake, foodGenerator, gameLoop, playPauseController);
 
 		ObservableList<HighScoreEntry> highScoreEntries = FXCollections
 				.observableArrayList();
