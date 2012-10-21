@@ -2,17 +2,10 @@ package eu.lestard.snakefx.config;
 
 /**
  * This enum represents configuration parameters of type integer.
- *
- * Configuration parameters are key value pairs and this enum represents the
- * key's.
- *
- * Every key has a default value that is used by the application when no other
- * value is provided.
- *
+ * 
  * @author manuel.mauky
- *
  */
-public enum IntegerKey {
+public enum IntegerConfig {
 
 	/**
 	 * The default value that is used by the injection mechanism when no other
@@ -31,25 +24,33 @@ public enum IntegerKey {
 	 */
 	GRID_SIZE_IN_PIXEL(500),
 
+	/**
+	 * The x coordinate of the starting point of the snake
+	 */
 	SNAKE_START_X(10),
 
+	/**
+	 * The y coordinate of the starting point of the snake
+	 */
 	SNAKE_START_Y(10),
 
-	SCORE_COUNT(10)
-
+	/**
+	 * The max number of HighScore entries that are saved and persisted
+	 */
+	MAX_SCORE_COUNT(10)
 
 	;
 
-	private Integer defaultValue;
+	private Integer value;
 
-	private IntegerKey(final Integer defaultValue) {
-		this.defaultValue = defaultValue;
+	private IntegerConfig(final Integer value) {
+		this.value = value;
 	}
 
 	/**
 	 * @return the specified default value of the key.
 	 */
-	public Integer getDefaultValue() {
-		return defaultValue;
+	public Integer get() {
+		return value;
 	}
 }

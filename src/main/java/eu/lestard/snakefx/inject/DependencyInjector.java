@@ -1,5 +1,15 @@
 package eu.lestard.snakefx.inject;
 
+import static eu.lestard.snakefx.config.IntegerConfig.GRID_SIZE_IN_PIXEL;
+import static eu.lestard.snakefx.config.IntegerConfig.MAX_SCORE_COUNT;
+import static eu.lestard.snakefx.config.IntegerConfig.ROW_AND_COLUMN_COUNT;
+import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_X;
+import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_Y;
+import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_HIGHSCORE;
+import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_MAIN;
+import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_NEW_SCORE_ENTRY;
+import static eu.lestard.snakefx.config.StringConfig.HIGH_SCORE_FILEPATH;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -20,8 +30,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import eu.lestard.snakefx.config.Configurator;
-import eu.lestard.snakefx.config.IntegerKey;
 import eu.lestard.snakefx.core.FoodGenerator;
 import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
@@ -51,11 +59,6 @@ public class DependencyInjector {
 	private static final String FXML_ID_SPEED_CHOICE_BOX = "#speedChoiceBox";
 	private static final String FXML_ID_POINTS_LABEL = "#pointsLabel";
 	private static final String FXML_ID_PLAY_PAUSE_BUTTON = "#playPauseButton";
-	private static final String FXML_FILENAME_MAIN = "/fxml/main.fxml";
-	private static final String FXML_FILENAME_HIGHSCORE = "/fxml/highscore.fxml";
-	private static final String FXML_FILENAME_NEW_SCORE_ENTRY = "/fxml/newScoreEntry.fxml";
-	private static final String HIGH_SCORE_FILEPATH = "highscores";
-
 
 	private ApplicationStarter starter;
 
@@ -69,63 +72,66 @@ public class DependencyInjector {
 	 * Creates the object graph for the application with Dependency Injection.
 	 */
 	public void createObjectGraph() {
+		final Grid grid = new Grid(ROW_AND_COLUMN_COUNT.get(),
+				GRID_SIZE_IN_PIXEL.get());
 
-		Configurator configurator = new Configurator();
-		int gridSizeInPixel = configurator
-				.getValue(IntegerKey.GRID_SIZE_IN_PIXEL);
-		int rowAndColumnCount = configurator
-				.getValue(IntegerKey.ROW_AND_COLUMN_COUNT);
+		final Snake snake = new Snake(grid, SNAKE_START_X.get(),
+				SNAKE_START_Y.get());
 
-		Grid grid = new Grid(rowAndColumnCount, gridSizeInPixel);
-		int snakeStartX = configurator.getValue(IntegerKey.SNAKE_START_X);
-		int snakeStartY = configurator.getValue(IntegerKey.SNAKE_START_Y);
+		final ReadOnlyIntegerProperty pointsProperty = snake.pointsProperty();
 
-		Snake snake = new Snake(grid, snakeStartX, snakeStartY);
+		final GameLoop gameLoop = new GameLoop(snake);
 
-		ReadOnlyIntegerProperty pointsProperty = snake.pointsProperty();
+		final FoodGenerator foodGenerator = new FoodGenerator(grid,
+				pointsProperty);
 
-		GameLoop gameLoop = new GameLoop(snake);
-
-		FoodGenerator foodGenerator = new FoodGenerator(grid, pointsProperty);
-
-		PlayPauseController playPauseController = new PlayPauseController(
+		final PlayPauseController playPauseController = new PlayPauseController(
 				gameLoop);
 
-		NewGameController newGameController = new NewGameController(grid,
+		final NewGameController newGameController = new NewGameController(grid,
 				snake, foodGenerator, gameLoop, playPauseController);
 
-		ObservableList<HighScoreEntry> highScoreEntries = FXCollections
+		final ObservableList<HighScoreEntry> highScoreEntries = FXCollections
 				.observableArrayList();
 
-		int scoreCount = configurator.getValue(IntegerKey.SCORE_COUNT);
 
-		Path highScoreFilepath = Paths.get(HIGH_SCORE_FILEPATH);
+		final Path highScoreFilepath = Paths.get(HIGH_SCORE_FILEPATH.get());
 
-		HighScorePersistence highScorePersistence = new HighScorePersistence(
+		final HighScorePersistence highScorePersistence = new HighScorePersistence(
 				highScoreFilepath);
 
-		HighScoreManager highScoreManager = new HighScoreManager(
-				highScoreEntries, scoreCount, highScorePersistence);
+		final HighScoreManager highScoreManager = new HighScoreManager(
+				highScoreEntries, MAX_SCORE_COUNT.get(), highScorePersistence);
 
-		NewScoreEntryController newScoreEntryController = new NewScoreEntryController(
+		final NewScoreEntryController newScoreEntryController = new NewScoreEntryController(
 				highScoreManager, pointsProperty);
 
-		Parent newScoreEntryRoot = createNewScoreEntryRoot(newScoreEntryController);
-		Stage newScoreEntryStage1 = new Stage();
+
+
+		FxmlFactory fxmlFactory2 = createFxmlFactory();
+		final Parent newScoreEntryRoot = fxmlFactory2.getFxmlRoot(
+				FXML_FILENAME_NEW_SCORE_ENTRY.get(), newScoreEntryController);
+
+
+
+
+
+		final Stage newScoreEntryStage1 = new Stage();
 		newScoreEntryStage1.setScene(new Scene(newScoreEntryRoot));
-		Stage newScoreEntryStage = newScoreEntryStage1;
+		final Stage newScoreEntryStage = newScoreEntryStage1;
 
 
-		HighScoreController highScoreController = new HighScoreController(
+		final HighScoreController highScoreController = new HighScoreController(
 				newScoreEntryStage, pointsProperty, highScoreEntries,
-				scoreCount);
-		FxmlFactory fxmlFactory1 = createFxmlFactory();
+				MAX_SCORE_COUNT.get());
+		final FxmlFactory fxmlFactory1 = createFxmlFactory();
 
 
-		Parent highScoreRoot = fxmlFactory1.getFxmlRoot(
-				FXML_FILENAME_HIGHSCORE, highScoreController);
+		final Parent highScoreRoot = fxmlFactory1.getFxmlRoot(
+				FXML_FILENAME_HIGHSCORE.get(), highScoreController);
 
-		Stage highScoreStage = createHighScoreStage(highScoreRoot, primaryStage);
+		final Stage highScoreStage = createHighScoreStage(highScoreRoot,
+				primaryStage);
 
 
 
@@ -135,29 +141,29 @@ public class DependencyInjector {
 		initNewScoreEntryStage(newScoreEntryStage, highScoreStage);
 
 
-		MainController mainController = new MainController(grid,
+		final MainController mainController = new MainController(grid,
 				newGameController, highScoreStage);
-		FxmlFactory fxmlFactory = createFxmlFactory();
+		final FxmlFactory fxmlFactory = createFxmlFactory();
 
-		Parent root = fxmlFactory.getFxmlRoot(FXML_FILENAME_MAIN,
+		final Parent mainRoot = fxmlFactory.getFxmlRoot(FXML_FILENAME_MAIN.get(),
 				mainController);
 
 		@SuppressWarnings("unchecked")
-		ChoiceBox<SpeedLevel> speedChoiceBox = (ChoiceBox<SpeedLevel>) root
+		final ChoiceBox<SpeedLevel> speedChoiceBox = (ChoiceBox<SpeedLevel>) mainRoot
 				.lookup(FXML_ID_SPEED_CHOICE_BOX);
-		SpeedChangeController speedChangeController = new SpeedChangeController(
+		final SpeedChangeController speedChangeController = new SpeedChangeController(
 				gameLoop, speedChoiceBox);
 
 		speedChangeController.init();
 
-		Label pointsLabel = (Label) root.lookup(FXML_ID_POINTS_LABEL);
+		final Label pointsLabel = (Label) mainRoot.lookup(FXML_ID_POINTS_LABEL);
 
 		pointsLabel.textProperty().bind(Bindings.convert(pointsProperty));
 
-		initPlayPauseController(playPauseController, snake, root);
+		initPlayPauseController(playPauseController, snake, mainRoot);
 
-		Keyboard keyboard = new Keyboard(snake);
-		Scene mainScene = createMainScene(root, keyboard);
+		final Keyboard keyboard = new Keyboard(snake);
+		final Scene mainScene = createMainScene(mainRoot, keyboard);
 
 		mainController.newGame();
 
@@ -189,13 +195,6 @@ public class DependencyInjector {
 				}
 			}
 		});
-	}
-
-	private Parent createNewScoreEntryRoot(
-			final NewScoreEntryController newScoreEntryController) {
-		FxmlFactory fxmlFactory = createFxmlFactory();
-		return fxmlFactory.getFxmlRoot(FXML_FILENAME_NEW_SCORE_ENTRY,
-				newScoreEntryController);
 	}
 
 	private Stage createHighScoreStage(final Parent highScoreRoot,
