@@ -39,11 +39,11 @@ import eu.lestard.snakefx.view.controller.PlayPauseController;
 import eu.lestard.snakefx.view.controller.SpeedChangeController;
 
 /**
- * The DependencyInjector is the Class that manages all instances of all classes and
- * the creation process.
- *
+ * The DependencyInjector is the Class that manages all instances of all classes
+ * and the creation process.
+ * 
  * @author manuel.mauky
- *
+ * 
  */
 public class DependencyInjector {
 
@@ -58,9 +58,9 @@ public class DependencyInjector {
 
 	private ApplicationStarter starter;
 
-	private Stage primaryStage;
+	private final Stage primaryStage;
 
-	public DependencyInjector(Stage primaryStage) {
+	public DependencyInjector(final Stage primaryStage) {
 		this.primaryStage = primaryStage;
 	}
 
@@ -84,24 +84,30 @@ public class DependencyInjector {
 
 		GameLoop gameLoop = new GameLoop(snake);
 
-		FoodGenerator foodGenerator = new FoodGenerator(grid, snake);
+		FoodGenerator foodGenerator = new FoodGenerator(grid, pointsProperty);
 
-		PlayPauseController playPauseController = new PlayPauseController(gameLoop);
+		PlayPauseController playPauseController = new PlayPauseController(
+				gameLoop);
 
 		NewGameController newGameController = new NewGameController(grid,
-		snake, foodGenerator, gameLoop, playPauseController, pointsProperty);
+				snake, foodGenerator, gameLoop, playPauseController,
+				pointsProperty);
 
-		ObservableList<HighScoreEntry> highScoreEntries = FXCollections.observableArrayList();
+		ObservableList<HighScoreEntry> highScoreEntries = FXCollections
+				.observableArrayList();
 
 		int scoreCount = configurator.getValue(IntegerKey.SCORE_COUNT);
 
 		Path highScoreFilepath = Paths.get(HIGH_SCORE_FILEPATH);
 
-		HighScorePersistence highScorePersistence = new HighScorePersistence(highScoreFilepath);
+		HighScorePersistence highScorePersistence = new HighScorePersistence(
+				highScoreFilepath);
 
-		HighScoreManager highScoreManager = new HighScoreManager(highScoreEntries,scoreCount, highScorePersistence);
+		HighScoreManager highScoreManager = new HighScoreManager(
+				highScoreEntries, scoreCount, highScorePersistence);
 
-		NewScoreEntryController newScoreEntryController = new NewScoreEntryController(highScoreManager, pointsProperty);
+		NewScoreEntryController newScoreEntryController = new NewScoreEntryController(
+				highScoreManager, pointsProperty);
 
 		Parent newScoreEntryRoot = createNewScoreEntryRoot(newScoreEntryController);
 		Stage newScoreEntryStage1 = new Stage();
@@ -109,11 +115,14 @@ public class DependencyInjector {
 		Stage newScoreEntryStage = newScoreEntryStage1;
 
 
-		HighScoreController highScoreController = new HighScoreController(newScoreEntryStage, pointsProperty, highScoreEntries,scoreCount);
+		HighScoreController highScoreController = new HighScoreController(
+				newScoreEntryStage, pointsProperty, highScoreEntries,
+				scoreCount);
 		FxmlFactory fxmlFactory1 = createFxmlFactory();
 
 
-		Parent highScoreRoot = fxmlFactory1.getFxmlRoot(FXML_FILENAME_HIGHSCORE, highScoreController);
+		Parent highScoreRoot = fxmlFactory1.getFxmlRoot(
+				FXML_FILENAME_HIGHSCORE, highScoreController);
 
 		Stage highScoreStage = createHighScoreStage(highScoreRoot, primaryStage);
 
@@ -125,11 +134,12 @@ public class DependencyInjector {
 		initNewScoreEntryStage(newScoreEntryStage, highScoreStage);
 
 
-		MainController mainController = new MainController(grid, newGameController, highScoreStage);
+		MainController mainController = new MainController(grid,
+				newGameController, highScoreStage);
 		FxmlFactory fxmlFactory = createFxmlFactory();
 
 		Parent root = fxmlFactory.getFxmlRoot(FXML_FILENAME_MAIN,
-		mainController);
+				mainController);
 
 		@SuppressWarnings("unchecked")
 		ChoiceBox<SpeedLevel> speedChoiceBox = (ChoiceBox<SpeedLevel>) root
@@ -164,14 +174,15 @@ public class DependencyInjector {
 		starter = new ApplicationStarter(mainScene, primaryStage);
 	}
 
-	private void initNewScoreEntryStage(Stage newScoreEntryStage,
-			Stage owner) {
+	private void initNewScoreEntryStage(final Stage newScoreEntryStage,
+			final Stage owner) {
 		newScoreEntryStage.initModality(Modality.WINDOW_MODAL);
 		newScoreEntryStage.initOwner(owner);
 	}
 
-	private void initHighScoreController(Snake snake,
-			final HighScoreController highScoreController, final Stage highScoreStage) {
+	private void initHighScoreController(final Snake snake,
+			final HighScoreController highScoreController,
+			final Stage highScoreStage) {
 		snake.addCollisionEventListener(new Callback() {
 			@Override
 			public void call() {
@@ -181,12 +192,15 @@ public class DependencyInjector {
 		});
 	}
 
-	private Parent createNewScoreEntryRoot(NewScoreEntryController newScoreEntryController) {
+	private Parent createNewScoreEntryRoot(
+			final NewScoreEntryController newScoreEntryController) {
 		FxmlFactory fxmlFactory = createFxmlFactory();
-		return fxmlFactory.getFxmlRoot(FXML_FILENAME_NEW_SCORE_ENTRY, newScoreEntryController);
+		return fxmlFactory.getFxmlRoot(FXML_FILENAME_NEW_SCORE_ENTRY,
+				newScoreEntryController);
 	}
 
-	private Stage createHighScoreStage(Parent highScoreRoot, Stage owner) {
+	private Stage createHighScoreStage(final Parent highScoreRoot,
+			final Stage owner) {
 		Stage highScoreStage = new Stage();
 
 		highScoreStage.initModality(Modality.WINDOW_MODAL);
@@ -195,20 +209,21 @@ public class DependencyInjector {
 		return highScoreStage;
 	}
 
-	private Scene createMainScene(Parent root, Keyboard keyboard) {
+	private Scene createMainScene(final Parent root, final Keyboard keyboard) {
 		Scene mainScene = new Scene(root);
 		mainScene.setOnKeyPressed(keyboard);
 		return mainScene;
 	}
 
 	private void initPlayPauseController(
-			final PlayPauseController playPauseController, Snake snake,
-			Parent root) {
-		final Button playPauseButton = (Button) root.lookup(FXML_ID_PLAY_PAUSE_BUTTON);
+			final PlayPauseController playPauseController, final Snake snake,
+			final Parent root) {
+		final Button playPauseButton = (Button) root
+				.lookup(FXML_ID_PLAY_PAUSE_BUTTON);
 
 		playPauseButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent arg0) {
+			public void handle(final ActionEvent arg0) {
 				playPauseController.togglePlayPause();
 			}
 		});
