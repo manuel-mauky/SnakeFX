@@ -28,6 +28,7 @@ public class NewGameController {
 	}
 
 	public void newGame() {
+		gameLoop.stop();
 		gameLoop.init();
 
 		playPauseController.enableButton();

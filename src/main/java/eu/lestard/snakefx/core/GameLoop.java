@@ -109,7 +109,9 @@ public class GameLoop {
 	 * delegate to the pause method of the timeline.
 	 */
 	public void stop() {
-		timeline.stop();
+		if (timeline != null) {
+			timeline.stop();
+		}
 	}
 
 	/**
