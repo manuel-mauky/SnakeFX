@@ -72,24 +72,15 @@ public class DependencyInjector {
 	 * Creates the object graph for the application with Dependency Injection.
 	 */
 	public void createObjectGraph() {
-		final Grid grid = new Grid(ROW_AND_COLUMN_COUNT.get(),
-				GRID_SIZE_IN_PIXEL.get());
-
-		final Snake snake = new Snake(grid, SNAKE_START_X.get(),
-				SNAKE_START_Y.get());
-
-		final ReadOnlyIntegerProperty pointsProperty = snake.pointsProperty();
-
-		final GameLoop gameLoop = new GameLoop(snake);
-
-		final FoodGenerator foodGenerator = new FoodGenerator(grid,
-				pointsProperty);
+		CoreInjector coreInjector = new CoreInjector();
 
 		final PlayPauseController playPauseController = new PlayPauseController(
-				gameLoop);
+				coreInjector.getGameLoop());
 
-		final NewGameController newGameController = new NewGameController(grid,
-				snake, foodGenerator, gameLoop, playPauseController);
+		final NewGameController newGameController = new NewGameController(
+				coreInjector.getGrid(), coreInjector.getSnake(),
+				coreInjector.getFoodGenerator(), coreInjector.getGameLoop(),
+				playPauseController);
 
 		final ObservableList<HighScoreEntry> highScoreEntries = FXCollections
 				.observableArrayList();
@@ -104,7 +95,7 @@ public class DependencyInjector {
 				highScoreEntries, MAX_SCORE_COUNT.get(), highScorePersistence);
 
 		final NewScoreEntryController newScoreEntryController = new NewScoreEntryController(
-				highScoreManager, pointsProperty);
+				highScoreManager, coreInjector.getPointsProperty());
 
 
 
@@ -122,8 +113,8 @@ public class DependencyInjector {
 
 
 		final HighScoreController highScoreController = new HighScoreController(
-				newScoreEntryStage, pointsProperty, highScoreEntries,
-				MAX_SCORE_COUNT.get());
+				newScoreEntryStage, coreInjector.getPointsProperty(),
+				highScoreEntries, MAX_SCORE_COUNT.get());
 		final FxmlFactory fxmlFactory1 = createFxmlFactory();
 
 
@@ -136,33 +127,36 @@ public class DependencyInjector {
 
 
 
-		initHighScoreController(snake, highScoreController, highScoreStage);
+		initHighScoreController(coreInjector.getSnake(), highScoreController,
+				highScoreStage);
 
 		initNewScoreEntryStage(newScoreEntryStage, highScoreStage);
 
 
-		final MainController mainController = new MainController(grid,
-				newGameController, highScoreStage);
+		final MainController mainController = new MainController(
+				coreInjector.getGrid(), newGameController, highScoreStage);
 		final FxmlFactory fxmlFactory = createFxmlFactory();
 
-		final Parent mainRoot = fxmlFactory.getFxmlRoot(FXML_FILENAME_MAIN.get(),
-				mainController);
+		final Parent mainRoot = fxmlFactory.getFxmlRoot(
+				FXML_FILENAME_MAIN.get(), mainController);
 
 		@SuppressWarnings("unchecked")
 		final ChoiceBox<SpeedLevel> speedChoiceBox = (ChoiceBox<SpeedLevel>) mainRoot
 				.lookup(FXML_ID_SPEED_CHOICE_BOX);
 		final SpeedChangeController speedChangeController = new SpeedChangeController(
-				gameLoop, speedChoiceBox);
+				coreInjector.getGameLoop(), speedChoiceBox);
 
 		speedChangeController.init();
 
 		final Label pointsLabel = (Label) mainRoot.lookup(FXML_ID_POINTS_LABEL);
 
-		pointsLabel.textProperty().bind(Bindings.convert(pointsProperty));
+		pointsLabel.textProperty().bind(
+				Bindings.convert(coreInjector.getPointsProperty()));
 
-		initPlayPauseController(playPauseController, snake, mainRoot);
+		initPlayPauseController(playPauseController, coreInjector.getSnake(),
+				mainRoot);
 
-		final Keyboard keyboard = new Keyboard(snake);
+		final Keyboard keyboard = new Keyboard(coreInjector.getSnake());
 		final Scene mainScene = createMainScene(mainRoot, keyboard);
 
 		mainController.newGame();
