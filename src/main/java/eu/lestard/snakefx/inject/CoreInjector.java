@@ -18,7 +18,6 @@ import eu.lestard.snakefx.core.Snake;
  */
 public class CoreInjector {
 
-
 	private final Grid grid;
 	private final Snake snake;
 	private final GameLoop gameLoop;
@@ -37,9 +36,6 @@ public class CoreInjector {
 		foodGenerator = new FoodGenerator(grid, pointsProperty);
 	}
 
-	public Grid getGrid() {
-		return grid;
-	}
 
 	public Snake getSnake() {
 		return snake;
@@ -55,6 +51,10 @@ public class CoreInjector {
 
 	public ReadOnlyIntegerProperty getPointsProperty() {
 		return pointsProperty;
+	}
+
+	public Grid getGrid() {
+		return grid;
 	}
 
 }

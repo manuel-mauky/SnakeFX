@@ -2,31 +2,46 @@ package eu.lestard.snakefx.view.controller;
 
 import javafx.animation.Animation.Status;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import eu.lestard.snakefx.core.GameLoop;
 
 public class PlayPauseController {
 
-	private GameLoop gameLoop;
+	private final GameLoop gameLoop;
 
-	private StringProperty buttonLabel;
+	private final StringProperty buttonLabel;
 
-	private BooleanProperty disabled;
+	private final BooleanProperty disabled;
 
-	public PlayPauseController(GameLoop gameLoop){
+	public PlayPauseController(final GameLoop gameLoop,
+			final ReadOnlyBooleanProperty collisionProperty) {
 		this.gameLoop = gameLoop;
 
 		buttonLabel = new SimpleStringProperty();
 		disabled = new SimpleBooleanProperty();
+
+
+		collisionProperty.addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(final ObservableValue<? extends Boolean> arg0,
+					final Boolean oldValue, final Boolean newValue) {
+				if (newValue) {
+					disabled.set(true);
+				}
+			}
+		});
 	}
 
-	public StringProperty buttonLabelProperty(){
+	public StringProperty buttonLabelProperty() {
 		return buttonLabel;
 	}
 
-	public BooleanProperty disabledProperty(){
+	public BooleanProperty disabledProperty() {
 		return disabled;
 	}
 
@@ -53,10 +68,6 @@ public class PlayPauseController {
 			gameLoop.play();
 			break;
 		}
-	}
-
-	public void onCollision() {
-		disabled.set(true);
 	}
 
 }
