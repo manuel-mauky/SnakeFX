@@ -10,6 +10,12 @@ import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
 import eu.lestard.snakefx.core.Snake;
 
+/**
+ * This class is the Dependency Injector for all Classes in the core package.
+ * 
+ * @author manuel.mauky
+ * 
+ */
 public class CoreInjector {
 
 

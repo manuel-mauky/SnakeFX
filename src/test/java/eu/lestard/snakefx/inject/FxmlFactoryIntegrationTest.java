@@ -19,17 +19,17 @@ public class FxmlFactoryIntegrationTest {
 	private FxmlFactory factory;
 
 	@Before
-	public void setup(){
+	public void setup() {
 		fxmlLoader = spy(new FXMLLoader());
 
-		factory = new FxmlFactory(fxmlLoader);
+		factory = new FxmlFactory();
 	}
 
 	@Test
-	public void testGetFxmlRoot(){
+	public void testGetFxmlRoot() {
 		Object controller = new Object();
 
-		Parent root = factory.getFxmlRoot(FXML_FILE, controller);
+		Parent root = factory.getFxmlRoot(FXML_FILE, controller, fxmlLoader);
 		assertThat(root).isNotNull();
 
 		// VBox is the root element of the example.fxml file
@@ -42,15 +42,16 @@ public class FxmlFactoryIntegrationTest {
 	 * The controller must not be null
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void testGetFxmlRootFailControllerIsNull(){
+	public void testGetFxmlRootFailControllerIsNull() {
 		factory.getFxmlRoot(FXML_FILE, null);
 	}
 
-	@Test(expected= IllegalArgumentException.class)
-	public void testGetFxmlRootFailWrongFilename(){
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetFxmlRootFailWrongFilename() {
 		Object controller = new Object();
 
-		Parent root = factory.getFxmlRoot("wrong/filename.fxml", controller);
+		Parent root = factory.getFxmlRoot("wrong/filename.fxml", controller,
+				fxmlLoader);
 		assertThat(root).isNotNull();
 
 		// VBox is the root element of the example.fxml file
@@ -60,11 +61,11 @@ public class FxmlFactoryIntegrationTest {
 	}
 
 	/**
-	 * the file INVALID_FXLM_FILE is no valid FXML file.
-	 * In this case a IllegalStateException has to be thrown
+	 * the file INVALID_FXLM_FILE is no valid FXML file. In this case a
+	 * IllegalStateException has to be thrown
 	 */
-	@Test(expected=IllegalStateException.class)
-	public void testGetFxmlRootFailMalformedFile(){
+	@Test(expected = IllegalStateException.class)
+	public void testGetFxmlRootFailMalformedFile() {
 		Object controller = new Object();
 
 		factory.getFxmlRoot(INVALID_FXML_FILE, controller);

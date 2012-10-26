@@ -72,70 +72,27 @@ public class DependencyInjector {
 	 * Creates the object graph for the application with Dependency Injection.
 	 */
 	public void createObjectGraph() {
+
+		FxmlFactory fxmlFactory = new FxmlFactory();
+
+		StageFactory stageFactory = new StageFactory(fxmlFactory);
+
 		CoreInjector coreInjector = new CoreInjector();
 
-		final PlayPauseController playPauseController = new PlayPauseController(
-				coreInjector.getGameLoop());
+		ControllerInitializer controllerInitializer = new ControllerInitializer();
 
-		final NewGameController newGameController = new NewGameController(
-				coreInjector.getGrid(), coreInjector.getSnake(),
-				coreInjector.getFoodGenerator(), coreInjector.getGameLoop(),
-				playPauseController);
-
-		final ObservableList<HighScoreEntry> highScoreEntries = FXCollections
-				.observableArrayList();
-
-
-		final Path highScoreFilepath = Paths.get(HIGH_SCORE_FILEPATH.get());
-
-		final HighScorePersistence highScorePersistence = new HighScorePersistence(
-				highScoreFilepath);
-
-		final HighScoreManager highScoreManager = new HighScoreManager(
-				highScoreEntries, MAX_SCORE_COUNT.get(), highScorePersistence);
-
-		final NewScoreEntryController newScoreEntryController = new NewScoreEntryController(
-				highScoreManager, coreInjector.getPointsProperty());
+		ControllerInjector controllerInjector = new ControllerInjector(
+				primaryStage, coreInjector, stageFactory, controllerInitializer);
 
 
 
-		FxmlFactory fxmlFactory2 = createFxmlFactory();
-		final Parent newScoreEntryRoot = fxmlFactory2.getFxmlRoot(
-				FXML_FILENAME_NEW_SCORE_ENTRY.get(), newScoreEntryController);
+		PlayPauseController playPauseController = controllerInjector
+				.getPlayPauseController();
 
 
+		final MainController mainController = controllerInjector
+				.getMainController();
 
-
-
-		final Stage newScoreEntryStage1 = new Stage();
-		newScoreEntryStage1.setScene(new Scene(newScoreEntryRoot));
-		final Stage newScoreEntryStage = newScoreEntryStage1;
-
-
-		final HighScoreController highScoreController = new HighScoreController(
-				newScoreEntryStage, coreInjector.getPointsProperty(),
-				highScoreEntries, MAX_SCORE_COUNT.get());
-		final FxmlFactory fxmlFactory1 = createFxmlFactory();
-
-
-		final Parent highScoreRoot = fxmlFactory1.getFxmlRoot(
-				FXML_FILENAME_HIGHSCORE.get(), highScoreController);
-
-		final Stage highScoreStage = createHighScoreStage(highScoreRoot,
-				primaryStage);
-
-
-
-
-		initHighScoreController(coreInjector.getSnake(), highScoreController,
-				highScoreStage);
-
-		initNewScoreEntryStage(newScoreEntryStage, highScoreStage);
-
-
-		final MainController mainController = new MainController(
-				coreInjector.getGrid(), newGameController, highScoreStage);
-		final FxmlFactory fxmlFactory = createFxmlFactory();
 
 		final Parent mainRoot = fxmlFactory.getFxmlRoot(
 				FXML_FILENAME_MAIN.get(), mainController);
@@ -164,41 +121,6 @@ public class DependencyInjector {
 
 
 		starter = new ApplicationStarter(mainScene, primaryStage);
-	}
-
-	private void initNewScoreEntryStage(final Stage newScoreEntryStage,
-			final Stage owner) {
-		newScoreEntryStage.initModality(Modality.WINDOW_MODAL);
-		newScoreEntryStage.initOwner(owner);
-	}
-
-	private void initHighScoreController(final Snake snake,
-			final HighScoreController highScoreController,
-			final Stage highScoreStage) {
-
-		ReadOnlyBooleanProperty collisionProperty = snake.collisionProperty();
-
-		collisionProperty.addListener(new ChangeListener<Boolean>() {
-
-			@Override
-			public void changed(final ObservableValue<? extends Boolean> arg0,
-					final Boolean oldValue, final Boolean newValue) {
-				if (newValue) {
-					highScoreStage.show();
-					highScoreController.gameFinished();
-				}
-			}
-		});
-	}
-
-	private Stage createHighScoreStage(final Parent highScoreRoot,
-			final Stage owner) {
-		Stage highScoreStage = new Stage();
-
-		highScoreStage.initModality(Modality.WINDOW_MODAL);
-		highScoreStage.initOwner(owner);
-		highScoreStage.setScene(new Scene(highScoreRoot));
-		return highScoreStage;
 	}
 
 	private Scene createMainScene(final Parent root, final Keyboard keyboard) {
@@ -238,10 +160,6 @@ public class DependencyInjector {
 		});
 	}
 
-	private FxmlFactory createFxmlFactory() {
-		FXMLLoader fxmlLoader = new FXMLLoader();
-		return new FxmlFactory(fxmlLoader);
-	}
 
 	public ApplicationStarter getApplicationStarter() {
 		return starter;
