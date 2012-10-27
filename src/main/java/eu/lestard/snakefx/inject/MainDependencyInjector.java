@@ -14,37 +14,28 @@ import eu.lestard.snakefx.view.controller.MainController;
  * @author manuel.mauky
  * 
  */
-public class DependencyInjector {
+public class MainDependencyInjector {
 
-	private ApplicationStarter starter;
+	private final ApplicationStarter starter;
 
-	private final Stage primaryStage;
+	public MainDependencyInjector(final Stage primaryStage) {
 
-	public DependencyInjector(final Stage primaryStage) {
-		this.primaryStage = primaryStage;
-	}
+		final FxmlFactory fxmlFactory = new FxmlFactory();
 
-	/**
-	 * Creates the object graph for the application with Dependency Injection.
-	 */
-	public void createObjectGraph() {
+		final StageFactory stageFactory = new StageFactory(fxmlFactory);
 
-		FxmlFactory fxmlFactory = new FxmlFactory();
+		final CoreInjector coreInjector = new CoreInjector();
 
-		StageFactory stageFactory = new StageFactory(fxmlFactory);
+		final ControllerInitializer controllerInitializer = new ControllerInitializer();
 
-		CoreInjector coreInjector = new CoreInjector();
-
-		ControllerInitializer controllerInitializer = new ControllerInitializer();
-
-		ControllerInjector controllerInjector = new ControllerInjector(
+		final ControllerInjector controllerInjector = new ControllerInjector(
 				primaryStage, coreInjector, fxmlFactory, stageFactory,
 				controllerInitializer);
 
 
 		final Parent mainRoot = controllerInjector.getMainRoot();
 
-		BindingInitializer bindingInitializer = new BindingInitializer(
+		final BindingInitializer bindingInitializer = new BindingInitializer(
 				mainRoot, coreInjector, controllerInjector);
 
 		bindingInitializer.initBindings();

@@ -4,12 +4,12 @@ import javafx.scene.paint.Color;
 
 /**
  * Represents the states that a field can has.
- *
+ * 
  * Every state is connected to a {@link Color} that the field will get when it
  * is in the given state.
- *
+ * 
  * @author manuel.mauky
- *
+ * 
  */
 public enum State {
 
@@ -17,7 +17,7 @@ public enum State {
 
 	HEAD(Color.DARKGREEN),
 
-	TAIL(Color.GREEN),
+	TAIL(Color.FORESTGREEN),
 
 	FOOD(Color.BLACK);
 
