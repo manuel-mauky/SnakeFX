@@ -5,6 +5,7 @@ It was created as an example project to learn *JavaFX 2*.
 The object of the game is simple: You are controlling a snake that likes to eat
 food. Every time the snake eats some food it grows a little bit. You may not bite yourself in the tail or you are game over. There are no walls in this game so when you move outside of one side of the screen you appear again on the other side of the screen.
 
+
 *Please note:* You need JavaFX 2.2 installed on your computer to play the game.
 It is bundled in the Oracle Java SE since version 1.7.07. If you have installed this version or above there should be no problem with running the game.
 
@@ -44,5 +45,4 @@ For example this is my settings.xml file:
 To build the project simply run `mvn clean install`. After this run `mvn assembly:single` to create the executable jar file and package it into a `zip` file located in the `target` folder. 
 
 To play the game, unpack this zip file to any location and run the jar file inside the extracted folder (`java -jar snakefx.jar`).
-
 
