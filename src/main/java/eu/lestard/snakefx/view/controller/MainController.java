@@ -8,26 +8,29 @@ import eu.lestard.snakefx.core.Grid;
 
 /**
  * Controller class for the main.fxml file.
+ * 
  * @author manuel.mauky
- *
+ * 
  */
 public class MainController {
 
 	@FXML
 	private Group gridContainer;
 
-	private Grid grid;
+	private final Grid grid;
 
-	private NewGameController newGameController;
+	private final NewGameController newGameController;
 
-	private Stage highScoreStage;
+	private final Stage highScoreStage;
 
-	public MainController(Grid grid,
-			NewGameController newGameController,
-			Stage highScoreStage) {
+	private final Stage aboutStage;
+
+	public MainController(Grid grid, NewGameController newGameController, Stage highScoreStage, Stage aboutStage) {
 		this.grid = grid;
 		this.newGameController = newGameController;
 		this.highScoreStage = highScoreStage;
+		this.aboutStage = aboutStage;
+
 	}
 
 
@@ -48,6 +51,11 @@ public class MainController {
 	@FXML
 	public void showHighScore() {
 		highScoreStage.show();
+	}
+
+	@FXML
+	public void about() {
+		aboutStage.show();
 	}
 
 	@FXML

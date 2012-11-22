@@ -23,6 +23,11 @@ public enum StringConfig {
 	FXML_FILENAME_NEW_SCORE_ENTRY("/fxml/newScoreEntry.fxml"),
 
 	/**
+	 * The filename of the fxml file for the about window.
+	 */
+	FXML_FILENAME_ABOUT("/fxml/about.fxml"),
+
+	/**
 	 * The filepath where the highscore should be saved.
 	 */
 	HIGH_SCORE_FILEPATH("highscores"),

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" stylesheets="css/about.css" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <VBox alignment="CENTER" fillWidth="true" prefHeight="400.0" prefWidth="600.0" spacing="14.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+        <Label fx:id="mainLabel" text="SnakeFX" />
+        <Label style="" text="© 2012, Manuel Mauky" textFill="BLACK" />
+        <Hyperlink fx:id="homepageLink" onAction="#homepageLink" text="http://www.lestard.eu" />
+        <Hyperlink fx:id="licenseLink" onAction="#licenseLink" text="License: GNU General Public License Version 3" />
+      </children>
+      <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      </padding>
+    </VBox>
+  </children>
+</AnchorPane>

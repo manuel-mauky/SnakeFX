@@ -11,11 +11,13 @@
 
 	<top>
 		<MenuBar>
-			<Menu text="SnakeFX">
-				<MenuItem text="New Game" onAction="#newGame" />
-				<MenuItem text="High Score" onAction="#showHighScore" />
-
-				<MenuItem text="Exit" onAction="#exit" />
+			<Menu mnemonicParsing="true" text="_SnakeFX">
+				<MenuItem mnemonicParsing="true" text="_New Game" onAction="#newGame" />
+				<MenuItem mnemonicParsing="true"  text="_High Score" onAction="#showHighScore" />
+	
+				<SeparatorMenuItem mnemonicParsing="false" />
+        		<MenuItem mnemonicParsing="true" text="_About" fx:id="about" onAction="#about"/>
+				<MenuItem mnemonicParsing="true" text="E_xit" onAction="#exit" />
 			</Menu>
 		</MenuBar>
 	</top>

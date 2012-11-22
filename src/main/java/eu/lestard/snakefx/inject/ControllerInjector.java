@@ -1,6 +1,7 @@
 package eu.lestard.snakefx.inject;
 
 import static eu.lestard.snakefx.config.IntegerConfig.MAX_SCORE_COUNT;
+import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_ABOUT;
 import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_HIGHSCORE;
 import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_MAIN;
 import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_NEW_SCORE_ENTRY;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 import eu.lestard.snakefx.highscore.HighScoreEntry;
 import eu.lestard.snakefx.highscore.HighScoreManager;
 import eu.lestard.snakefx.highscore.HighScorePersistence;
+import eu.lestard.snakefx.view.controller.AboutController;
 import eu.lestard.snakefx.view.controller.HighScoreController;
 import eu.lestard.snakefx.view.controller.MainController;
 import eu.lestard.snakefx.view.controller.NewGameController;
@@ -44,60 +46,53 @@ public class ControllerInjector {
 	private final Stage newScoreEntryStage;
 	private final MainController mainController;
 	private final SpeedChangeController speedChangeController;
+	private final AboutController aboutController;
 	private final Parent mainRoot;
 
-	public ControllerInjector(final Stage primaryStage,
-			final CoreInjector coreInjector, final FxmlFactory fxmlFactory,
-			final StageFactory stageFactory,
-			final ControllerInitializer initializer) {
+	public ControllerInjector(final Stage primaryStage, final CoreInjector coreInjector,
+			final FxmlFactory fxmlFactory, final StageFactory stageFactory, final ControllerInitializer initializer) {
 		highScoreEntries = FXCollections.observableArrayList();
 		Path highScoreFilepath = Paths.get(HIGH_SCORE_FILEPATH.get());
 
-		playPauseController = new PlayPauseController(
-				coreInjector.getGameLoop(), coreInjector.getSnake()
-						.collisionProperty());
+		playPauseController = new PlayPauseController(coreInjector.getGameLoop(), coreInjector.getSnake()
+				.collisionProperty());
 
-		newGameController = new NewGameController(coreInjector.getGrid(),
-				coreInjector.getSnake(), coreInjector.getFoodGenerator(),
-				coreInjector.getGameLoop(), playPauseController);
+		newGameController = new NewGameController(coreInjector.getGrid(), coreInjector.getSnake(),
+				coreInjector.getFoodGenerator(), coreInjector.getGameLoop(), playPauseController);
 
 
 		highScorePersistence = new HighScorePersistence(highScoreFilepath);
 
-		highScoreManager = new HighScoreManager(highScoreEntries,
-				MAX_SCORE_COUNT.get(), highScorePersistence);
+		highScoreManager = new HighScoreManager(highScoreEntries, MAX_SCORE_COUNT.get(), highScorePersistence);
 
-		newScoreEntryController = new NewScoreEntryController(highScoreManager,
-				coreInjector.getPointsProperty());
+		newScoreEntryController = new NewScoreEntryController(highScoreManager, coreInjector.getPointsProperty());
 
-		newScoreEntryStage = stageFactory.createStage(
-				FXML_FILENAME_NEW_SCORE_ENTRY, newScoreEntryController);
+		newScoreEntryStage = stageFactory.createStage(FXML_FILENAME_NEW_SCORE_ENTRY, newScoreEntryController);
 
-		highScoreController = new HighScoreController(newScoreEntryStage,
-				coreInjector.getPointsProperty(), highScoreEntries,
-				MAX_SCORE_COUNT.get());
+		highScoreController = new HighScoreController(newScoreEntryStage, coreInjector.getPointsProperty(),
+				highScoreEntries, MAX_SCORE_COUNT.get());
 
 
-		Stage highScoreStage = stageFactory.createStage(
-				FXML_FILENAME_HIGHSCORE, highScoreController);
+		Stage highScoreStage = stageFactory.createStage(FXML_FILENAME_HIGHSCORE, highScoreController);
 
 		setToModal(highScoreStage, primaryStage);
 
 		setToModal(newScoreEntryStage, highScoreStage);
 
+		initializer.initHighScoreController(coreInjector.getSnake(), highScoreController, highScoreStage);
 
-		initializer.initHighScoreController(coreInjector.getSnake(),
-				highScoreController, highScoreStage);
+		aboutController = new AboutController();
 
-		mainController = new MainController(coreInjector.getGrid(),
-				newGameController, highScoreStage);
-
-		mainRoot = fxmlFactory.getFxmlRoot(FXML_FILENAME_MAIN.get(),
-				mainController);
+		Stage aboutStage = stageFactory.createStage(FXML_FILENAME_ABOUT, aboutController);
 
 
-		speedChangeController = initializer.createSpeedChangeController(
-				mainRoot, coreInjector.getGameLoop());
+
+		mainController = new MainController(coreInjector.getGrid(), newGameController, highScoreStage, aboutStage);
+
+		mainRoot = fxmlFactory.getFxmlRoot(FXML_FILENAME_MAIN.get(), mainController);
+
+
+		speedChangeController = initializer.createSpeedChangeController(mainRoot, coreInjector.getGameLoop());
 		speedChangeController.init();
 
 	}

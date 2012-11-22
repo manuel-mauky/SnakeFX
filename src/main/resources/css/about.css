@@ -1,0 +1,13 @@
+#mainLabel{
+	-fx-font-size:30px;
+	-fx-font-weight:bold;
+	-fx-text-fill:#555;
+}
+
+.label{
+	-fx-text-fill:#555;
+}
+
+.hyperlink{
+	-fx-text-fill:#33b6ff;
+}
