@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Pos ?>
@@ -7,9 +8,13 @@
 
 <VBox
 	xmlns:fx="http://javafx.com/fxml"
-	stylesheets="css/newScoreEntry.css"
 	spacing="5"
 	alignment="CENTER">
+	
+	<stylesheets>
+		<URL value="@newScoreEntry.css"/>
+	</stylesheets>
+	
 	<padding>
 		<Insets
 			top="5"

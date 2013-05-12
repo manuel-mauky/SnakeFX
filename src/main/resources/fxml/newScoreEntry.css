@@ -5,7 +5,7 @@
 
 #errorMessage{
 	-fx-text-fill:red;
-	-fx-font-weight:600;
+	-fx-font-weight:bold;
 }
 
 

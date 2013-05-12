@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import java.lang.*?>
+<?import java.net.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.*?>
@@ -9,9 +10,11 @@
 
 <VBox
 	xmlns:fx="http://javafx.com/fxml"
-	stylesheets="css/highscore.css"
 	alignment="center"
 	spacing="10">
+	<stylesheets>
+		<URL value="@highscore.css"/>
+	</stylesheets>
 	<padding>
 		<Insets
 			top="10"

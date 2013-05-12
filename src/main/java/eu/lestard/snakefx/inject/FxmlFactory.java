@@ -29,14 +29,14 @@ public class FxmlFactory {
 		return getFxmlRoot(filename, controller, fxmlLoader);
 	}
 
-	protected Parent getFxmlRoot(final String filename,
-			final Object controller, final FXMLLoader fxmlLoader) {
+	protected Parent getFxmlRoot(final String filename, final Object controller, final FXMLLoader fxmlLoader) {
 		if (controller == null) {
-			throw new IllegalArgumentException(
-					"the controller param must not be null");
+			throw new IllegalArgumentException("the controller param must not be null");
 		}
 
 		fxmlLoader.setController(controller);
+		fxmlLoader.setLocation(this.getClass().getClassLoader().getResource("fxml/"));
+
 		InputStream is = null;
 
 		try {
@@ -45,11 +45,9 @@ public class FxmlFactory {
 			if (is == null) {
 				throw new IllegalArgumentException("the fxml file wasn't found");
 			}
-
 			return (Parent) fxmlLoader.load(is);
 		} catch (final IOException e) {
-			throw new IllegalStateException("can't load FXML file:" + filename,
-					e);
+			throw new IllegalStateException("can't load FXML file:" + filename, e);
 		}
 	}
 
