@@ -5,47 +5,53 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import javafx.collections.ObservableList;
+
+import com.sun.javafx.collections.ObservableListWrapper;
+
+import eu.lestard.snakefx.viewmodel.ViewModel;
+
 /**
  * This class is the grid of the game. It contains a collection of {@link Field}
  * instances.
- *
+ * 
  * @author manuel.mauky
- *
+ * 
  */
 public class Grid {
 
-	private final Integer rowAndColumnCount;
 	private final Integer gridSizeInPixel;
 
-	private final List<Field> fields = new ArrayList<Field>();
+	private final ObservableList<Field> fields = new ObservableListWrapper<>(new ArrayList<Field>());
+
+	private final ViewModel viewModel;
 
 	/**
-	 * @param rowAndColumnCount
-	 *            the number of rows and columns for this grid.
+	 * @param viewModel
+	 *            the viewModel instance.
 	 * @param gridSizeInPixel
 	 *            the size of the grid in pixel
 	 */
-	public Grid(final int rowAndColumnCount, final int gridSizeInPixel) {
-		this.rowAndColumnCount = rowAndColumnCount;
+	public Grid(ViewModel viewModel, final int gridSizeInPixel) {
+		this.viewModel = viewModel;
 		this.gridSizeInPixel = gridSizeInPixel;
 	}
 
 	/**
-	 * This method initializes the grid. According to the given parameter
-	 * {@link rowAndColumnCount} the fields ({@link Field}) are created with the
-	 * coordinates and the size that is calculated with the given parameter
-	 * {@link gridSizeInPixel}.
-	 *
+	 * This method initializes the grid. According to the
+	 * {@link ViewModel#gridSizeProperty()} the fields ({@link Field}) are
+	 * created with the coordinates and the size that is calculated with the
+	 * given parameter {@link gridSizeInPixel}.
+	 * 
 	 */
 	public void init() {
-
-		for (int y = 0; y < rowAndColumnCount; y++) {
-			for (int x = 0; x < rowAndColumnCount; x++) {
-				Field f = new Field(x, y, (gridSizeInPixel / rowAndColumnCount));
+		int gridSize = viewModel.gridSizeProperty().get();
+		for (int y = 0; y < gridSize; y++) {
+			for (int x = 0; x < gridSize; x++) {
+				Field f = new Field(x, y, (gridSizeInPixel / gridSize));
 				fields.add(f);
 			}
 		}
-
 	}
 
 	/**
@@ -56,7 +62,7 @@ public class Grid {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param x
 	 *            the x coordinate
 	 * @param y
@@ -74,13 +80,13 @@ public class Grid {
 	}
 
 	/**
-	* returns the field that is located next to the given field in the given
-	* direction.
-	*
-	* @param field
-	* @param direction
-	* @return the field in the given direction
-	*/
+	 * returns the field that is located next to the given field in the given
+	 * direction.
+	 * 
+	 * @param field
+	 * @param direction
+	 * @return the field in the given direction
+	 */
 	public Field getFromDirection(final Field field, final Direction direction) {
 		int x = field.getX();
 		int y = field.getY();
@@ -100,10 +106,12 @@ public class Grid {
 			break;
 		}
 
-		x += rowAndColumnCount;
-		y += rowAndColumnCount;
-		x = x % rowAndColumnCount;
-		y = y % rowAndColumnCount;
+		int gridSize = viewModel.gridSizeProperty().get();
+
+		x += gridSize;
+		y += gridSize;
+		x = x % gridSize;
+		y = y % gridSize;
 
 		return getXY(x, y);
 	}

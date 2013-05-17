@@ -7,23 +7,29 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import eu.lestard.snakefx.viewmodel.ViewModel;
+
 public class GridTest {
 
 	private static final int ROW_AND_COLUMN_COUNT = 4;
 	private static final int GRID_SIZE_IN_PIXEL = 300;
 
 	private Grid grid;
+	private ViewModel viewModel;
 
 	@Before
 	public void setUp() {
-		grid = new Grid(ROW_AND_COLUMN_COUNT, GRID_SIZE_IN_PIXEL);
+		viewModel = new ViewModel();
+		viewModel.gridSizeProperty().set(ROW_AND_COLUMN_COUNT);
+		grid = new Grid(viewModel, GRID_SIZE_IN_PIXEL);
+
 		grid.init();
 	}
 
 	/**
-	* The init method has to create a list of {@link Field} instances with the
-	* right coordinates.
-	*/
+	 * The init method has to create a list of {@link Field} instances with the
+	 * right coordinates.
+	 */
 	@Test
 	public void testInitialization() {
 
@@ -35,10 +41,8 @@ public class GridTest {
 		// first check the calculated Size for all Fields
 
 		for (Field f : fields) {
-			assertThat(f.getRectangle().getWidth()).isEqualTo(
-					GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
-			assertThat(f.getRectangle().getHeight()).isEqualTo(
-					GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
+			assertThat(f.getRectangle().getWidth()).isEqualTo(GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
+			assertThat(f.getRectangle().getHeight()).isEqualTo(GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
 		}
 
 		// choose some sample fields and check there x and y values
@@ -82,9 +86,9 @@ public class GridTest {
 	}
 
 	/**
-	* when the value for x or y (or both) is bigger than the grid then null has
-	* to be returned.
-	*/
+	 * when the value for x or y (or both) is bigger than the grid then null has
+	 * to be returned.
+	 */
 	@Test
 	public void testGetXYFail() {
 		Field x2y5 = grid.getXY(2, 5);
@@ -93,8 +97,8 @@ public class GridTest {
 	}
 
 	/**
-	* From a given field get the field next to it from a given direction.
-	*/
+	 * From a given field get the field next to it from a given direction.
+	 */
 	@Test
 	public void testGetFromDirection() {
 		Field x2y2 = grid.getXY(2, 2);
@@ -111,14 +115,14 @@ public class GridTest {
 	}
 
 	/**
-	* In the game when the snake moves outside of the grid on one side it
-	* appears again on the other side.
-	*
-	* When a field is located directly at the border of the grid and the
-	* getFromDirection method is called with the direction to the outside of
-	* the grid, the field on the other side of the grid on the same row/column
-	* has to be returned.
-	*/
+	 * In the game when the snake moves outside of the grid on one side it
+	 * appears again on the other side.
+	 * 
+	 * When a field is located directly at the border of the grid and the
+	 * getFromDirection method is called with the direction to the outside of
+	 * the grid, the field on the other side of the grid on the same row/column
+	 * has to be returned.
+	 */
 	@Test
 	public void testGetFromDirectionOtherSideOfTheGrid() {
 
@@ -144,9 +148,9 @@ public class GridTest {
 	}
 
 	/**
-	* When the newGame method is called, all fields must be reset to status
-	* EMPTY.
-	*/
+	 * When the newGame method is called, all fields must be reset to status
+	 * EMPTY.
+	 */
 	@Test
 	public void testNewGame() {
 

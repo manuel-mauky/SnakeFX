@@ -3,10 +3,7 @@ package eu.lestard.snakefx.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.ReadOnlyBooleanWrapper;
-import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 
 /**
  * This class represents the snake.
@@ -29,9 +26,8 @@ public class Snake {
 
 	private final List<Field> tail;
 
-	private final ReadOnlyBooleanWrapper collision;
 
-	private final ReadOnlyIntegerWrapper points;
+	private final ViewModel viewModel;
 
 
 	/**
@@ -41,16 +37,14 @@ public class Snake {
 	 *            the x coordinate where the snake is created
 	 * @param y
 	 *            the y coordinate where the snake is created
-	 * @param pointsProperty
+	 * @param points
 	 *            the property for the points
 	 */
-	public Snake(final Grid grid, final int x, final int y) {
+	public Snake(ViewModel viewModel, final Grid grid, final int x, final int y) {
+		this.viewModel = viewModel;
 		this.grid = grid;
 		this.x = x;
 		this.y = y;
-
-		collision = new ReadOnlyBooleanWrapper(false);
-		points = new ReadOnlyIntegerWrapper();
 
 		tail = new ArrayList<Field>();
 	}
@@ -61,30 +55,13 @@ public class Snake {
 	public void init() {
 		setHead(grid.getXY(x, y));
 
-		collision.set(false);
+		viewModel.collisionProperty().set(false);
 
-		points.set(0);
+		viewModel.pointsProperty().set(0);
 
 		currentDirection = Direction.UP;
 		nextDirection = Direction.UP;
 	}
-
-	private void setHead(final Field head) {
-		this.head = head;
-		head.changeState(State.HEAD);
-	}
-
-	/**
-	 * The given field is added to the tail of the snake and gets the state
-	 * TAIL.
-	 * 
-	 * @param field
-	 */
-	private void grow(final Field field) {
-		field.changeState(State.TAIL);
-		tail.add(field);
-	}
-
 
 	/**
 	 * Change the direction of the snake. The direction is only changed when the
@@ -113,7 +90,7 @@ public class Snake {
 		Field newHead = grid.getFromDirection(head, currentDirection);
 
 		if (newHead.getState().equals(State.TAIL)) {
-			collision.set(true);
+			viewModel.collisionProperty().set(true);
 			return;
 		}
 
@@ -143,21 +120,31 @@ public class Snake {
 		setHead(newHead);
 	}
 
-	private void addPoints() {
-		int current = points.get();
-		points.set(current + 1);
-	}
-
 	public void newGame() {
 		tail.clear();
 		init();
 	}
 
-	public ReadOnlyIntegerProperty pointsProperty() {
-		return points.getReadOnlyProperty();
+	private void setHead(final Field head) {
+		this.head = head;
+		head.changeState(State.HEAD);
 	}
 
-	public ReadOnlyBooleanProperty collisionProperty() {
-		return collision.getReadOnlyProperty();
+	/**
+	 * The given field is added to the tail of the snake and gets the state
+	 * TAIL.
+	 * 
+	 * @param field
+	 */
+	private void grow(final Field field) {
+		field.changeState(State.TAIL);
+		tail.add(field);
 	}
+
+	private void addPoints() {
+		int current = viewModel.pointsProperty().get();
+		viewModel.pointsProperty().set(current + 1);
+	}
+
+
 }
