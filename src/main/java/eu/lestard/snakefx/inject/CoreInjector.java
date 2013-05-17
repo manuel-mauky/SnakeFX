@@ -1,14 +1,13 @@
 package eu.lestard.snakefx.inject;
 
 import static eu.lestard.snakefx.config.IntegerConfig.GRID_SIZE_IN_PIXEL;
-import static eu.lestard.snakefx.config.IntegerConfig.ROW_AND_COLUMN_COUNT;
 import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_X;
 import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_Y;
-import javafx.beans.property.ReadOnlyIntegerProperty;
 import eu.lestard.snakefx.core.FoodGenerator;
 import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
 import eu.lestard.snakefx.core.Snake;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 
 /**
  * This class is the Dependency Injector for all Classes in the core package.
@@ -22,18 +21,15 @@ public class CoreInjector {
 	private final Snake snake;
 	private final GameLoop gameLoop;
 	private final FoodGenerator foodGenerator;
-	private final ReadOnlyIntegerProperty pointsProperty;
 
-	public CoreInjector() {
-		grid = new Grid(ROW_AND_COLUMN_COUNT.get(), GRID_SIZE_IN_PIXEL.get());
+	public CoreInjector(ViewModel viewModel) {
+		grid = new Grid(viewModel, GRID_SIZE_IN_PIXEL.get());
 
-		snake = new Snake(grid, SNAKE_START_X.get(), SNAKE_START_Y.get());
+		snake = new Snake(viewModel, grid, SNAKE_START_X.get(), SNAKE_START_Y.get());
 
-		gameLoop = new GameLoop(snake);
+		gameLoop = new GameLoop(viewModel);
 
-		pointsProperty = snake.pointsProperty();
-
-		foodGenerator = new FoodGenerator(grid, pointsProperty);
+		foodGenerator = new FoodGenerator(viewModel, grid);
 	}
 
 
@@ -47,10 +43,6 @@ public class CoreInjector {
 
 	public FoodGenerator getFoodGenerator() {
 		return foodGenerator;
-	}
-
-	public ReadOnlyIntegerProperty getPointsProperty() {
-		return pointsProperty;
 	}
 
 	public Grid getGrid() {

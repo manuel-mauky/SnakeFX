@@ -1,6 +1,10 @@
 package eu.lestard.snakefx.view.controller;
 
-import javafx.beans.property.ReadOnlyIntegerProperty;
+import static eu.lestard.snakefx.config.IntegerConfig.MAX_SCORE_COUNT;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,28 +14,24 @@ import eu.lestard.snakefx.highscore.HighScoreEntry;
 
 public class HighScoreController {
 
-	private final int scoreCount;
-
 	@FXML
 	private TableView<HighScoreEntry> tableView;
 
-	private final ReadOnlyIntegerProperty pointsProperty;
-
 	private final Stage newScoreEntryStage;
-
-	private ObservableList<HighScoreEntry> highScoreEntries = FXCollections
-			.observableArrayList();
-
+	private final ListProperty<HighScoreEntry> highScoreEntries = new SimpleListProperty<>();
+	private final IntegerProperty pointsProperty = new SimpleIntegerProperty();
 
 
-	public HighScoreController(final Stage newScoreEntryStage,
-			final ReadOnlyIntegerProperty pointsProperty,
-			final ObservableList<HighScoreEntry> highScoreEntries,
-			final int scoreCount) {
+	public HighScoreController(final Stage newScoreEntryStage) {
 		this.newScoreEntryStage = newScoreEntryStage;
-		this.pointsProperty = pointsProperty;
-		this.highScoreEntries = highScoreEntries;
-		this.scoreCount = scoreCount;
+	}
+
+	public IntegerProperty pointsProperty() {
+		return pointsProperty;
+	}
+
+	public ListProperty<HighScoreEntry> highScoreEntries() {
+		return highScoreEntries;
 	}
 
 	public void gameFinished() {
@@ -39,7 +39,7 @@ public class HighScoreController {
 
 		int size = highScoreEntries.size();
 
-		if (size < scoreCount) {
+		if (size < MAX_SCORE_COUNT.get()) {
 			newScoreEntryStage.show();
 		} else {
 			// check whether the last entry on the list has more points then the

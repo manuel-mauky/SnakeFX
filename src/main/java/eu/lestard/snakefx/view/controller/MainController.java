@@ -30,9 +30,7 @@ public class MainController {
 		this.newGameController = newGameController;
 		this.highScoreStage = highScoreStage;
 		this.aboutStage = aboutStage;
-
 	}
-
 
 	@FXML
 	public void initialize() {
@@ -50,12 +48,12 @@ public class MainController {
 
 	@FXML
 	public void showHighScore() {
-		highScoreStage.show();
+		// highScoreStage.show();
 	}
 
 	@FXML
 	public void about() {
-		aboutStage.show();
+		// aboutStage.show();
 	}
 
 	@FXML

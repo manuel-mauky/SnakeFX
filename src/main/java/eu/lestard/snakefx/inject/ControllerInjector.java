@@ -1,6 +1,5 @@
 package eu.lestard.snakefx.inject;
 
-import static eu.lestard.snakefx.config.IntegerConfig.MAX_SCORE_COUNT;
 import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_ABOUT;
 import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_HIGHSCORE;
 import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_MAIN;
@@ -10,7 +9,6 @@ import static eu.lestard.snakefx.config.StringConfig.HIGH_SCORE_FILEPATH;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 import javafx.stage.Modality;
@@ -25,6 +23,7 @@ import eu.lestard.snakefx.view.controller.NewGameController;
 import eu.lestard.snakefx.view.controller.NewScoreEntryController;
 import eu.lestard.snakefx.view.controller.PlayPauseController;
 import eu.lestard.snakefx.view.controller.SpeedChangeController;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 
 
 /**
@@ -38,7 +37,6 @@ public class ControllerInjector {
 
 	private final PlayPauseController playPauseController;
 	private final NewGameController newGameController;
-	private final ObservableList<HighScoreEntry> highScoreEntries;
 	private final HighScorePersistence highScorePersistence;
 	private final HighScoreManager highScoreManager;
 	private final NewScoreEntryController newScoreEntryController;
@@ -50,27 +48,28 @@ public class ControllerInjector {
 	private final Parent mainRoot;
 
 	public ControllerInjector(final Stage primaryStage, final CoreInjector coreInjector,
-			final FxmlFactory fxmlFactory, final StageFactory stageFactory, final ControllerInitializer initializer) {
-		highScoreEntries = FXCollections.observableArrayList();
+			final FxmlFactory fxmlFactory, final StageFactory stageFactory,
+			final ControllerInitializer initializer, ViewModel viewModel) {
 		Path highScoreFilepath = Paths.get(HIGH_SCORE_FILEPATH.get());
 
-		playPauseController = new PlayPauseController(coreInjector.getGameLoop(), coreInjector.getSnake()
-				.collisionProperty());
+		playPauseController = new PlayPauseController(viewModel);
 
 		newGameController = new NewGameController(coreInjector.getGrid(), coreInjector.getSnake(),
-				coreInjector.getFoodGenerator(), coreInjector.getGameLoop(), playPauseController);
+				coreInjector.getFoodGenerator(), playPauseController);
 
 
 		highScorePersistence = new HighScorePersistence(highScoreFilepath);
 
-		highScoreManager = new HighScoreManager(highScoreEntries, MAX_SCORE_COUNT.get(), highScorePersistence);
+		highScoreManager = new HighScoreManager(highScorePersistence);
 
-		newScoreEntryController = new NewScoreEntryController(highScoreManager, coreInjector.getPointsProperty());
+		newScoreEntryController = new NewScoreEntryController(highScoreManager);
+		newScoreEntryController.pointsProperty().bind(viewModel.pointsProperty());
 
 		newScoreEntryStage = stageFactory.createStage(FXML_FILENAME_NEW_SCORE_ENTRY, newScoreEntryController);
 
-		highScoreController = new HighScoreController(newScoreEntryStage, coreInjector.getPointsProperty(),
-				highScoreEntries, MAX_SCORE_COUNT.get());
+		highScoreController = new HighScoreController(newScoreEntryStage);
+
+		highScoreController.highScoreEntries().bind(highScoreManager.highScoreEntries());
 
 
 		Stage highScoreStage = stageFactory.createStage(FXML_FILENAME_HIGHSCORE, highScoreController);
@@ -79,7 +78,8 @@ public class ControllerInjector {
 
 		setToModal(newScoreEntryStage, highScoreStage);
 
-		initializer.initHighScoreController(coreInjector.getSnake(), highScoreController, highScoreStage);
+		initializer.initHighScoreController(coreInjector.getSnake(), highScoreController, highScoreStage,
+				viewModel);
 
 		aboutController = new AboutController();
 
@@ -92,7 +92,7 @@ public class ControllerInjector {
 		mainRoot = fxmlFactory.getFxmlRoot(FXML_FILENAME_MAIN.get(), mainController);
 
 
-		speedChangeController = initializer.createSpeedChangeController(mainRoot, coreInjector.getGameLoop());
+		speedChangeController = initializer.createSpeedChangeController(mainRoot);
 		speedChangeController.init();
 
 	}

@@ -1,7 +1,9 @@
 package eu.lestard.snakefx.view.controller;
 
+import javafx.animation.Animation.Status;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import eu.lestard.snakefx.core.FoodGenerator;
-import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
 import eu.lestard.snakefx.core.Snake;
 
@@ -13,23 +15,24 @@ public class NewGameController {
 
 	private final FoodGenerator foodGenerator;
 
-	private final GameLoop gameLoop;
-
 	private final PlayPauseController playPauseController;
 
-	public NewGameController(final Grid grid, final Snake snake,
-			final FoodGenerator foodGenerator, final GameLoop gameLoop,
+	public ObjectProperty<Status> gameloopStatus = new SimpleObjectProperty<>();
+
+	public NewGameController(final Grid grid, final Snake snake, final FoodGenerator foodGenerator,
 			final PlayPauseController playPauseController) {
 		this.grid = grid;
 		this.snake = snake;
 		this.foodGenerator = foodGenerator;
-		this.gameLoop = gameLoop;
 		this.playPauseController = playPauseController;
 	}
 
+	public ObjectProperty<Status> gameloopStatus() {
+		return gameloopStatus;
+	}
+
 	public void newGame() {
-		gameLoop.stop();
-		gameLoop.init();
+		gameloopStatus.set(Status.STOPPED);
 
 		playPauseController.enableButton();
 
@@ -39,7 +42,8 @@ public class NewGameController {
 
 		foodGenerator.generateFood();
 
-		gameLoop.pause();
+		gameloopStatus.set(Status.RUNNING);
+		gameloopStatus.set(Status.PAUSED);
 	}
 
 }

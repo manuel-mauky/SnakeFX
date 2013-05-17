@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import eu.lestard.snakefx.view.controller.PlayPauseController;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 
 
 /**
@@ -28,12 +29,14 @@ public class BindingInitializer {
 
 	private final ControllerInjector controllerInjector;
 
-	public BindingInitializer(final Parent mainRoot,
-			final CoreInjector coreInjector,
-			final ControllerInjector controllerInjector) {
+	private final ViewModel viewModel;
+
+	public BindingInitializer(final Parent mainRoot, final CoreInjector coreInjector,
+			final ControllerInjector controllerInjector, ViewModel viewModel) {
 		this.mainRoot = mainRoot;
 		this.coreInjector = coreInjector;
 		this.controllerInjector = controllerInjector;
+		this.viewModel = viewModel;
 	}
 
 	/**
@@ -46,16 +49,13 @@ public class BindingInitializer {
 
 	private void initPointsBinding() {
 		final Label pointsLabel = (Label) mainRoot.lookup(FXML_ID_POINTS_LABEL);
-		pointsLabel.textProperty().bind(
-				Bindings.convert(coreInjector.getPointsProperty()));
+		pointsLabel.textProperty().bind(Bindings.convert(viewModel.pointsProperty()));
 	}
 
 	private void initPlayPauseControllerBindings() {
-		final Button playPauseButton = (Button) mainRoot
-				.lookup(FXML_ID_PLAY_PAUSE_BUTTON);
+		final Button playPauseButton = (Button) mainRoot.lookup(FXML_ID_PLAY_PAUSE_BUTTON);
 
-		final PlayPauseController playPauseController = controllerInjector
-				.getPlayPauseController();
+		final PlayPauseController playPauseController = controllerInjector.getPlayPauseController();
 
 		playPauseButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -64,9 +64,7 @@ public class BindingInitializer {
 			}
 		});
 
-		playPauseController.buttonLabelProperty().bindBidirectional(
-				playPauseButton.textProperty());
-		playPauseController.disabledProperty().bindBidirectional(
-				playPauseButton.disableProperty());
+		playPauseController.buttonLabelProperty().bindBidirectional(playPauseButton.textProperty());
+		playPauseController.disabledProperty().bindBidirectional(playPauseButton.disableProperty());
 	}
 }

@@ -11,6 +11,7 @@ import eu.lestard.snakefx.core.Snake;
 import eu.lestard.snakefx.core.SpeedLevel;
 import eu.lestard.snakefx.view.controller.HighScoreController;
 import eu.lestard.snakefx.view.controller.SpeedChangeController;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 
 /**
  * This class is used for cases where controllers need special creation or
@@ -24,34 +25,32 @@ import eu.lestard.snakefx.view.controller.SpeedChangeController;
 public class ControllerInitializer {
 
 	private static final String FXML_ID_SPEED_CHOICE_BOX = "#speedChoiceBox";
+	private ViewModel viewModel;
 
 
-	public void initHighScoreController(final Snake snake,
-			final HighScoreController highScoreController,
-			final Stage highScoreStage) {
+	public void initHighScoreController(final Snake snake, final HighScoreController highScoreController,
+			final Stage highScoreStage, ViewModel viewModel) {
 
-		ReadOnlyBooleanProperty collisionProperty = snake.collisionProperty();
-
-		collisionProperty.addListener(new ChangeListener<Boolean>() {
+		this.viewModel = viewModel;
+		viewModel.collisionProperty().addListener(new ChangeListener<Boolean>() {
 
 			@Override
-			public void changed(final ObservableValue<? extends Boolean> arg0,
-					final Boolean oldValue, final Boolean newValue) {
+			public void changed(final ObservableValue<? extends Boolean> arg0, final Boolean oldValue,
+					final Boolean newValue) {
 				if (newValue) {
-					highScoreStage.show();
+					// highScoreStage.show();
 					highScoreController.gameFinished();
 				}
 			}
 		});
 	}
 
-	public SpeedChangeController createSpeedChangeController(
-			final Parent mainRoot, final GameLoop gameLoop) {
+	public SpeedChangeController createSpeedChangeController(final Parent mainRoot) {
 		@SuppressWarnings("unchecked")
 		final ChoiceBox<SpeedLevel> speedChoiceBox = (ChoiceBox<SpeedLevel>) mainRoot
 				.lookup(FXML_ID_SPEED_CHOICE_BOX);
 
-		return new SpeedChangeController(gameLoop, speedChoiceBox);
+		return new SpeedChangeController(speedChoiceBox, viewModel);
 	}
 
 }

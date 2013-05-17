@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import eu.lestard.snakefx.view.ApplicationStarter;
 import eu.lestard.snakefx.view.Keyboard;
 import eu.lestard.snakefx.view.controller.MainController;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 
 /**
  * The DependencyInjector is the Class that manages all instances of all classes
@@ -24,19 +25,20 @@ public class MainDependencyInjector {
 
 		final StageFactory stageFactory = new StageFactory(fxmlFactory);
 
-		final CoreInjector coreInjector = new CoreInjector();
+		ViewModel viewModel = new ViewModel();
+
+		final CoreInjector coreInjector = new CoreInjector(viewModel);
 
 		final ControllerInitializer controllerInitializer = new ControllerInitializer();
 
-		final ControllerInjector controllerInjector = new ControllerInjector(
-				primaryStage, coreInjector, fxmlFactory, stageFactory,
-				controllerInitializer);
+		final ControllerInjector controllerInjector = new ControllerInjector(primaryStage, coreInjector,
+				fxmlFactory, stageFactory, controllerInitializer, viewModel);
 
 
 		final Parent mainRoot = controllerInjector.getMainRoot();
 
-		final BindingInitializer bindingInitializer = new BindingInitializer(
-				mainRoot, coreInjector, controllerInjector);
+		final BindingInitializer bindingInitializer = new BindingInitializer(mainRoot, coreInjector,
+				controllerInjector, viewModel);
 
 		bindingInitializer.initBindings();
 
@@ -44,8 +46,7 @@ public class MainDependencyInjector {
 		final Scene mainScene = createMainScene(mainRoot, keyboard);
 
 
-		final MainController mainController = controllerInjector
-				.getMainController();
+		final MainController mainController = controllerInjector.getMainController();
 		mainController.newGame();
 
 		starter = new ApplicationStarter(mainScene, primaryStage);
