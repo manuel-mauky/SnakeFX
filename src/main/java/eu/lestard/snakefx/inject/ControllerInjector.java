@@ -3,14 +3,10 @@ package eu.lestard.snakefx.inject;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.fxml.FXMLLoader;
 import javafx.util.Callback;
-
-import eu.lestard.snakefx.view.controller.AboutController;
-import eu.lestard.snakefx.view.controller.HighScoreController;
-import eu.lestard.snakefx.view.controller.HighscoresController;
 import eu.lestard.snakefx.view.controller.MainController;
 import eu.lestard.snakefx.view.controller.MenuController;
-import eu.lestard.snakefx.view.controller.NewHighscoreController;
 import eu.lestard.snakefx.view.controller.PanelController;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 
@@ -18,6 +14,9 @@ import eu.lestard.snakefx.viewmodel.ViewModel;
 /**
  * This class is the Dependency Injector for all Controller classes for the
  * view.
+ * 
+ * This class acts as controllerFactory for the {@link FXMLLoader}. See
+ * {@link FXMLLoader#setControllerFactory(Callback)}.
  * 
  * @author manuel.mauky
  * 
@@ -39,15 +38,6 @@ public class ControllerInjector implements Callback<Class<?>, Object> {
 
 		final PanelController panelController = new PanelController(viewModel);
 		instances.put(PanelController.class, panelController);
-
-		final AboutController aboutController = new AboutController();
-		instances.put(AboutController.class, aboutController);
-
-		final HighscoresController highscoresController = new HighscoresController();
-		instances.put(HighScoreController.class, highscoresController);
-
-		final NewHighscoreController newHighscoreController = new NewHighscoreController();
-		instances.put(NewHighscoreController.class, newHighscoreController);
 	}
 
 	@Override

@@ -25,49 +25,50 @@ public class FxmlFactoryIntegrationTest {
 		factory = new FxmlFactory(null);
 	}
 
-	@Test
-	public void testGetFxmlRoot() {
-		Object controller = new Object();
-
-		Parent root = factory.getFxmlRoot(FXML_FILE, controller, fxmlLoader);
-		assertThat(root).isNotNull();
-
-		// VBox is the root element of the example.fxml file
-		assertThat(root).isInstanceOf(VBox.class);
-
-		verify(fxmlLoader).setController(controller);
-	}
-
-	/**
-	 * The controller must not be null
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testGetFxmlRootFailControllerIsNull() {
-		factory.getFxmlRoot(FXML_FILE, null);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testGetFxmlRootFailWrongFilename() {
-		Object controller = new Object();
-
-		Parent root = factory.getFxmlRoot("wrong/filename.fxml", controller, fxmlLoader);
-		assertThat(root).isNotNull();
-
-		// VBox is the root element of the example.fxml file
-		assertThat(root).isInstanceOf(VBox.class);
-
-		verify(fxmlLoader).setController(controller);
-	}
-
-	/**
-	 * the file INVALID_FXLM_FILE is no valid FXML file. In this case a
-	 * IllegalStateException has to be thrown
-	 */
-	@Test(expected = IllegalStateException.class)
-	public void testGetFxmlRootFailMalformedFile() {
-		Object controller = new Object();
-
-		factory.getFxmlRoot(INVALID_FXML_FILE, controller);
-	}
+	// @Test
+	// public void testGetFxmlRoot() {
+	// Object controller = new Object();
+	//
+	// Parent root = factory.getFxmlRoot(FXML_FILE, controller, fxmlLoader);
+	// assertThat(root).isNotNull();
+	//
+	// // VBox is the root element of the example.fxml file
+	// assertThat(root).isInstanceOf(VBox.class);
+	//
+	// verify(fxmlLoader).setController(controller);
+	// }
+	//
+	// /**
+	// * The controller must not be null
+	// */
+	// @Test(expected = IllegalArgumentException.class)
+	// public void testGetFxmlRootFailControllerIsNull() {
+	// factory.getFxmlRoot(FXML_FILE, null);
+	// }
+	//
+	// @Test(expected = IllegalArgumentException.class)
+	// public void testGetFxmlRootFailWrongFilename() {
+	// Object controller = new Object();
+	//
+	// Parent root = factory.getFxmlRoot("wrong/filename.fxml", controller,
+	// fxmlLoader);
+	// assertThat(root).isNotNull();
+	//
+	// // VBox is the root element of the example.fxml file
+	// assertThat(root).isInstanceOf(VBox.class);
+	//
+	// verify(fxmlLoader).setController(controller);
+	// }
+	//
+	// /**
+	// * the file INVALID_FXLM_FILE is no valid FXML file. In this case a
+	// * IllegalStateException has to be thrown
+	// */
+	// @Test(expected = IllegalStateException.class)
+	// public void testGetFxmlRootFailMalformedFile() {
+	// Object controller = new Object();
+	//
+	// factory.getFxmlRoot(INVALID_FXML_FILE, controller);
+	// }
 
 }

@@ -18,7 +18,7 @@ public class MenuController {
 	private final ViewModel viewModel;
 	private final Function newGameFunction;
 
-	public MenuController(ViewModel viewModel, Function newGameFunction) {
+	public MenuController(final ViewModel viewModel, final Function newGameFunction) {
 		this.viewModel = viewModel;
 		this.newGameFunction = newGameFunction;
 	}
@@ -32,13 +32,13 @@ public class MenuController {
 	@FXML
 	public void showHighscores() {
 		System.out.println("highscore");
-		viewModel.highscoreWindowOpenProperty().set(true);
+		// viewModel.highscoreWindowOpenProperty().set(true);
 	}
 
 	@FXML
 	public void about() {
 		System.out.println("about");
-		viewModel.aboutWindowOpenProperty().set(true);
+		// viewModel.aboutWindowOpenProperty().set(true);
 	}
 
 	@FXML

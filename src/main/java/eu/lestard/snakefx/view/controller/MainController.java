@@ -1,13 +1,8 @@
 package eu.lestard.snakefx.view.controller;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import eu.lestard.snakefx.core.Field;
 import eu.lestard.snakefx.core.Grid;
 import eu.lestard.snakefx.core.NewGameFunction;
@@ -22,56 +17,34 @@ import eu.lestard.snakefx.viewmodel.ViewModel;
 public class MainController {
 
 	@FXML
-	public void initialize() {
-		System.out.println("Initialize");
-	}
+	private Pane gridContainer;
 
-
-	// @FXML
-	// private Group gridContainer;
-	//
 	private final Grid grid;
 
 	private final ViewModel viewModel;
 
+	private final NewGameFunction newGameFunction;
 
-	public MainController(ViewModel viewModel, Grid grid, NewGameFunction newGameFunction) {
+
+	public MainController(final ViewModel viewModel, final Grid grid, final NewGameFunction newGameFunction) {
 		this.viewModel = viewModel;
 		this.grid = grid;
-
-		System.out.println("Test");
+		this.newGameFunction = newGameFunction;
 	}
-	//
-	// @FXML
-	// public void initialize() {
-	// grid.init();
-	//
-	// for (Field f : grid.getFields()) {
-	// gridContainer.getChildren().add(f.getRectangle());
-	// }
-	// }
-	//
-	// @FXML
-	// public void newGame() {
-	// System.out.println("new game");
-	// newGameFunction.call();
-	// }
-	//
-	// @FXML
-	// public void showHighScore() {
-	// System.out.println("highscore");
-	// viewModel.highscoreWindowOpenProperty().set(true);
-	// }
-	//
-	// @FXML
-	// public void about() {
-	// System.out.println("about");
-	// viewModel.aboutWindowOpenProperty().set(true);
-	// }
-	//
-	// @FXML
-	// public void exit() {
-	// Platform.exit();
-	// }
+
+
+	@FXML
+	public void initialize() {
+		System.out.println("initializing the grid");
+		grid.init();
+
+		System.out.println("gridContainer: " + gridContainer);
+
+		for (final Field f : grid.getFields()) {
+			gridContainer.getChildren().add(f.getRectangle());
+		}
+
+		newGameFunction.call();
+	}
 
 }

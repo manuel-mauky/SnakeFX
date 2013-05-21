@@ -35,6 +35,8 @@ public class PanelController {
 
 	@FXML
 	public void initialize() {
+		speed.itemsProperty().get().addAll(SpeedLevel.values());
+
 		points.textProperty().bind(viewModel.pointsProperty().asString());
 		speed.getSelectionModel().selectFirst();
 
@@ -43,6 +45,7 @@ public class PanelController {
 		playPause.disableProperty().bind(viewModel.collisionProperty());
 	}
 
+	@FXML
 	public void togglePlayPause() {
 		switch (viewModel.gameloopStatusProperty().get()) {
 		case PAUSED:

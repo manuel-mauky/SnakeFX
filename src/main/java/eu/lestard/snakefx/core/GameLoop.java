@@ -34,7 +34,7 @@ public class GameLoop {
 
 	private final ViewModel viewModel;
 
-	public GameLoop(ViewModel viewModel) {
+	public GameLoop(final ViewModel viewModel) {
 		this.viewModel = viewModel;
 		viewModel.collisionProperty().addListener(new CollisionListener());
 		viewModel.speedProperty().addListener(new SpeedChangeListener());
@@ -51,7 +51,7 @@ public class GameLoop {
 	 * @param actions
 	 *            the action that gets called.
 	 */
-	public void addActions(Function... actions) {
+	public void addActions(final Function... actions) {
 		this.actions.addAll(Arrays.asList(actions));
 	}
 
@@ -65,7 +65,8 @@ public class GameLoop {
 		// is can also be changed in other places.
 		timeline.statusProperty().addListener(new ChangeListener<Status>() {
 			@Override
-			public void changed(ObservableValue<? extends Status> arg0, Status arg1, Status newValue) {
+			public void changed(final ObservableValue<? extends Status> arg0, final Status arg1,
+					final Status newValue) {
 				viewModel.gameloopStatusProperty().set(newValue);
 			}
 		});
@@ -77,12 +78,13 @@ public class GameLoop {
 	 */
 	private KeyFrame buildKeyFrame() {
 
-		Duration duration = Duration.millis(ONE_SECOND / viewModel.speedProperty().get().getFps());
+		final int fps = viewModel.speedProperty().get().getFps();
+		final Duration duration = Duration.millis(ONE_SECOND / fps);
 
-		KeyFrame frame = new KeyFrame(duration, new EventHandler<ActionEvent>() {
+		final KeyFrame frame = new KeyFrame(duration, new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(final ActionEvent arg0) {
-				for (Function action : actions) {
+				for (final Function action : actions) {
 					action.call();
 				}
 			}
@@ -100,8 +102,8 @@ public class GameLoop {
 	 */
 	private final class StatusChangedListener implements ChangeListener<Status> {
 		@Override
-		public void changed(ObservableValue<? extends Status> arg0, Status oldStatus, Status newStatus) {
-
+		public void changed(final ObservableValue<? extends Status> arg0, final Status oldStatus,
+				final Status newStatus) {
 			switch (newStatus) {
 			case PAUSED:
 				timeline.pause();
@@ -122,9 +124,10 @@ public class GameLoop {
 	 */
 	private final class SpeedChangeListener implements ChangeListener<SpeedLevel> {
 		@Override
-		public void changed(ObservableValue<? extends SpeedLevel> arg0, SpeedLevel oldSpeed, SpeedLevel newSpeed) {
+		public void changed(final ObservableValue<? extends SpeedLevel> arg0, final SpeedLevel oldSpeed,
+				final SpeedLevel newSpeed) {
 
-			Status oldStatus = timeline.getStatus();
+			final Status oldStatus = timeline.getStatus();
 
 			timeline.stop();
 			init();

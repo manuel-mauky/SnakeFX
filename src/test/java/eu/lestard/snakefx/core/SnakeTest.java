@@ -19,6 +19,8 @@ public class SnakeTest {
 
 	private Grid gridMock;
 
+	private GameLoop gameLoopMock;
+
 	private static final int X = 4;
 	private static final int Y = 2;
 
@@ -27,15 +29,19 @@ public class SnakeTest {
 	@Before
 	public void setUp() {
 		gridMock = mock(Grid.class);
+		gameLoopMock = mock(GameLoop.class);
 
 		viewModel = new ViewModel();
 
-		snake = new Snake(viewModel, gridMock, X, Y);
+		snake = new Snake(viewModel, gridMock, gameLoopMock);
+		Whitebox.setInternalState(snake, "x", X);
+		Whitebox.setInternalState(snake, "y", Y);
+
 	}
 
 	@Test
 	public void testInitialization() {
-		Field field = mock(Field.class);
+		final Field field = mock(Field.class);
 
 		when(gridMock.getXY(X, Y)).thenReturn(field);
 
@@ -47,14 +53,14 @@ public class SnakeTest {
 		assertThat(getHead()).isEqualTo(field);
 
 		// The direction of the snake is UP on start.
-		Direction direction = currentDirectionFromSnake();
+		final Direction direction = currentDirectionFromSnake();
 		assertThat(direction).isEqualTo(Direction.UP);
 	}
 
 	@Test
 	public void testChangeDirection() {
 		snake.changeDirection(Direction.LEFT);
-		Direction direction = nextDirectionFromSnake();
+		final Direction direction = nextDirectionFromSnake();
 
 		assertThat(direction).isEqualTo(Direction.LEFT);
 	}
@@ -82,10 +88,10 @@ public class SnakeTest {
 	 */
 	@Test
 	public void testChangeDirectionNewHasSameOrientationAsOld() {
-		Field head = mock(Field.class);
+		final Field head = mock(Field.class);
 		when(gridMock.getXY(X, Y)).thenReturn(head);
 
-		Field newHead = mock(Field.class);
+		final Field newHead = mock(Field.class);
 		when(newHead.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getFromDirection(head, Direction.LEFT)).thenReturn(newHead);
 
@@ -122,13 +128,13 @@ public class SnakeTest {
 
 	@Test
 	public void testMove() {
-		Field oldHead = mock(Field.class);
+		final Field oldHead = mock(Field.class);
 		when(oldHead.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getXY(X, Y)).thenReturn(oldHead);
 
 		snake.init();
 
-		Field newHead = mock(Field.class);
+		final Field newHead = mock(Field.class);
 		when(newHead.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getFromDirection(oldHead, Direction.UP)).thenReturn(newHead);
 
@@ -145,17 +151,17 @@ public class SnakeTest {
 	 */
 	@Test
 	public void testGrow() {
-		Field field1 = new Field(0, 3, 10);
+		final Field field1 = new Field(0, 3, 10);
 		// at the start field1 is the head
 		when(gridMock.getXY(X, Y)).thenReturn(field1);
 
 		// field2 is above field1
-		Field field2 = new Field(0, 2, 10);
+		final Field field2 = new Field(0, 2, 10);
 		field2.changeState(State.FOOD);
 		when(gridMock.getFromDirection(field1, Direction.UP)).thenReturn(field2);
 
 		// field3 is above field2
-		Field field3 = new Field(0, 1, 10);
+		final Field field3 = new Field(0, 1, 10);
 		when(gridMock.getFromDirection(field2, Direction.UP)).thenReturn(field3);
 
 		snake.init();
@@ -190,13 +196,13 @@ public class SnakeTest {
 	@Test
 	public void testCollision() {
 
-		Field oldHead = mock(Field.class);
+		final Field oldHead = mock(Field.class);
 		when(oldHead.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getXY(X, Y)).thenReturn(oldHead);
 
 		snake.init();
 
-		Field tail = mock(Field.class);
+		final Field tail = mock(Field.class);
 		when(tail.getState()).thenReturn(State.TAIL);
 		when(gridMock.getFromDirection(oldHead, Direction.UP)).thenReturn(tail);
 
@@ -213,11 +219,11 @@ public class SnakeTest {
 	 */
 	@Test
 	public void testNewGame() {
-		Field head = mock(Field.class);
+		final Field head = mock(Field.class);
 		when(head.getState()).thenReturn(State.EMPTY);
 		when(gridMock.getXY(X, Y)).thenReturn(head);
 
-		Field food = mock(Field.class);
+		final Field food = mock(Field.class);
 		when(food.getState()).thenReturn(State.FOOD);
 		when(gridMock.getFromDirection(head, Direction.UP)).thenReturn(food);
 
@@ -236,6 +242,7 @@ public class SnakeTest {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<Field> getTail() {
 		return (List<Field>) Whitebox.getInternalState(snake, "tail");
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.internal.util.reflection.Whitebox;
 
 import eu.lestard.snakefx.viewmodel.ViewModel;
 
@@ -21,7 +22,8 @@ public class GridTest {
 	public void setUp() {
 		viewModel = new ViewModel();
 		viewModel.gridSizeProperty().set(ROW_AND_COLUMN_COUNT);
-		grid = new Grid(viewModel, GRID_SIZE_IN_PIXEL);
+		grid = new Grid(viewModel);
+		Whitebox.setInternalState(grid, "gridSizeInPixel", GRID_SIZE_IN_PIXEL);
 
 		grid.init();
 	}
@@ -33,14 +35,14 @@ public class GridTest {
 	@Test
 	public void testInitialization() {
 
-		List<Field> fields = grid.getFields();
+		final List<Field> fields = grid.getFields();
 
-		int fieldCount = ROW_AND_COLUMN_COUNT * ROW_AND_COLUMN_COUNT;
+		final int fieldCount = ROW_AND_COLUMN_COUNT * ROW_AND_COLUMN_COUNT;
 		assertThat(fields).hasSize(fieldCount);
 
 		// first check the calculated Size for all Fields
 
-		for (Field f : fields) {
+		for (final Field f : fields) {
 			assertThat(f.getRectangle().getWidth()).isEqualTo(GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
 			assertThat(f.getRectangle().getHeight()).isEqualTo(GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
 		}
@@ -52,7 +54,7 @@ public class GridTest {
 		 * _|_|_|_
 		 * | | |
 		 */
-		Field x0y0 = fields.get(0);
+		final Field x0y0 = fields.get(0);
 		assertThat(x0y0.getX()).isEqualTo(0);
 		assertThat(x0y0.getY()).isEqualTo(0);
 
@@ -62,7 +64,7 @@ public class GridTest {
 		 * _|o|_|_
 		 * | | |
 		 */
-		Field x1y2 = fields.get(9);
+		final Field x1y2 = fields.get(9);
 		assertThat(x1y2.getX()).isEqualTo(1);
 		assertThat(x1y2.getY()).isEqualTo(2);
 
@@ -72,14 +74,14 @@ public class GridTest {
 		 * _|_|_|_
 		 * | | |o
 		 */
-		Field x3y3 = fields.get(fieldCount - 1);
+		final Field x3y3 = fields.get(fieldCount - 1);
 		assertThat(x3y3.getX()).isEqualTo(3);
 		assertThat(x3y3.getY()).isEqualTo(3);
 	}
 
 	@Test
 	public void testGetXY() {
-		Field x2y1 = grid.getXY(2, 1);
+		final Field x2y1 = grid.getXY(2, 1);
 
 		assertThat(x2y1.getX()).isEqualTo(2);
 		assertThat(x2y1.getY()).isEqualTo(1);
@@ -91,7 +93,7 @@ public class GridTest {
 	 */
 	@Test
 	public void testGetXYFail() {
-		Field x2y5 = grid.getXY(2, 5);
+		final Field x2y5 = grid.getXY(2, 5);
 
 		assertThat(x2y5).isNull();
 	}
@@ -101,14 +103,14 @@ public class GridTest {
 	 */
 	@Test
 	public void testGetFromDirection() {
-		Field x2y2 = grid.getXY(2, 2);
+		final Field x2y2 = grid.getXY(2, 2);
 
-		Field x2y3 = grid.getFromDirection(x2y2, Direction.DOWN);
+		final Field x2y3 = grid.getFromDirection(x2y2, Direction.DOWN);
 
 		assertThat(x2y3.getX()).isEqualTo(2);
 		assertThat(x2y3.getY()).isEqualTo(3);
 
-		Field x3y3 = grid.getFromDirection(x2y3, Direction.RIGHT);
+		final Field x3y3 = grid.getFromDirection(x2y3, Direction.RIGHT);
 
 		assertThat(x3y3.getX()).isEqualTo(3);
 		assertThat(x3y3.getY()).isEqualTo(3);
@@ -127,7 +129,7 @@ public class GridTest {
 	public void testGetFromDirectionOtherSideOfTheGrid() {
 
 		Field x0y3 = grid.getXY(0, 3);
-		Field x3y3 = grid.getFromDirection(x0y3, Direction.LEFT);
+		final Field x3y3 = grid.getFromDirection(x0y3, Direction.LEFT);
 
 		assertThat(x3y3.getX()).isEqualTo(3);
 		assertThat(x3y3.getY()).isEqualTo(3);
@@ -137,7 +139,7 @@ public class GridTest {
 		assertThat(x0y3.getY()).isEqualTo(3);
 
 		Field x2y0 = grid.getXY(2, 0);
-		Field x2y3 = grid.getFromDirection(x2y0, Direction.UP);
+		final Field x2y3 = grid.getFromDirection(x2y0, Direction.UP);
 
 		assertThat(x2y3.getX()).isEqualTo(2);
 		assertThat(x2y3.getY()).isEqualTo(3);
@@ -156,14 +158,14 @@ public class GridTest {
 
 		// First change the state of some fields
 
-		Field x2y1 = grid.getXY(2, 1);
+		final Field x2y1 = grid.getXY(2, 1);
 		x2y1.changeState(State.FOOD);
 
-		Field x3y3 = grid.getXY(3, 3);
+		final Field x3y3 = grid.getXY(3, 3);
 
 		x3y3.changeState(State.HEAD);
 
-		Field x0y2 = grid.getXY(0, 2);
+		final Field x0y2 = grid.getXY(0, 2);
 		x0y2.changeState(State.TAIL);
 
 		grid.newGame();
@@ -174,8 +176,8 @@ public class GridTest {
 		assertThat(x0y2.getState()).isEqualTo(State.EMPTY);
 
 		// All other fields must be empty too
-		List<Field> fields = grid.getFields();
-		for (Field field : fields) {
+		final List<Field> fields = grid.getFields();
+		for (final Field field : fields) {
 			assertThat(field.getState()).isEqualTo(State.EMPTY);
 		}
 

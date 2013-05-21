@@ -1,8 +1,12 @@
 package eu.lestard.snakefx.core;
 
+import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_X;
+import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_Y;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.lestard.snakefx.util.Function;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 
 /**
@@ -33,20 +37,23 @@ public class Snake {
 	/**
 	 * @param grid
 	 *            the grid on which the snake is created
-	 * @param x
-	 *            the x coordinate where the snake is created
-	 * @param y
-	 *            the y coordinate where the snake is created
 	 * @param points
 	 *            the property for the points
 	 */
-	public Snake(ViewModel viewModel, final Grid grid, final int x, final int y) {
+	public Snake(final ViewModel viewModel, final Grid grid, final GameLoop gameLoop) {
 		this.viewModel = viewModel;
 		this.grid = grid;
-		this.x = x;
-		this.y = y;
+		x = SNAKE_START_X.get();
+		y = SNAKE_START_Y.get();
 
 		tail = new ArrayList<Field>();
+
+		gameLoop.addActions(new Function() {
+			@Override
+			public void call() {
+				move();
+			}
+		});
 	}
 
 	/**
@@ -84,10 +91,10 @@ public class Snake {
 	/**
 	 * Move the snake by one field.
 	 */
-	public void move() {
+	void move() {
 		currentDirection = nextDirection;
 
-		Field newHead = grid.getFromDirection(head, currentDirection);
+		final Field newHead = grid.getFromDirection(head, currentDirection);
 
 		if (newHead.getState().equals(State.TAIL)) {
 			viewModel.collisionProperty().set(true);
@@ -102,7 +109,7 @@ public class Snake {
 		Field lastField = head;
 
 		for (int i = 0; i < tail.size(); i++) {
-			Field f = tail.get(i);
+			final Field f = tail.get(i);
 
 			lastField.changeState(State.TAIL);
 			tail.set(i, lastField);
@@ -142,7 +149,7 @@ public class Snake {
 	}
 
 	private void addPoints() {
-		int current = viewModel.pointsProperty().get();
+		final int current = viewModel.pointsProperty().get();
 		viewModel.pointsProperty().set(current + 1);
 	}
 

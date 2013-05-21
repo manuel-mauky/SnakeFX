@@ -1,5 +1,7 @@
 package eu.lestard.snakefx.core;
 
+import static eu.lestard.snakefx.config.IntegerConfig.GRID_SIZE_IN_PIXEL;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,12 +31,10 @@ public class Grid {
 	/**
 	 * @param viewModel
 	 *            the viewModel instance.
-	 * @param gridSizeInPixel
-	 *            the size of the grid in pixel
 	 */
-	public Grid(ViewModel viewModel, final int gridSizeInPixel) {
+	public Grid(final ViewModel viewModel) {
 		this.viewModel = viewModel;
-		this.gridSizeInPixel = gridSizeInPixel;
+		gridSizeInPixel = GRID_SIZE_IN_PIXEL.get();
 	}
 
 	/**
@@ -45,10 +45,10 @@ public class Grid {
 	 * 
 	 */
 	public void init() {
-		int gridSize = viewModel.gridSizeProperty().get();
+		final int gridSize = viewModel.gridSizeProperty().get();
 		for (int y = 0; y < gridSize; y++) {
 			for (int x = 0; x < gridSize; x++) {
-				Field f = new Field(x, y, (gridSizeInPixel / gridSize));
+				final Field f = new Field(x, y, (gridSizeInPixel / gridSize));
 				fields.add(f);
 			}
 		}
@@ -71,7 +71,7 @@ public class Grid {
 	 *         this coordinates is available.
 	 */
 	public Field getXY(final int x, final int y) {
-		for (Field f : fields) {
+		for (final Field f : fields) {
 			if (f.getX() == x && f.getY() == y) {
 				return f;
 			}
@@ -106,7 +106,7 @@ public class Grid {
 			break;
 		}
 
-		int gridSize = viewModel.gridSizeProperty().get();
+		final int gridSize = viewModel.gridSizeProperty().get();
 
 		x += gridSize;
 		y += gridSize;
@@ -118,10 +118,10 @@ public class Grid {
 
 	public Field getRandomEmptyField() {
 
-		List<Field> temp = new ArrayList<Field>();
+		final List<Field> temp = new ArrayList<Field>();
 
 		// Get all empty fields
-		for (Field f : fields) {
+		for (final Field f : fields) {
 			if (f.getState().equals(State.EMPTY)) {
 				temp.add(f);
 			}
@@ -130,13 +130,13 @@ public class Grid {
 		if (temp.isEmpty()) {
 			return null;
 		} else {
-			int nextInt = new Random().nextInt(temp.size());
+			final int nextInt = new Random().nextInt(temp.size());
 			return temp.get(nextInt);
 		}
 	}
 
 	public void newGame() {
-		for (Field f : fields) {
+		for (final Field f : fields) {
 			f.changeState(State.EMPTY);
 		}
 	}
