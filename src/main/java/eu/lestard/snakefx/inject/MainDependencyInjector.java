@@ -1,9 +1,14 @@
 package eu.lestard.snakefx.inject;
 
+import java.net.URL;
+
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import eu.lestard.snakefx.view.ApplicationStarter;
+import eu.lestard.snakefx.view.FXMLFile;
 import eu.lestard.snakefx.view.Keyboard;
 import eu.lestard.snakefx.view.controller.MainController;
 import eu.lestard.snakefx.viewmodel.ViewModel;
@@ -21,43 +26,19 @@ public class MainDependencyInjector {
 
 	public MainDependencyInjector(final Stage primaryStage) {
 
-		final FxmlFactory fxmlFactory = new FxmlFactory();
-
-		final StageFactory stageFactory = new StageFactory(fxmlFactory);
-
 		ViewModel viewModel = new ViewModel();
-
 		final CoreInjector coreInjector = new CoreInjector(viewModel);
 
-		final ControllerInitializer controllerInitializer = new ControllerInitializer();
+		ControllerInjector controllerInjector = new ControllerInjector(viewModel, coreInjector);
 
-		final ControllerInjector controllerInjector = new ControllerInjector(primaryStage, coreInjector,
-				fxmlFactory, stageFactory, controllerInitializer, viewModel);
+		final FxmlFactory fxmlFactory = new FxmlFactory(controllerInjector);
 
+		Parent root = fxmlFactory.getFxmlRoot(FXMLFile.MAIN);
 
-		final Parent mainRoot = controllerInjector.getMainRoot();
-
-		final BindingInitializer bindingInitializer = new BindingInitializer(mainRoot, coreInjector,
-				controllerInjector, viewModel);
-
-		bindingInitializer.initBindings();
-
-		final Keyboard keyboard = new Keyboard(coreInjector.getSnake());
-		final Scene mainScene = createMainScene(mainRoot, keyboard);
-
-
-		final MainController mainController = controllerInjector.getMainController();
-		mainController.newGame();
+		Scene mainScene = new Scene(root);
 
 		starter = new ApplicationStarter(mainScene, primaryStage);
 	}
-
-	private Scene createMainScene(final Parent root, final Keyboard keyboard) {
-		Scene mainScene = new Scene(root);
-		mainScene.setOnKeyPressed(keyboard);
-		return mainScene;
-	}
-
 
 	public ApplicationStarter getApplicationStarter() {
 		return starter;

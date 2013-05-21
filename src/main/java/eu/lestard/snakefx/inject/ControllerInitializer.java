@@ -1,16 +1,10 @@
 package eu.lestard.snakefx.inject;
 
-import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.Parent;
-import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
-import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Snake;
-import eu.lestard.snakefx.core.SpeedLevel;
 import eu.lestard.snakefx.view.controller.HighScoreController;
-import eu.lestard.snakefx.view.controller.SpeedChangeController;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 
 /**
@@ -29,7 +23,7 @@ public class ControllerInitializer {
 
 
 	public void initHighScoreController(final Snake snake, final HighScoreController highScoreController,
-			final Stage highScoreStage, ViewModel viewModel) {
+			final Stage highScoreStage, final ViewModel viewModel) {
 
 		this.viewModel = viewModel;
 		viewModel.collisionProperty().addListener(new ChangeListener<Boolean>() {
@@ -43,14 +37,6 @@ public class ControllerInitializer {
 				}
 			}
 		});
-	}
-
-	public SpeedChangeController createSpeedChangeController(final Parent mainRoot) {
-		@SuppressWarnings("unchecked")
-		final ChoiceBox<SpeedLevel> speedChoiceBox = (ChoiceBox<SpeedLevel>) mainRoot
-				.lookup(FXML_ID_SPEED_CHOICE_BOX);
-
-		return new SpeedChangeController(speedChoiceBox, viewModel);
 	}
 
 }

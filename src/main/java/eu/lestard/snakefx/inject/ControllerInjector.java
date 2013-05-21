@@ -1,28 +1,17 @@
 package eu.lestard.snakefx.inject;
 
-import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_ABOUT;
-import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_HIGHSCORE;
-import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_MAIN;
-import static eu.lestard.snakefx.config.StringConfig.FXML_FILENAME_NEW_SCORE_ENTRY;
-import static eu.lestard.snakefx.config.StringConfig.HIGH_SCORE_FILEPATH;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import javafx.util.Callback;
 
-import javafx.collections.ObservableList;
-import javafx.scene.Parent;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import eu.lestard.snakefx.highscore.HighScoreEntry;
-import eu.lestard.snakefx.highscore.HighScoreManager;
-import eu.lestard.snakefx.highscore.HighScorePersistence;
 import eu.lestard.snakefx.view.controller.AboutController;
 import eu.lestard.snakefx.view.controller.HighScoreController;
+import eu.lestard.snakefx.view.controller.HighscoresController;
 import eu.lestard.snakefx.view.controller.MainController;
-import eu.lestard.snakefx.view.controller.NewGameController;
-import eu.lestard.snakefx.view.controller.NewScoreEntryController;
-import eu.lestard.snakefx.view.controller.PlayPauseController;
-import eu.lestard.snakefx.view.controller.SpeedChangeController;
+import eu.lestard.snakefx.view.controller.MenuController;
+import eu.lestard.snakefx.view.controller.NewHighscoreController;
+import eu.lestard.snakefx.view.controller.PanelController;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 
 
@@ -33,88 +22,37 @@ import eu.lestard.snakefx.viewmodel.ViewModel;
  * @author manuel.mauky
  * 
  */
-public class ControllerInjector {
+public class ControllerInjector implements Callback<Class<?>, Object> {
 
-	private final PlayPauseController playPauseController;
-	private final NewGameController newGameController;
-	private final HighScorePersistence highScorePersistence;
-	private final HighScoreManager highScoreManager;
-	private final NewScoreEntryController newScoreEntryController;
-	private final HighScoreController highScoreController;
-	private final Stage newScoreEntryStage;
-	private final MainController mainController;
-	private final SpeedChangeController speedChangeController;
-	private final AboutController aboutController;
-	private final Parent mainRoot;
+	private final Map<Class<?>, Object> instances = new HashMap<>();
 
-	public ControllerInjector(final Stage primaryStage, final CoreInjector coreInjector,
-			final FxmlFactory fxmlFactory, final StageFactory stageFactory,
-			final ControllerInitializer initializer, ViewModel viewModel) {
-		Path highScoreFilepath = Paths.get(HIGH_SCORE_FILEPATH.get());
+	public ControllerInjector(final ViewModel viewModel, final CoreInjector coreInjector) {
 
-		playPauseController = new PlayPauseController(viewModel);
-
-		newGameController = new NewGameController(coreInjector.getGrid(), coreInjector.getSnake(),
-				coreInjector.getFoodGenerator(), playPauseController);
+		final MainController mainController = new MainController(viewModel, coreInjector.getGrid(),
+				coreInjector.getNewGameFunction());
+		instances.put(MainController.class, mainController);
 
 
-		highScorePersistence = new HighScorePersistence(highScoreFilepath);
-
-		highScoreManager = new HighScoreManager(highScorePersistence);
-
-		newScoreEntryController = new NewScoreEntryController(highScoreManager);
-		newScoreEntryController.pointsProperty().bind(viewModel.pointsProperty());
-
-		newScoreEntryStage = stageFactory.createStage(FXML_FILENAME_NEW_SCORE_ENTRY, newScoreEntryController);
-
-		highScoreController = new HighScoreController(newScoreEntryStage);
-
-		highScoreController.highScoreEntries().bind(highScoreManager.highScoreEntries());
+		final MenuController menuController = new MenuController(viewModel, coreInjector.getNewGameFunction());
+		instances.put(MenuController.class, menuController);
 
 
-		Stage highScoreStage = stageFactory.createStage(FXML_FILENAME_HIGHSCORE, highScoreController);
+		final PanelController panelController = new PanelController(viewModel);
+		instances.put(PanelController.class, panelController);
 
-		setToModal(highScoreStage, primaryStage);
+		final AboutController aboutController = new AboutController();
+		instances.put(AboutController.class, aboutController);
 
-		setToModal(newScoreEntryStage, highScoreStage);
+		final HighscoresController highscoresController = new HighscoresController();
+		instances.put(HighScoreController.class, highscoresController);
 
-		initializer.initHighScoreController(coreInjector.getSnake(), highScoreController, highScoreStage,
-				viewModel);
-
-		aboutController = new AboutController();
-
-		Stage aboutStage = stageFactory.createStage(FXML_FILENAME_ABOUT, aboutController);
-
-
-
-		mainController = new MainController(coreInjector.getGrid(), newGameController, highScoreStage, aboutStage);
-
-		mainRoot = fxmlFactory.getFxmlRoot(FXML_FILENAME_MAIN.get(), mainController);
-
-
-		speedChangeController = initializer.createSpeedChangeController(mainRoot);
-		speedChangeController.init();
-
+		final NewHighscoreController newHighscoreController = new NewHighscoreController();
+		instances.put(NewHighscoreController.class, newHighscoreController);
 	}
 
-	private void setToModal(final Stage current, final Stage owner) {
-		current.initModality(Modality.WINDOW_MODAL);
-		current.initOwner(owner);
+	@Override
+	public Object call(final Class<?> clazz) {
+		return instances.get(clazz);
 	}
-
-	public PlayPauseController getPlayPauseController() {
-		return playPauseController;
-	}
-
-
-	public MainController getMainController() {
-		return mainController;
-	}
-
-	public Parent getMainRoot() {
-		return mainRoot;
-	}
-
-
 
 }

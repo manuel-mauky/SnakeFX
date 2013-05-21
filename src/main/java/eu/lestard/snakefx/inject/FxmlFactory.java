@@ -5,6 +5,8 @@ import java.io.InputStream;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.util.Callback;
+import eu.lestard.snakefx.view.FXMLFile;
 
 /**
  * This factory can be used to load FXML documents and get the root element of
@@ -14,6 +16,14 @@ import javafx.scene.Parent;
  * 
  */
 public class FxmlFactory {
+
+
+	private final ControllerInjector controllerInjector;
+
+
+	public FxmlFactory(ControllerInjector injector) {
+		controllerInjector = injector;
+	}
 
 	/**
 	 * Loads the fxml file with the given name and returns the root element.
@@ -28,6 +38,21 @@ public class FxmlFactory {
 		FXMLLoader fxmlLoader = new FXMLLoader();
 		return getFxmlRoot(filename, controller, fxmlLoader);
 	}
+
+	public Parent getFxmlRoot(FXMLFile file) {
+		FXMLLoader loader = new FXMLLoader(file.url());
+
+		loader.setControllerFactory(controllerInjector);
+
+		try {
+			loader.load();
+		} catch (IOException e) {
+			throw new IllegalStateException("Can't load FXML file [" + file.url() + "]", e);
+		}
+
+		return loader.getRoot();
+	}
+
 
 	protected Parent getFxmlRoot(final String filename, final Object controller, final FXMLLoader fxmlLoader) {
 		if (controller == null) {

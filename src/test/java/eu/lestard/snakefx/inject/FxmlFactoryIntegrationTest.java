@@ -22,7 +22,7 @@ public class FxmlFactoryIntegrationTest {
 	public void setup() {
 		fxmlLoader = spy(new FXMLLoader());
 
-		factory = new FxmlFactory();
+		factory = new FxmlFactory(null);
 	}
 
 	@Test
@@ -50,8 +50,7 @@ public class FxmlFactoryIntegrationTest {
 	public void testGetFxmlRootFailWrongFilename() {
 		Object controller = new Object();
 
-		Parent root = factory.getFxmlRoot("wrong/filename.fxml", controller,
-				fxmlLoader);
+		Parent root = factory.getFxmlRoot("wrong/filename.fxml", controller, fxmlLoader);
 		assertThat(root).isNotNull();
 
 		// VBox is the root element of the example.fxml file

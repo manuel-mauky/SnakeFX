@@ -1,55 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import java.lang.*?>
+<?import java.util.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.*?>
-<?import eu.lestard.snakefx.core.SpeedLevel?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.paint.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml">
-
-	<top>
-		<MenuBar>
-			<Menu mnemonicParsing="true" text="_SnakeFX">
-				<MenuItem mnemonicParsing="true" text="_New Game" onAction="#newGame" />
-				<MenuItem mnemonicParsing="true"  text="_High Score" onAction="#showHighScore" />
-	
-				<SeparatorMenuItem mnemonicParsing="false" />
-        		<MenuItem mnemonicParsing="true" text="_About" fx:id="about" onAction="#about"/>
-				<MenuItem mnemonicParsing="true" text="E_xit" onAction="#exit" />
-			</Menu>
-		</MenuBar>
-	</top>
-
-	<left>
-		<VBox spacing="10">
-			<padding>
-				<Insets top="10" right="10" bottom="10" left="10" />
-			</padding>
-
-			<HBox>
-				<Label text="Points: "/>
-				<Label fx:id="pointsLabel" />
-			</HBox>
-
-			<Button fx:id="playPauseButton" text="Start" focusTraversable="false">
-				<maxWidth>
-					<Double fx:constant="MAX_VALUE" />
-				</maxWidth>
-			</Button>
-			<Label text="Speed:" />
-			<ChoiceBox fx:id="speedChoiceBox" focusTraversable="false">
-				<SpeedLevel fx:value="SLOW" />
-				<SpeedLevel fx:value="MEDIUM" />
-				<SpeedLevel fx:value="FAST" />
-				<SpeedLevel fx:value="EXTRA" />
-			</ChoiceBox>
-		</VBox>
-	</left>
-
+<BorderPane
+	id="BorderPane"
+	maxHeight="-Infinity"
+	maxWidth="-Infinity"
+	minHeight="-Infinity"
+	minWidth="-Infinity"
+	prefHeight="400.0"
+	prefWidth="600.0"
+	xmlns:fx="http://javafx.com/fxml"
+	fx:controller="eu.lestard.snakefx.view.controller.MainController">
 	<center>
-		<Group fx:id="gridContainer" />
+		<Pane
+			prefHeight="200.0"
+			prefWidth="200.0"
+			style="-fx-background-color:grey;"
+			BorderPane.alignment="CENTER" />
 	</center>
-
+	<left>
+		<fx:include source="panel.fxml" />
+	</left>
+	<top>
+		<fx:include
+			source="menu.fxml"
+			maxHeight="1.7976931348623157E308"
+			maxWidth="1.7976931348623157E308"
+			minHeight="-Infinity"
+			prefWidth="-1.0"
+			BorderPane.alignment="TOP_LEFT" />
+	</top>
 </BorderPane>

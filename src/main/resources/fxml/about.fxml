@@ -18,9 +18,6 @@
 	prefHeight="300.0"
 	prefWidth="400.0"
 	xmlns:fx="http://javafx.com/fxml">
-	<stylesheets>
-		<URL value="@about.bss" />
-	</stylesheets>
 
 	<children>
 		<VBox

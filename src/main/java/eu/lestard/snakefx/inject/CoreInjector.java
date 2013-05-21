@@ -3,9 +3,14 @@ package eu.lestard.snakefx.inject;
 import static eu.lestard.snakefx.config.IntegerConfig.GRID_SIZE_IN_PIXEL;
 import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_X;
 import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_Y;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import eu.lestard.snakefx.core.FoodGenerator;
 import eu.lestard.snakefx.core.GameLoop;
 import eu.lestard.snakefx.core.Grid;
+import eu.lestard.snakefx.core.NewGameFunction;
 import eu.lestard.snakefx.core.Snake;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 
@@ -21,6 +26,7 @@ public class CoreInjector {
 	private final Snake snake;
 	private final GameLoop gameLoop;
 	private final FoodGenerator foodGenerator;
+	private final NewGameFunction newGameFunction;
 
 	public CoreInjector(ViewModel viewModel) {
 		grid = new Grid(viewModel, GRID_SIZE_IN_PIXEL.get());
@@ -30,8 +36,9 @@ public class CoreInjector {
 		gameLoop = new GameLoop(viewModel);
 
 		foodGenerator = new FoodGenerator(viewModel, grid);
-	}
 
+		newGameFunction = new NewGameFunction(viewModel, grid, snake, foodGenerator);
+	}
 
 	public Snake getSnake() {
 		return snake;
@@ -49,4 +56,7 @@ public class CoreInjector {
 		return grid;
 	}
 
+	public NewGameFunction getNewGameFunction() {
+		return newGameFunction;
+	}
 }
