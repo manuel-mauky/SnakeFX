@@ -4,32 +4,31 @@ import static eu.lestard.snakefx.config.IntegerConfig.MAX_SCORE_COUNT;
 
 import java.util.ArrayList;
 
-import com.sun.javafx.collections.ObservableListWrapper;
-
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
+import com.sun.javafx.collections.ObservableListWrapper;
 
 public class HighScoreManager {
 
 	private final ListProperty<HighScoreEntry> highScoreEntries = new SimpleListProperty<>(
 			new ObservableListWrapper<HighScoreEntry>(new ArrayList<HighScoreEntry>()));
 
-	private final HighScorePersistence persistence;
+	private final HighscoreDao dao;
 
-	public HighScoreManager(HighScorePersistence highScorePersistence) {
-		persistence = highScorePersistence;
+	public HighScoreManager(final HighscoreDao highScorePersistence) {
+		dao = highScorePersistence;
 
-		highScoreEntries.setAll(persistence.loadHighScores());
+		highScoreEntries.setAll(dao.load());
 	}
 
 	public ListProperty<HighScoreEntry> highScoreEntries() {
 		return highScoreEntries;
 	}
 
-	public void addScore(String name, int points) {
-		HighScoreEntry entry = new HighScoreEntry(1, name, points);
+	public void addScore(final String name, final int points) {
+		final HighScoreEntry entry = new HighScoreEntry(1, name, points);
 
 		highScoreEntries.add(entry);
 
@@ -47,6 +46,6 @@ public class HighScoreManager {
 			}
 		}
 
-		persistence.persistHighScores(highScoreEntries);
+		dao.persist(highScoreEntries);
 	}
 }

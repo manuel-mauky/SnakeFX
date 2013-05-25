@@ -11,43 +11,50 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class HighScorePersistence {
+/**
+ * DAO implementation for {@link HighScoreEntry} that is using a CSV file for
+ * persistence.
+ * 
+ * @author manuel.mauky
+ * 
+ */
+public class HighscoreCsvDao implements HighscoreDao {
 
 	private static final Charset ENCODING = StandardCharsets.UTF_8;
 
 	private final Path filepath;
 
-	public HighScorePersistence(final Path filepath) {
+	public HighscoreCsvDao(final Path filepath) {
 		this.filepath = filepath;
 	}
 
-	public void persistHighScores(final List<HighScoreEntry> highScoreList) {
-		try (BufferedWriter writer = Files
-				.newBufferedWriter(filepath, ENCODING)) {
-			for (HighScoreEntry e : highScoreList) {
-				String csvLine = entryToCsv(e);
+	@Override
+	public void persist(final List<HighScoreEntry> highScoreList) {
+		try (BufferedWriter writer = Files.newBufferedWriter(filepath, ENCODING)) {
+			for (final HighScoreEntry e : highScoreList) {
+				final String csvLine = entryToCsv(e);
 
 				writer.write(csvLine);
 				writer.newLine();
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 
-
-	public List<HighScoreEntry> loadHighScores() {
-		List<HighScoreEntry> resultList = new ArrayList<HighScoreEntry>();
+	@Override
+	public List<HighScoreEntry> load() {
+		final List<HighScoreEntry> resultList = new ArrayList<HighScoreEntry>();
 
 		try {
 
-			File file = filepath.toFile();
+			final File file = filepath.toFile();
 			if (!file.exists()) {
 				file.createNewFile();
 			}
 
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			System.err.println("Can't create file for highscore");
 			e.printStackTrace();
 		}
@@ -55,12 +62,12 @@ public class HighScorePersistence {
 
 		try (Scanner scanner = new Scanner(filepath, ENCODING.name())) {
 			while (scanner.hasNextLine()) {
-				HighScoreEntry entry = csvToEntry(scanner.nextLine());
+				final HighScoreEntry entry = csvToEntry(scanner.nextLine());
 				if (entry != null) {
 					resultList.add(entry);
 				}
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 
@@ -79,7 +86,7 @@ public class HighScorePersistence {
 	 * @return
 	 */
 	protected String entryToCsv(final HighScoreEntry entry) {
-		StringBuilder csvBuilder = new StringBuilder();
+		final StringBuilder csvBuilder = new StringBuilder();
 
 		csvBuilder.append(entry.getRanking());
 		csvBuilder.append(",");
@@ -137,9 +144,9 @@ public class HighScorePersistence {
 			return null;
 		}
 
-		String filteredCsvLine = csvLine.replaceAll(";", "");
+		final String filteredCsvLine = csvLine.replaceAll(";", "");
 
-		String[] splitByComma = filteredCsvLine.split(",");
+		final String[] splitByComma = filteredCsvLine.split(",");
 
 		if (splitByComma.length != 3) {
 			return null;
@@ -151,11 +158,11 @@ public class HighScorePersistence {
 		try {
 			ranking = (int) Double.parseDouble(splitByComma[0]);
 			points = (int) Double.parseDouble(splitByComma[2]);
-		} catch (NumberFormatException nfe) {
+		} catch (final NumberFormatException nfe) {
 			return null;
 		}
 
-		String playername = splitByComma[1].trim();
+		final String playername = splitByComma[1].trim();
 
 		return new HighScoreEntry(ranking, playername, points);
 	}

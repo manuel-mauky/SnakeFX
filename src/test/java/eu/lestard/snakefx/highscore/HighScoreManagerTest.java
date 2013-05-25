@@ -17,8 +17,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
-
 @Ignore
 public class HighScoreManagerTest {
 	private HighScoreManager scoreManager;
@@ -27,15 +25,15 @@ public class HighScoreManagerTest {
 
 	private final static int MAX_SCORE_COUNT = 3;
 
-	private HighScorePersistence persistenceMock;
+	private HighscoreDao daoMock;
 
 	@Before
 	public void setup() {
 		highScoreEntries = FXCollections.observableArrayList();
 
-		persistenceMock = mock(HighScorePersistence.class);
+		daoMock = mock(HighscoreDao.class);
 
-		scoreManager = new HighScoreManager(persistenceMock);
+		scoreManager = new HighScoreManager(daoMock);
 	}
 
 	@Test
@@ -45,9 +43,9 @@ public class HighScoreManagerTest {
 		final HighScoreEntry highScoreEntry = new HighScoreEntry(1, "yoda,", 14);
 		existingEntries.add(highScoreEntry);
 
-		when(persistenceMock.loadHighScores()).thenReturn(existingEntries);
+		when(daoMock.load()).thenReturn(existingEntries);
 
-		scoreManager = new HighScoreManager(persistenceMock);
+		scoreManager = new HighScoreManager(daoMock);
 
 		assertThat(highScoreEntries).hasSize(1);
 		assertThat(highScoreEntries).contains(highScoreEntry);
@@ -74,7 +72,7 @@ public class HighScoreManagerTest {
 		assertThat(extractProperty("playername", String.class).from(highScoreEntries)).containsSequence("jabba",
 				"yoda", "luke");
 
-		verify(persistenceMock, times(4)).persistHighScores(highScoreEntries);
+		verify(daoMock, times(4)).persist(highScoreEntries);
 
 	}
 }
