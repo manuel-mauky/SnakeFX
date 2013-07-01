@@ -25,7 +25,6 @@ import eu.lestard.snakefx.viewmodel.ViewModel;
  */
 public class GameLoop {
 
-
 	private static final int ONE_SECOND = 1000;
 
 	private Timeline timeline;
@@ -62,7 +61,7 @@ public class GameLoop {
 		timeline = TimelineBuilder.create().cycleCount(Animation.INDEFINITE).keyFrames(buildKeyFrame()).build();
 
 		// in this place we can't use a direct binding as the ViewModel property
-		// is can also be changed in other places.
+		// can also be changed in other places.
 		timeline.statusProperty().addListener(new ChangeListener<Status>() {
 			@Override
 			public void changed(final ObservableValue<? extends Status> arg0, final Status arg1,
@@ -104,16 +103,16 @@ public class GameLoop {
 		@Override
 		public void changed(final ObservableValue<? extends Status> arg0, final Status oldStatus,
 				final Status newStatus) {
+
 			switch (newStatus) {
 			case PAUSED:
-				timeline.pause();
+				pause();
 				break;
 			case RUNNING:
-				init();
-				timeline.play();
+				play();
 				break;
 			case STOPPED:
-				timeline.stop();
+				stop();
 				break;
 			}
 		}
@@ -129,11 +128,14 @@ public class GameLoop {
 
 			final Status oldStatus = timeline.getStatus();
 
-			timeline.stop();
+			if (Status.RUNNING.equals(oldStatus)) {
+				pause();
+			}
+
 			init();
 
 			if (Status.RUNNING.equals(oldStatus)) {
-				timeline.play();
+				play();
 			}
 		}
 	}
@@ -147,9 +149,21 @@ public class GameLoop {
 		public void changed(final ObservableValue<? extends Boolean> arg0, final Boolean oldValue,
 				final Boolean newCollision) {
 			if (newCollision) {
-				timeline.stop();
+				stop();
 			}
 		}
+	}
+
+	private void play() {
+		timeline.play();
+	}
+
+	private void pause() {
+		timeline.pause();
+	}
+
+	private void stop() {
+		timeline.stop();
 	}
 
 }

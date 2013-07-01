@@ -47,7 +47,8 @@ public class PanelController {
 
 	@FXML
 	public void togglePlayPause() {
-		switch (viewModel.gameloopStatusProperty().get()) {
+		final Status status = viewModel.gameloopStatusProperty().get();
+		switch (status) {
 		case PAUSED:
 			playPause.textProperty().set("Pause");
 			viewModel.gameloopStatusProperty().set(Status.RUNNING);

@@ -35,10 +35,7 @@ public class MainController {
 
 	@FXML
 	public void initialize() {
-		System.out.println("initializing the grid");
 		grid.init();
-
-		System.out.println("gridContainer: " + gridContainer);
 
 		for (final Field f : grid.getFields()) {
 			gridContainer.getChildren().add(f.getRectangle());
