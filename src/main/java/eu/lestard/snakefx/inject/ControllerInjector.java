@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javafx.fxml.FXMLLoader;
 import javafx.util.Callback;
+import eu.lestard.snakefx.view.controller.KeyboardController;
 import eu.lestard.snakefx.view.controller.MainController;
 import eu.lestard.snakefx.view.controller.MenuController;
 import eu.lestard.snakefx.view.controller.PanelController;
@@ -38,11 +39,19 @@ public class ControllerInjector implements Callback<Class<?>, Object> {
 
 		final PanelController panelController = new PanelController(viewModel);
 		instances.put(PanelController.class, panelController);
+
+		final KeyboardController keyboardController = new KeyboardController(viewModel);
+		instances.put(KeyboardController.class, keyboardController);
 	}
 
 	@Override
 	public Object call(final Class<?> clazz) {
 		return instances.get(clazz);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T callSafe(final Class<T> clazz) {
+		return (T) instances.get(clazz);
 	}
 
 }

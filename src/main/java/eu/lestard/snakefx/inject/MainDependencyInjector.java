@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import eu.lestard.snakefx.view.ApplicationStarter;
 import eu.lestard.snakefx.view.FXMLFile;
+import eu.lestard.snakefx.view.controller.KeyboardController;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 
 /**
@@ -30,6 +31,9 @@ public class MainDependencyInjector {
 		final Parent root = fxmlFactory.getFxmlRoot(FXMLFile.MAIN);
 
 		final Scene mainScene = new Scene(root);
+
+		final KeyboardController keyboardController = controllerInjector.callSafe(KeyboardController.class);
+		mainScene.setOnKeyPressed(keyboardController);
 
 		starter = new ApplicationStarter(mainScene, primaryStage);
 	}
