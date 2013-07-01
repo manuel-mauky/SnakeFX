@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.internal.util.reflection.Whitebox;
 
 public class HighscoreJsonDaoIntegrationTest {
 
@@ -24,7 +25,10 @@ public class HighscoreJsonDaoIntegrationTest {
 	public void setup() {
 		filepath = Paths.get("target", filename);
 
-		dao = new HighscoreJsonDao(filepath);
+		dao = new HighscoreJsonDao();
+
+		Whitebox.setInternalState(dao, "filepath", filepath);
+
 	}
 
 	@After

@@ -2,12 +2,15 @@ package eu.lestard.snakefx.highscore;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.codehaus.jackson.map.type.TypeFactory;
+
+import eu.lestard.snakefx.config.StringConfig;
 
 /**
  * DAO implementation for {@link HighScoreEntry} that is using a JSON for
@@ -22,8 +25,8 @@ public class HighscoreJsonDao implements HighscoreDao {
 	private final ObjectMapper mapper;
 	private final TypeFactory typeFactory;
 
-	public HighscoreJsonDao(final Path filepath) {
-		this.filepath = filepath;
+	public HighscoreJsonDao() {
+		filepath = Paths.get(StringConfig.HIGH_SCORE_FILEPATH.get());
 		mapper = new ObjectMapper();
 		mapper.configure(Feature.INDENT_OUTPUT, true);
 		typeFactory = TypeFactory.defaultInstance();

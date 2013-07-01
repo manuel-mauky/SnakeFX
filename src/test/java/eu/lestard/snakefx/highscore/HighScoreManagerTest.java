@@ -10,30 +10,25 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.internal.util.reflection.Whitebox;
 
-@Ignore
+import eu.lestard.snakefx.config.IntegerConfig;
+
 public class HighScoreManagerTest {
-	private HighScoreManager scoreManager;
-
-	private ObservableList<HighScoreEntry> highScoreEntries;
-
-	private final static int MAX_SCORE_COUNT = 3;
+	private HighscoreManager scoreManager;
 
 	private HighscoreDao daoMock;
 
 	@Before
 	public void setup() {
-		highScoreEntries = FXCollections.observableArrayList();
-
 		daoMock = mock(HighscoreDao.class);
 
-		scoreManager = new HighScoreManager(daoMock);
+		scoreManager = new HighscoreManager(daoMock);
+
+		// Change the config value to 3 for easier testing.
+		Whitebox.setInternalState(IntegerConfig.MAX_SCORE_COUNT, "value", 3);
 	}
 
 	@Test
@@ -45,10 +40,10 @@ public class HighScoreManagerTest {
 
 		when(daoMock.load()).thenReturn(existingEntries);
 
-		scoreManager = new HighScoreManager(daoMock);
+		scoreManager = new HighscoreManager(daoMock);
 
-		assertThat(highScoreEntries).hasSize(1);
-		assertThat(highScoreEntries).contains(highScoreEntry);
+		assertThat(scoreManager.highScoreEntries()).hasSize(1);
+		assertThat(scoreManager.highScoreEntries()).contains(highScoreEntry);
 	}
 
 	@Test
@@ -57,22 +52,21 @@ public class HighScoreManagerTest {
 		scoreManager.addScore("yoda", 213);
 		scoreManager.addScore("luke", 143);
 
-		assertThat(highScoreEntries).hasSize(3);
+		assertThat(scoreManager.highScoreEntries()).hasSize(3);
 
-		assertThat(extractProperty("points", Integer.class).from(highScoreEntries))
+		assertThat(extractProperty("points", Integer.class).from(scoreManager.highScoreEntries()))
 				.containsSequence(213, 143, 100);
-		assertThat(extractProperty("playername", String.class).from(highScoreEntries)).containsSequence("yoda",
-				"luke", "yoda");
+		assertThat(extractProperty("playername", String.class).from(scoreManager.highScoreEntries()))
+				.containsSequence("yoda", "luke", "yoda");
 
 		scoreManager.addScore("jabba", 215);
 
-		assertThat(highScoreEntries).hasSize(3);
-		assertThat(extractProperty("points", Integer.class).from(highScoreEntries))
+		assertThat(scoreManager.highScoreEntries()).hasSize(3);
+		assertThat(extractProperty("points", Integer.class).from(scoreManager.highScoreEntries()))
 				.containsSequence(215, 213, 143).doesNotContain(100);
-		assertThat(extractProperty("playername", String.class).from(highScoreEntries)).containsSequence("jabba",
-				"yoda", "luke");
+		assertThat(extractProperty("playername", String.class).from(scoreManager.highScoreEntries()))
+				.containsSequence("jabba", "yoda", "luke");
 
-		verify(daoMock, times(4)).persist(highScoreEntries);
-
+		verify(daoMock, times(4)).persist(scoreManager.highScoreEntries());
 	}
 }

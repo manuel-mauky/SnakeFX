@@ -30,7 +30,7 @@ public enum StringConfig {
 	/**
 	 * The filepath where the highscore should be saved.
 	 */
-	HIGH_SCORE_FILEPATH("highscores"),
+	HIGH_SCORE_FILEPATH("highscores.json"),
 
 	;
 

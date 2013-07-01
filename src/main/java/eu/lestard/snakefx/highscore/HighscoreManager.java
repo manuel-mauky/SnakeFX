@@ -10,15 +10,25 @@ import javafx.collections.FXCollections;
 
 import com.sun.javafx.collections.ObservableListWrapper;
 
-public class HighScoreManager {
+import eu.lestard.snakefx.config.IntegerConfig;
+
+/**
+ * The purpose of the HighscoreManager is to add new highscore entries and to
+ * verify that there are only as many entries in the highscore list as defined
+ * in {@link IntegerConfig#MAX_SCORE_COUNT}.
+ * 
+ * @author manuel.mauky
+ * 
+ */
+public class HighscoreManager {
 
 	private final ListProperty<HighScoreEntry> highScoreEntries = new SimpleListProperty<>(
 			new ObservableListWrapper<HighScoreEntry>(new ArrayList<HighScoreEntry>()));
 
 	private final HighscoreDao dao;
 
-	public HighScoreManager(final HighscoreDao highScorePersistence) {
-		dao = highScorePersistence;
+	public HighscoreManager(final HighscoreDao highScoreDao) {
+		dao = highScoreDao;
 
 		highScoreEntries.setAll(dao.load());
 	}
