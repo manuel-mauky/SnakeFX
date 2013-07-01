@@ -59,7 +59,7 @@ public class SnakeTest {
 
 	@Test
 	public void testChangeDirection() {
-		snake.changeDirection(Direction.LEFT);
+		viewModel.snakeDirection.set(Direction.LEFT);
 		final Direction direction = nextDirectionFromSnake();
 
 		assertThat(direction).isEqualTo(Direction.LEFT);
@@ -98,14 +98,14 @@ public class SnakeTest {
 		// Snake is initialized with currentDirection=UP and nextDirection=UP
 		snake.init();
 
-		snake.changeDirection(Direction.DOWN);
+		viewModel.snakeDirection.set(Direction.DOWN);
 
 		// currentDirection and nextDirection is still UP because the
 		// orientation is the same
 		assertThat(nextDirectionFromSnake()).isEqualTo(Direction.UP);
 		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
 
-		snake.changeDirection(Direction.LEFT);
+		viewModel.snakeDirection.set(Direction.LEFT);
 		// the nextDirection is now changed...
 		assertThat(nextDirectionFromSnake()).isEqualsToByComparingFields(Direction.LEFT);
 		// ... the currentDirection is still the old one. It is only changed
@@ -113,7 +113,7 @@ public class SnakeTest {
 		// snake moves.
 		assertThat(currentDirectionFromSnake()).isEqualTo(Direction.UP);
 
-		snake.changeDirection(Direction.DOWN);
+		viewModel.snakeDirection.set(Direction.DOWN);
 		// nextDirection is not changed as the currentDirection is still UP and
 		// has the same orientation as DOWN
 		assertThat(nextDirectionFromSnake()).isEqualTo(Direction.LEFT);
@@ -175,7 +175,7 @@ public class SnakeTest {
 		assertThat(field1.getState()).isEqualTo(State.TAIL);
 
 		// One Point has to be added.
-		assertThat(viewModel.pointsProperty().get()).isEqualTo(1);
+		assertThat(viewModel.points.get()).isEqualTo(1);
 
 		// Now the snake is moving another field forward. This time the new
 		// field (field3)
@@ -208,7 +208,7 @@ public class SnakeTest {
 
 		snake.move();
 
-		assertThat(viewModel.collisionProperty().get()).isTrue();
+		assertThat(viewModel.collision.get()).isTrue();
 	}
 
 	/**

@@ -19,7 +19,7 @@ public class GameLoopTest {
 	@Before
 	public void setup() {
 		viewModel = new ViewModel();
-		viewModel.speedProperty().set(SpeedLevel.SLOW);
+		viewModel.speed.set(SpeedLevel.SLOW);
 		gameLoop = new GameLoop(viewModel);
 	}
 
@@ -28,7 +28,7 @@ public class GameLoopTest {
 	public void testStoppedTimelineStaysStoppedAfterSpeedChange() {
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.STOPPED);
 
-		viewModel.speedProperty().set(SpeedLevel.FAST);
+		viewModel.speed.set(SpeedLevel.FAST);
 
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.STOPPED);
 	}
@@ -38,7 +38,7 @@ public class GameLoopTest {
 		getTimeline().play();
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.RUNNING);
 
-		viewModel.speedProperty().set(SpeedLevel.FAST);
+		viewModel.speed.set(SpeedLevel.FAST);
 
 
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.RUNNING);
@@ -46,10 +46,10 @@ public class GameLoopTest {
 
 	@Test
 	public void testTimelineIsPlayingAfterChangeInViewModel() {
-		assertThat(viewModel.gameloopStatusProperty().get()).isEqualTo(Status.STOPPED);
+		assertThat(viewModel.gameloopStatus.get()).isEqualTo(Status.STOPPED);
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.STOPPED);
 
-		viewModel.gameloopStatusProperty().set(Status.RUNNING);
+		viewModel.gameloopStatus.set(Status.RUNNING);
 
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.RUNNING);
 	}
@@ -57,13 +57,13 @@ public class GameLoopTest {
 
 	@Test
 	public void testPlayingTimelineIsStoppedAfterChangeInViewModel() {
-		assertThat(viewModel.gameloopStatusProperty().get()).isEqualTo(Status.STOPPED);
+		assertThat(viewModel.gameloopStatus.get()).isEqualTo(Status.STOPPED);
 
 		getTimeline().play();
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.RUNNING);
-		assertThat(viewModel.gameloopStatusProperty().get()).isEqualTo(Status.RUNNING);
+		assertThat(viewModel.gameloopStatus.get()).isEqualTo(Status.RUNNING);
 
-		viewModel.gameloopStatusProperty().set(Status.PAUSED);
+		viewModel.gameloopStatus.set(Status.PAUSED);
 
 		assertThat(getTimeline().getStatus()).isEqualTo(Status.PAUSED);
 	}

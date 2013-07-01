@@ -21,7 +21,7 @@ public class GridTest {
 	@Before
 	public void setUp() {
 		viewModel = new ViewModel();
-		viewModel.gridSizeProperty().set(ROW_AND_COLUMN_COUNT);
+		viewModel.gridSize.set(ROW_AND_COLUMN_COUNT);
 		grid = new Grid(viewModel);
 		Whitebox.setInternalState(grid, "gridSizeInPixel", GRID_SIZE_IN_PIXEL);
 

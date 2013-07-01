@@ -35,9 +35,9 @@ public class GameLoop {
 
 	public GameLoop(final ViewModel viewModel) {
 		this.viewModel = viewModel;
-		viewModel.collisionProperty().addListener(new CollisionListener());
-		viewModel.speedProperty().addListener(new SpeedChangeListener());
-		viewModel.gameloopStatusProperty().addListener(new StatusChangedListener());
+		viewModel.collision.addListener(new CollisionListener());
+		viewModel.speed.addListener(new SpeedChangeListener());
+		viewModel.gameloopStatus.addListener(new StatusChangedListener());
 
 		init();
 	}
@@ -66,7 +66,7 @@ public class GameLoop {
 			@Override
 			public void changed(final ObservableValue<? extends Status> arg0, final Status arg1,
 					final Status newValue) {
-				viewModel.gameloopStatusProperty().set(newValue);
+				viewModel.gameloopStatus.set(newValue);
 			}
 		});
 	}
@@ -77,7 +77,7 @@ public class GameLoop {
 	 */
 	private KeyFrame buildKeyFrame() {
 
-		final int fps = viewModel.speedProperty().get().getFps();
+		final int fps = viewModel.speed.get().getFps();
 		final Duration duration = Duration.millis(ONE_SECOND / fps);
 
 		final KeyFrame frame = new KeyFrame(duration, new EventHandler<ActionEvent>() {

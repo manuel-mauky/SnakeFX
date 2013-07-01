@@ -4,32 +4,38 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import eu.lestard.snakefx.core.Direction;
-import eu.lestard.snakefx.core.Snake;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 
+/**
+ * This class handles the input of the user.
+ * 
+ * @author manuel.mauky
+ */
 public class Keyboard implements EventHandler<KeyEvent> {
 
-	private final Snake snake;
+	private final ViewModel viewModel;
 
-	public Keyboard(final Snake snake) {
-		this.snake = snake;
+	public Keyboard(final ViewModel viewModel) {
+		this.viewModel = viewModel;
 	}
 
+	@SuppressWarnings("incomplete-switch")
 	@Override
 	public void handle(final KeyEvent event) {
-		KeyCode code = event.getCode();
+		final KeyCode code = event.getCode();
 
 		switch (code) {
 		case UP:
-			snake.changeDirection(Direction.UP);
+			viewModel.snakeDirection.set(Direction.UP);
 			break;
 		case DOWN:
-			snake.changeDirection(Direction.DOWN);
+			viewModel.snakeDirection.set(Direction.DOWN);
 			break;
 		case LEFT:
-			snake.changeDirection(Direction.LEFT);
+			viewModel.snakeDirection.set(Direction.LEFT);
 			break;
 		case RIGHT:
-			snake.changeDirection(Direction.RIGHT);
+			viewModel.snakeDirection.set(Direction.RIGHT);
 			break;
 		}
 	}

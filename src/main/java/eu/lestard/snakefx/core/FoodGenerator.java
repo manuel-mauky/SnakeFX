@@ -22,7 +22,7 @@ public class FoodGenerator {
 	public FoodGenerator(final ViewModel viewModel, final Grid grid) {
 		this.grid = grid;
 
-		viewModel.pointsProperty().addListener(new ChangeListener<Number>() {
+		viewModel.points.addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(final ObservableValue<? extends Number> arg0, final Number oldValue,
 					final Number newValue) {
@@ -37,7 +37,7 @@ public class FoodGenerator {
 	 * Generates new food.
 	 */
 	public void generateFood() {
-		Field field = grid.getRandomEmptyField();
+		final Field field = grid.getRandomEmptyField();
 
 		field.changeState(State.FOOD);
 	}

@@ -6,6 +6,9 @@ import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_Y;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
 import eu.lestard.snakefx.util.Function;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 
@@ -54,6 +57,14 @@ public class Snake {
 				move();
 			}
 		});
+
+		viewModel.snakeDirection.addListener(new ChangeListener<Direction>() {
+			@Override
+			public void changed(final ObservableValue<? extends Direction> arg0, final Direction oldDirection,
+					final Direction newDirection) {
+				Snake.this.changeDirection(newDirection);
+			}
+		});
 	}
 
 	/**
@@ -62,9 +73,9 @@ public class Snake {
 	public void init() {
 		setHead(grid.getXY(x, y));
 
-		viewModel.collisionProperty().set(false);
+		viewModel.collision.set(false);
 
-		viewModel.pointsProperty().set(0);
+		viewModel.points.set(0);
 
 		currentDirection = Direction.UP;
 		nextDirection = Direction.UP;
@@ -82,7 +93,7 @@ public class Snake {
 	 * 
 	 * @param newDirection
 	 */
-	public void changeDirection(final Direction newDirection) {
+	private void changeDirection(final Direction newDirection) {
 		if (!newDirection.hasSameOrientation(currentDirection)) {
 			nextDirection = newDirection;
 		}
@@ -97,7 +108,7 @@ public class Snake {
 		final Field newHead = grid.getFromDirection(head, currentDirection);
 
 		if (newHead.getState().equals(State.TAIL)) {
-			viewModel.collisionProperty().set(true);
+			viewModel.collision.set(true);
 			return;
 		}
 
@@ -149,8 +160,8 @@ public class Snake {
 	}
 
 	private void addPoints() {
-		final int current = viewModel.pointsProperty().get();
-		viewModel.pointsProperty().set(current + 1);
+		final int current = viewModel.points.get();
+		viewModel.points.set(current + 1);
 	}
 
 

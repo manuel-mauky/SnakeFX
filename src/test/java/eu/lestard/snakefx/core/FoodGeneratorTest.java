@@ -26,7 +26,7 @@ public class FoodGeneratorTest {
 
 	@Test
 	public void testGenerateFood() {
-		Field field = new Field(0, 0, 10);
+		final Field field = new Field(0, 0, 10);
 
 		when(gridMock.getRandomEmptyField()).thenReturn(field);
 
@@ -37,32 +37,32 @@ public class FoodGeneratorTest {
 
 	@Test
 	public void testGenerationWhenPointsAreAddedToProperty() {
-		Field field = new Field(0, 0, 10);
+		final Field field = new Field(0, 0, 10);
 		field.changeState(State.EMPTY);
 		when(gridMock.getRandomEmptyField()).thenReturn(field);
 
-		viewModel.pointsProperty().set(1);
+		viewModel.points.set(1);
 
 		assertThat(field.getState()).isEqualTo(State.FOOD);
 	}
 
 	@Test
 	public void testNoFoodIsGeneratedWhenPointsPropertyIsResetToZero() {
-		Field field = new Field(0, 0, 10);
+		final Field field = new Field(0, 0, 10);
 		field.changeState(State.EMPTY);
 
-		Field secondField = new Field(0, 1, 10);
+		final Field secondField = new Field(0, 1, 10);
 		secondField.changeState(State.EMPTY);
 		when(gridMock.getRandomEmptyField()).thenReturn(field).thenReturn(secondField);
 
 
 		// first set the points to 10, food is generated for first field.
-		viewModel.pointsProperty().set(10);
+		viewModel.points.set(10);
 
 
 		// now set the points back to 0. now no food must be generated for
 		// second field.
-		viewModel.pointsProperty().set(0);
+		viewModel.points.set(0);
 
 		assertThat(secondField.getState()).isEqualTo(State.EMPTY);
 	}

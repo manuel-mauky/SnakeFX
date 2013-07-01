@@ -45,7 +45,7 @@ public class Grid {
 	 * 
 	 */
 	public void init() {
-		final int gridSize = viewModel.gridSizeProperty().get();
+		final int gridSize = viewModel.gridSize.get();
 		for (int y = 0; y < gridSize; y++) {
 			for (int x = 0; x < gridSize; x++) {
 				final Field f = new Field(x, y, (gridSizeInPixel / gridSize));
@@ -106,7 +106,7 @@ public class Grid {
 			break;
 		}
 
-		final int gridSize = viewModel.gridSizeProperty().get();
+		final int gridSize = viewModel.gridSize.get();
 
 		x += gridSize;
 		y += gridSize;

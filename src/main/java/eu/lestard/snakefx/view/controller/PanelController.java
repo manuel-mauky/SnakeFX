@@ -37,29 +37,29 @@ public class PanelController {
 	public void initialize() {
 		speed.itemsProperty().get().addAll(SpeedLevel.values());
 
-		points.textProperty().bind(viewModel.pointsProperty().asString());
+		points.textProperty().bind(viewModel.points.asString());
 		speed.getSelectionModel().selectFirst();
 
-		speed.valueProperty().bindBidirectional(viewModel.speedProperty());
+		speed.valueProperty().bindBidirectional(viewModel.speed);
 
-		playPause.disableProperty().bind(viewModel.collisionProperty());
+		playPause.disableProperty().bind(viewModel.collision);
 	}
 
 	@FXML
 	public void togglePlayPause() {
-		final Status status = viewModel.gameloopStatusProperty().get();
+		final Status status = viewModel.gameloopStatus.get();
 		switch (status) {
 		case PAUSED:
 			playPause.textProperty().set("Pause");
-			viewModel.gameloopStatusProperty().set(Status.RUNNING);
+			viewModel.gameloopStatus.set(Status.RUNNING);
 			break;
 		case RUNNING:
 			playPause.textProperty().set("Resume");
-			viewModel.gameloopStatusProperty().set(Status.PAUSED);
+			viewModel.gameloopStatus.set(Status.PAUSED);
 			break;
 		case STOPPED:
 			playPause.textProperty().set("Pause");
-			viewModel.gameloopStatusProperty().set(Status.RUNNING);
+			viewModel.gameloopStatus.set(Status.RUNNING);
 			break;
 		}
 	}

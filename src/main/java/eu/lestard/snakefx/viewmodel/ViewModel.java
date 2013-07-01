@@ -8,60 +8,33 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import eu.lestard.snakefx.core.Direction;
 import eu.lestard.snakefx.core.SpeedLevel;
 
+/**
+ * This class is the central viewmodel that contains the current state of the
+ * applications main properties.
+ * 
+ * @author manuel.mauky
+ * 
+ */
 public class ViewModel {
 
-	private final IntegerProperty points = new SimpleIntegerProperty(0);
+	public final IntegerProperty points = new SimpleIntegerProperty(0);
 
-	private final ObjectProperty<SpeedLevel> speed = new SimpleObjectProperty<>(SpeedLevel.MEDIUM);
+	public final ObjectProperty<SpeedLevel> speed = new SimpleObjectProperty<>(SpeedLevel.MEDIUM);
 
-	private final BooleanProperty collision = new SimpleBooleanProperty(false);
+	public final BooleanProperty collision = new SimpleBooleanProperty(false);
 
-	private final ObjectProperty<Status> gameloopStatus = new SimpleObjectProperty<>(Status.STOPPED);
+	public final ObjectProperty<Status> gameloopStatus = new SimpleObjectProperty<>(Status.STOPPED);
 
-	private final IntegerProperty gridSize = new SimpleIntegerProperty(ROW_AND_COLUMN_COUNT.get());
+	public final IntegerProperty gridSize = new SimpleIntegerProperty(ROW_AND_COLUMN_COUNT.get());
 
-	private final BooleanProperty highscoreWindowOpen = new SimpleBooleanProperty(false);
+	public final BooleanProperty highscoreWindowOpen = new SimpleBooleanProperty(false);
 
-	private final BooleanProperty newHighscoreWindowOpen = new SimpleBooleanProperty(false);
+	public final BooleanProperty newHighscoreWindowOpen = new SimpleBooleanProperty(false);
 
-	private final BooleanProperty aboutWindowOpen = new SimpleBooleanProperty(false);
+	public final BooleanProperty aboutWindowOpen = new SimpleBooleanProperty(false);
 
-
-
-
-	public IntegerProperty pointsProperty() {
-		return points;
-	}
-
-	public ObjectProperty<SpeedLevel> speedProperty() {
-		return speed;
-	}
-
-	public BooleanProperty collisionProperty() {
-		return collision;
-	}
-
-	public ObjectProperty<Status> gameloopStatusProperty() {
-		return gameloopStatus;
-	}
-
-	public IntegerProperty gridSizeProperty() {
-		return gridSize;
-	}
-
-
-	public BooleanProperty highscoreWindowOpenProperty() {
-		return highscoreWindowOpen;
-	}
-
-	public BooleanProperty newHighscoreWindowOpenProperty() {
-		return newHighscoreWindowOpen;
-	}
-
-	public BooleanProperty aboutWindowOpenProperty() {
-		return aboutWindowOpen;
-	}
-
+	public final ObjectProperty<Direction> snakeDirection = new SimpleObjectProperty<>(Direction.UP);
 }
