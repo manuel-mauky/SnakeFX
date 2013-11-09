@@ -1,6 +1,8 @@
 package eu.lestard.snakefx.view.controller;
 
 import javafx.animation.Animation.Status;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -17,6 +19,10 @@ import eu.lestard.snakefx.viewmodel.ViewModel;
  * 
  */
 public class PanelController {
+
+	private static final String LABEL_START = "Start";
+	private static final String LABEL_RESUME = "Resume";
+	private static final String LABEL_PAUSE = "Pause";
 
 	@FXML
 	private Label points;
@@ -43,6 +49,16 @@ public class PanelController {
 		speed.valueProperty().bindBidirectional(viewModel.speed);
 
 		playPause.disableProperty().bind(viewModel.collision);
+
+		viewModel.gameloopStatus.addListener(new ChangeListener<Status>() {
+			@Override
+			public void changed(final ObservableValue<? extends Status> arg0, final Status oldStatus,
+					final Status newStatus) {
+				if (Status.STOPPED.equals(newStatus)) {
+					playPause.textProperty().set(LABEL_START);
+				}
+			}
+		});
 	}
 
 	@FXML
@@ -50,15 +66,15 @@ public class PanelController {
 		final Status status = viewModel.gameloopStatus.get();
 		switch (status) {
 		case PAUSED:
-			playPause.textProperty().set("Pause");
+			playPause.textProperty().set(LABEL_PAUSE);
 			viewModel.gameloopStatus.set(Status.RUNNING);
 			break;
 		case RUNNING:
-			playPause.textProperty().set("Resume");
+			playPause.textProperty().set(LABEL_RESUME);
 			viewModel.gameloopStatus.set(Status.PAUSED);
 			break;
 		case STOPPED:
-			playPause.textProperty().set("Pause");
+			playPause.textProperty().set(LABEL_PAUSE);
 			viewModel.gameloopStatus.set(Status.RUNNING);
 			break;
 		}

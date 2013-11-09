@@ -1,6 +1,7 @@
 package eu.lestard.snakefx.highscore;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -23,7 +24,7 @@ public class HighscoreJsonDaoIntegrationTest {
 
 	@Before
 	public void setup() {
-		filepath = Paths.get("target", filename);
+		filepath = Paths.get("build/tmp", filename);
 
 		dao = new HighscoreJsonDao();
 

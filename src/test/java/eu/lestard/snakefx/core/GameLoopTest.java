@@ -1,6 +1,7 @@
 package eu.lestard.snakefx.core;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import javafx.animation.Animation.Status;
 import javafx.animation.Timeline;
 

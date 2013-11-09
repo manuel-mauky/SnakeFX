@@ -32,13 +32,13 @@ public class MenuController {
 	@FXML
 	public void showHighscores() {
 		System.out.println("highscore");
-		// viewModel.highscoreWindowOpenProperty().set(true);
+		viewModel.highscoreWindowOpen.set(true);
 	}
 
 	@FXML
 	public void about() {
 		System.out.println("about");
-		// viewModel.aboutWindowOpenProperty().set(true);
+		viewModel.aboutWindowOpen.set(true);
 	}
 
 	@FXML

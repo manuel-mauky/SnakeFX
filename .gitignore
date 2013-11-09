@@ -2,6 +2,13 @@
 /.classpath
 /.settings
 /.project
+/build
+/out
+.gradle
 
 # backup files from SceneBuilder
 *.bak
+
+#idea
+.idea
+*.iml

@@ -16,7 +16,8 @@ public class NewGameFunction implements Function {
 	private final Snake snake;
 	private final FoodGenerator foodGenerator;
 
-	public NewGameFunction(final ViewModel viewModel, final Grid grid, final Snake snake, final FoodGenerator foodGenerator) {
+	public NewGameFunction(final ViewModel viewModel, final Grid grid, final Snake snake,
+			final FoodGenerator foodGenerator) {
 		this.viewModel = viewModel;
 		this.grid = grid;
 		this.snake = snake;
@@ -32,7 +33,6 @@ public class NewGameFunction implements Function {
 		snake.newGame();
 
 		foodGenerator.generateFood();
-
 
 		viewModel.gameloopStatus.set(Status.RUNNING);
 		viewModel.gameloopStatus.set(Status.PAUSED);

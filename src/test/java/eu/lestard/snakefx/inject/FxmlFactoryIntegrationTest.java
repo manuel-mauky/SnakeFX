@@ -1,6 +1,7 @@
 package eu.lestard.snakefx.inject;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import javafx.fxml.FXMLLoader;
@@ -8,8 +9,10 @@ import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class FxmlFactoryIntegrationTest {
 
 	private static final String FXML_FILE = "/fxml/example.fxml";
