@@ -1,4 +1,4 @@
-package eu.lestard.snakefx.view.controller;
+package eu.lestard.snakefx.view.presenter;
 
 import javafx.fxml.FXML;
 
@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class AboutController {
+public class AboutPresenter {
 
 
 	private static final String URL_LESTARD_EU = "http://www.lestard.eu";

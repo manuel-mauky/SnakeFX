@@ -1,4 +1,4 @@
-package eu.lestard.snakefx.view.controller;
+package eu.lestard.snakefx.view.presenter;
 
 import static eu.lestard.snakefx.config.IntegerConfig.MAX_SCORE_COUNT;
 import javafx.beans.property.IntegerProperty;
@@ -10,7 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import eu.lestard.snakefx.highscore.HighScoreEntry;
 
-public class HighscoreController {
+public class HighscorePresenter {
 
 	@FXML
 	private TableView<HighScoreEntry> tableView;
@@ -20,7 +20,7 @@ public class HighscoreController {
 	private final IntegerProperty pointsProperty = new SimpleIntegerProperty();
 
 
-	public HighscoreController(final Stage newScoreEntryStage) {
+	public HighscorePresenter(final Stage newScoreEntryStage) {
 		this.newScoreEntryStage = newScoreEntryStage;
 	}
 

@@ -1,4 +1,4 @@
-package eu.lestard.snakefx.view.controller;
+package eu.lestard.snakefx.view.presenter;
 
 import javafx.animation.Animation.Status;
 import javafx.beans.value.ChangeListener;
@@ -12,13 +12,13 @@ import eu.lestard.snakefx.view.FXMLFile;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 
 /**
- * UI-Controller class for the fxml file {@link FXMLFile#PANEL}. This controller
+ * UI-Controller class for the fxml file {@link FXMLFile#PANEL}. This presenter
  * handles the actions of the side panel.
  * 
  * @author manuel.mauky
  * 
  */
-public class PanelController {
+public class PanelPresenter {
 
 	private static final String LABEL_START = "Start";
 	private static final String LABEL_RESUME = "Resume";
@@ -35,7 +35,7 @@ public class PanelController {
 
 	private final ViewModel viewModel;
 
-	public PanelController(final ViewModel viewModel) {
+	public PanelPresenter(final ViewModel viewModel) {
 		this.viewModel = viewModel;
 	}
 

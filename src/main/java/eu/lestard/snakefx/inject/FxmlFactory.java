@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import eu.lestard.snakefx.view.FXMLFile;
+import javafx.util.Callback;
 
 /**
  * This factory can be used to load FXML documents and get the root element of
@@ -16,10 +17,9 @@ import eu.lestard.snakefx.view.FXMLFile;
 public class FxmlFactory {
 
 
-	private final ControllerInjector controllerInjector;
+	private final Callback<Class<?>, Object> controllerInjector;
 
-
-	public FxmlFactory(final ControllerInjector injector) {
+	public FxmlFactory(final Callback<Class<?>, Object> injector) {
 		controllerInjector = injector;
 	}
 

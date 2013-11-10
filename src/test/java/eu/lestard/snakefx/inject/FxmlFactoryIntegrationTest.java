@@ -30,19 +30,19 @@ public class FxmlFactoryIntegrationTest {
 
 	// @Test
 	// public void testGetFxmlRoot() {
-	// Object controller = new Object();
+	// Object presenter = new Object();
 	//
-	// Parent root = factory.getFxmlRoot(FXML_FILE, controller, fxmlLoader);
+	// Parent root = factory.getFxmlRoot(FXML_FILE, presenter, fxmlLoader);
 	// assertThat(root).isNotNull();
 	//
 	// // VBox is the root element of the example.fxml file
 	// assertThat(root).isInstanceOf(VBox.class);
 	//
-	// verify(fxmlLoader).setController(controller);
+	// verify(fxmlLoader).setController(presenter);
 	// }
 	//
 	// /**
-	// * The controller must not be null
+	// * The presenter must not be null
 	// */
 	// @Test(expected = IllegalArgumentException.class)
 	// public void testGetFxmlRootFailControllerIsNull() {
@@ -51,16 +51,16 @@ public class FxmlFactoryIntegrationTest {
 	//
 	// @Test(expected = IllegalArgumentException.class)
 	// public void testGetFxmlRootFailWrongFilename() {
-	// Object controller = new Object();
+	// Object presenter = new Object();
 	//
-	// Parent root = factory.getFxmlRoot("wrong/filename.fxml", controller,
+	// Parent root = factory.getFxmlRoot("wrong/filename.fxml", presenter,
 	// fxmlLoader);
 	// assertThat(root).isNotNull();
 	//
 	// // VBox is the root element of the example.fxml file
 	// assertThat(root).isInstanceOf(VBox.class);
 	//
-	// verify(fxmlLoader).setController(controller);
+	// verify(fxmlLoader).setController(presenter);
 	// }
 	//
 	// /**
@@ -69,9 +69,9 @@ public class FxmlFactoryIntegrationTest {
 	// */
 	// @Test(expected = IllegalStateException.class)
 	// public void testGetFxmlRootFailMalformedFile() {
-	// Object controller = new Object();
+	// Object presenter = new Object();
 	//
-	// factory.getFxmlRoot(INVALID_FXML_FILE, controller);
+	// factory.getFxmlRoot(INVALID_FXML_FILE, presenter);
 	// }
 
 }

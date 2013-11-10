@@ -1,4 +1,4 @@
-package eu.lestard.snakefx.view.controller;
+package eu.lestard.snakefx.util;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -11,11 +11,11 @@ import eu.lestard.snakefx.viewmodel.ViewModel;
  * 
  * @author manuel.mauky
  */
-public class KeyboardController implements EventHandler<KeyEvent> {
+public class KeyboardHandler implements EventHandler<KeyEvent> {
 
 	private final ViewModel viewModel;
 
-	public KeyboardController(final ViewModel viewModel) {
+	public KeyboardHandler(final ViewModel viewModel) {
 		this.viewModel = viewModel;
 	}
 
