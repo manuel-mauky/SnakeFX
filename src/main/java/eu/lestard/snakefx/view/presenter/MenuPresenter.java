@@ -25,25 +25,21 @@ public class MenuPresenter {
 
 	@FXML
 	public void newGame() {
-		System.out.println("new game");
 		newGameFunction.call();
 	}
 
 	@FXML
 	public void showHighscores() {
-		System.out.println("highscore");
 		viewModel.highscoreWindowOpen.set(true);
 	}
 
 	@FXML
 	public void about() {
-		System.out.println("about");
 		viewModel.aboutWindowOpen.set(true);
 	}
 
 	@FXML
 	public void exit() {
-		System.out.println("Exit");
 		Platform.exit();
 	}
 

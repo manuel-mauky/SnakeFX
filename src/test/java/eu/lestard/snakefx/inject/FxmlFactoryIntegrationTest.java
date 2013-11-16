@@ -4,13 +4,12 @@ package eu.lestard.snakefx.inject;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+
+import eu.lestard.snakefx.util.FxmlFactory;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.layout.VBox;
 
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Test;
 
 @Ignore
 public class FxmlFactoryIntegrationTest {

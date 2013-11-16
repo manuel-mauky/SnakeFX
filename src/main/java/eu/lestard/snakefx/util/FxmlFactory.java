@@ -1,4 +1,4 @@
-package eu.lestard.snakefx.inject;
+package eu.lestard.snakefx.util;
 
 import java.io.IOException;
 

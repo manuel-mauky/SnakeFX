@@ -38,7 +38,7 @@ public class HighscoreManager {
 	}
 
 	public void addScore(final String name, final int points) {
-		final HighScoreEntry entry = new HighScoreEntry(1, name, points);
+        final HighScoreEntry entry = new HighScoreEntry(1, name, points);
 
 		highScoreEntries.add(entry);
 
@@ -46,7 +46,7 @@ public class HighscoreManager {
 	}
 
 	private void updateList() {
-		FXCollections.sort(highScoreEntries);
+        FXCollections.sort(highScoreEntries);
 
 		for (int i = 0; i < highScoreEntries.size(); i++) {
 			if (i < MAX_SCORE_COUNT.get()) {

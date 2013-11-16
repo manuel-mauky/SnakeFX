@@ -5,9 +5,7 @@ import eu.lestard.snakefx.highscore.HighscoreDao;
 import eu.lestard.snakefx.highscore.HighscoreJsonDao;
 import eu.lestard.snakefx.highscore.HighscoreManager;
 import eu.lestard.snakefx.util.KeyboardHandler;
-import eu.lestard.snakefx.view.presenter.MainPresenter;
-import eu.lestard.snakefx.view.presenter.MenuPresenter;
-import eu.lestard.snakefx.view.presenter.PanelPresenter;
+import eu.lestard.snakefx.view.presenter.*;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 import javafx.util.Callback;
 
@@ -21,9 +19,9 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
     public DependencyInjector() {
         injectCore();
 
-        injectPresenter();
-
         injectOthers();
+
+        injectPresenter();
     }
 
     private void injectCore() {
@@ -50,10 +48,17 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
         final MenuPresenter menuPresenter = new MenuPresenter(viewModel, get(NewGameFunction.class));
         final PanelPresenter panelPresenter = new PanelPresenter(viewModel);
 
+        final AboutPresenter aboutPresenter = new AboutPresenter();
+        final HighscorePresenter highscorePresenter = new HighscorePresenter(viewModel, get(HighscoreManager.class));
+
+        final NewScoreEntryPresenter newScoreEntryPresenter = new NewScoreEntryPresenter(get(HighscoreManager.class), viewModel);
 
         put(MainPresenter.class, mainPresenter);
         put(MenuPresenter.class, menuPresenter);
         put(PanelPresenter.class, panelPresenter);
+        put(AboutPresenter.class, aboutPresenter);
+        put(HighscorePresenter.class, highscorePresenter);
+        put(NewScoreEntryPresenter.class, newScoreEntryPresenter);
     }
 
     private void injectOthers() {
@@ -65,9 +70,6 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
         put(HighscoreDao.class, highscoreDao);
         put(HighscoreManager.class, highscoreManager);
     }
-
-
-
 
 
     private <T> void put(Class<T> clazz, T instance) {

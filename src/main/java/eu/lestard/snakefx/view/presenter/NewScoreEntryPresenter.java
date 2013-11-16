@@ -1,7 +1,10 @@
 package eu.lestard.snakefx.view.presenter;
 
+import eu.lestard.snakefx.viewmodel.ViewModel;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -19,25 +22,21 @@ public class NewScoreEntryPresenter {
 	private Label points;
 
 	private final HighscoreManager highScoreManager;
+    private ViewModel viewModel;
 
-	private final IntegerProperty pointsProperty = new SimpleIntegerProperty();
-
-	public NewScoreEntryPresenter(final HighscoreManager highScoreManager) {
+	public NewScoreEntryPresenter(final HighscoreManager highScoreManager, ViewModel viewModel) {
 		this.highScoreManager = highScoreManager;
-	}
-
-	public IntegerProperty pointsProperty() {
-		return pointsProperty;
+        this.viewModel = viewModel;
 	}
 
 	@FXML
 	public void initialize() {
-		points.textProperty().bind(pointsProperty.asString());
+		points.textProperty().bind(viewModel.points.asString());
 	}
 
 	@FXML
 	public void addEntry() {
-		String name = playername.getText();
+        String name = playername.getText();
 		if (!isNameValid(name)) {
 			errorMessage.setVisible(true);
 			return;
@@ -45,8 +44,9 @@ public class NewScoreEntryPresenter {
 			errorMessage.setVisible(false);
 		}
 
-		highScoreManager.addScore(name, pointsProperty.get());
-		playername.getScene().getWindow().hide();
+		highScoreManager.addScore(name, viewModel.points.get());
+        viewModel.newHighscoreWindowOpen.set(false);
+        viewModel.highscoreWindowOpen.set(true);
 	}
 
 	private boolean isNameValid(final String name) {
