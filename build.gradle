@@ -1,6 +1,12 @@
 apply plugin: "java"
+apply plugin: "application"
 
 sourceCompatibility= 1.8
+
+mainClassName = "eu.lestard.snakefx.Launcher"
+manifest.mainAttributes("Main-Class" : mainClassName)
+
+
 
 // Creates the initial directory structure
 task "create-dirs" << {
