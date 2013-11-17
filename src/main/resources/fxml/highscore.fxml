@@ -11,7 +11,8 @@
 <VBox
 	xmlns:fx="http://javafx.com/fxml"
 	alignment="center"
-	spacing="10">
+	spacing="10"
+        fx:controller="eu.lestard.snakefx.view.presenter.HighscorePresenter">
 	<stylesheets>
 		<URL value="@highscore.css"/>
 	</stylesheets>

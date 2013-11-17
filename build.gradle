@@ -1,0 +1,34 @@
+apply plugin: "java"
+
+sourceCompatibility= 1.8
+
+// Creates the initial directory structure
+task "create-dirs" << {
+    sourceSets*.java.srcDirs*.each { it.mkdirs() }
+    sourceSets*.resources.srcDirs*.each { it.mkdir()}
+}
+
+repositories {
+	mavenCentral()
+}
+
+
+
+// Bugfix for "failed to read class file" bug when using gradle with Java 8 ea.
+// See: http://forums.gradle.org/gradle/topics/1_7_rc_1_fails_to_read_classfile_for_test_when_using_java_8_0_ea_b99
+test.scanForTestClasses = false
+
+
+
+dependencies {
+    
+    compile "javax.validation:validation-api:1.0.0.GA"
+    compile "org.codehaus.jackson:jackson-mapper-asl:1.9.12"
+
+    // testing
+    testCompile "junit:junit:4.11"
+    testCompile "org.assertj:assertj-core:1.3.0"
+    testCompile "org.mockito:mockito-all:1.9.5"
+
+
+}

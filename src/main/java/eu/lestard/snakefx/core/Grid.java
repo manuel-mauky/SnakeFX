@@ -1,51 +1,56 @@
 package eu.lestard.snakefx.core;
 
+import com.sun.javafx.collections.ObservableListWrapper;
+import eu.lestard.snakefx.viewmodel.ViewModel;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+
+import static eu.lestard.snakefx.config.Config.*;
 
 /**
  * This class is the grid of the game. It contains a collection of {@link Field}
  * instances.
- *
+ * 
  * @author manuel.mauky
- *
+ * 
  */
 public class Grid {
 
-	private final Integer rowAndColumnCount;
 	private final Integer gridSizeInPixel;
 
-	private final List<Field> fields = new ArrayList<Field>();
+	private final ObservableList<Field> fields = new ObservableListWrapper<>(new ArrayList<>());
+
+	private final ViewModel viewModel;
 
 	/**
-	 * @param rowAndColumnCount
-	 *            the number of rows and columns for this grid.
-	 * @param gridSizeInPixel
-	 *            the size of the grid in pixel
+	 * @param viewModel
+	 *            the viewModel instance.
 	 */
-	public Grid(final int rowAndColumnCount, final int gridSizeInPixel) {
-		this.rowAndColumnCount = rowAndColumnCount;
-		this.gridSizeInPixel = gridSizeInPixel;
+	public Grid(final ViewModel viewModel) {
+		this.viewModel = viewModel;
+		gridSizeInPixel = GRID_SIZE_IN_PIXEL.get();
 	}
 
 	/**
-	 * This method initializes the grid. According to the given parameter
-	 * {@link rowAndColumnCount} the fields ({@link Field}) are created with the
-	 * coordinates and the size that is calculated with the given parameter
-	 * {@link gridSizeInPixel}.
-	 *
+	 * This method initializes the grid. According to the
+	 * {@link ViewModel#gridSize} the fields ({@link Field}) are
+	 * created with the coordinates and the size that is calculated with the
+	 * value of {@link eu.lestard.snakefx.config.Config#GRID_SIZE_IN_PIXEL}.
+	 * 
 	 */
 	public void init() {
+		final int gridSize = viewModel.gridSize.get();
 
-		for (int y = 0; y < rowAndColumnCount; y++) {
-			for (int x = 0; x < rowAndColumnCount; x++) {
-				Field f = new Field(x, y, (gridSizeInPixel / rowAndColumnCount));
-				fields.add(f);
+		for (int y = 0; y < gridSize; y++) {
+			for (int x = 0; x < gridSize; x++) {
+                fields.add(new Field(x, y, (gridSizeInPixel / gridSize)));
 			}
 		}
-
 	}
 
 	/**
@@ -56,7 +61,7 @@ public class Grid {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param x
 	 *            the x coordinate
 	 * @param y
@@ -65,22 +70,20 @@ public class Grid {
 	 *         this coordinates is available.
 	 */
 	public Field getXY(final int x, final int y) {
-		for (Field f : fields) {
-			if (f.getX() == x && f.getY() == y) {
-				return f;
-			}
-		}
-		return null;
+        return fields.stream()
+                .filter(field -> (field.getX() == x && field.getY() == y))
+                .findFirst()
+                .orElse(null);
 	}
 
 	/**
-	* returns the field that is located next to the given field in the given
-	* direction.
-	*
-	* @param field
-	* @param direction
-	* @return the field in the given direction
-	*/
+	 * returns the field that is located next to the given field in the given
+	 * direction.
+	 * 
+	 * @param field
+	 * @param direction
+	 * @return the field in the given direction
+	 */
 	public Field getFromDirection(final Field field, final Direction direction) {
 		int x = field.getX();
 		int y = field.getY();
@@ -100,37 +103,33 @@ public class Grid {
 			break;
 		}
 
-		x += rowAndColumnCount;
-		y += rowAndColumnCount;
-		x = x % rowAndColumnCount;
-		y = y % rowAndColumnCount;
+		final int gridSize = viewModel.gridSize.get();
+
+		x += gridSize;
+		y += gridSize;
+		x = x % gridSize;
+		y = y % gridSize;
 
 		return getXY(x, y);
 	}
 
 	public Field getRandomEmptyField() {
+        // filter the list to only empty fields.
+        List<Field> emptyFields = fields.stream()
+                .filter(field -> field.getState().equals(State.EMPTY))
+                .collect(Collectors.<Field>toList());
 
-		List<Field> temp = new ArrayList<Field>();
-
-		// Get all empty fields
-		for (Field f : fields) {
-			if (f.getState().equals(State.EMPTY)) {
-				temp.add(f);
-			}
-		}
-
-		if (temp.isEmpty()) {
+		if (emptyFields.isEmpty()) {
 			return null;
 		} else {
-			int nextInt = new Random().nextInt(temp.size());
-			return temp.get(nextInt);
+			final int nextInt = new Random().nextInt(emptyFields.size());
+			return emptyFields.get(nextInt);
 		}
 	}
 
 	public void newGame() {
-		for (Field f : fields) {
-			f.changeState(State.EMPTY);
-		}
+        fields.forEach(field -> {
+            field.changeState(State.EMPTY);
+        });
 	}
-
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<VBox
+        xmlns:fx="http://javafx.com/fxml"
+        spacing="5"
+        alignment="CENTER"
+        fx:controller="eu.lestard.snakefx.view.presenter.NewScoreEntryPresenter">
+
+    <stylesheets>
+        <URL value="@newScoreEntry.css"/>
+    </stylesheets>
+
+    <padding>
+        <Insets
+                top="5"
+                right="5"
+                bottom="5"
+                left="5"/>
+    </padding>
+    <HBox
+            alignment="CENTER"
+            id="newEntryPointsLabel">
+        <Label
+                fx:id="points"
+                text="0"/>
+        <Label text=" Points"/>
+    </HBox>
+
+    <Label text="Please Enter your Name"/>
+    <TextField
+            fx:id="playername"
+            promptText="Your Name"/>
+
+    <Label
+            id="errorMessage"
+            fx:id="errorMessage"
+            maxWidth="150"
+            wrapText="true"
+            text="Invalid Name. Must not be empty or contain ',' or ';'"
+            visible="false"/>
+
+    <Button
+            text="OK"
+            onAction="#addEntry"/>
+
+</VBox>

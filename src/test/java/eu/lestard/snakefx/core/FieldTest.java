@@ -1,9 +1,9 @@
 package eu.lestard.snakefx.core;
 
-import static org.fest.assertions.api.Assertions.assertThat;
 import javafx.scene.shape.Rectangle;
-
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author manuel.mauky

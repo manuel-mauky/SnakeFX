@@ -1,72 +1,68 @@
 package eu.lestard.snakefx.highscore;
 
-import static org.fest.assertions.api.Assertions.assertThat;
-import static org.fest.assertions.api.Assertions.extractProperty;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+
+import eu.lestard.snakefx.config.Config;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.internal.util.reflection.Whitebox;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class HighScoreManagerTest {
-	private HighScoreManager scoreManager;
+	private HighscoreManager scoreManager;
 
-	private ObservableList<HighScoreEntry> highScoreEntries;
-
-	private final static int MAX_SCORE_COUNT = 3;
-
-	private HighScorePersistence persistenceMock;
+	private HighscoreDao daoMock;
 
 	@Before
-	public void setup(){
-		highScoreEntries = FXCollections.observableArrayList();
+	public void setup() {
+		daoMock = mock(HighscoreDao.class);
 
-		persistenceMock = mock(HighScorePersistence.class);
+		scoreManager = new HighscoreManager(daoMock);
 
-		scoreManager = new HighScoreManager(highScoreEntries, MAX_SCORE_COUNT, persistenceMock);
+		// Change the config value to 3 for easier testing.
+		Whitebox.setInternalState(Config.MAX_SCORE_COUNT, "value", 3);
 	}
 
 	@Test
-	public void testConstructor(){
+	public void testConstructor() {
 
-		List<HighScoreEntry> existingEntries = new ArrayList<HighScoreEntry>();
-		HighScoreEntry highScoreEntry = new HighScoreEntry(1,"yoda,", 14);
+		final List<HighScoreEntry> existingEntries = new ArrayList<HighScoreEntry>();
+		final HighScoreEntry highScoreEntry = new HighScoreEntry(1, "yoda,", 14);
 		existingEntries.add(highScoreEntry);
 
-		when(persistenceMock.loadHighScores()).thenReturn(existingEntries);
+		when(daoMock.load()).thenReturn(existingEntries);
 
-		scoreManager = new HighScoreManager(highScoreEntries, MAX_SCORE_COUNT, persistenceMock);
+		scoreManager = new HighscoreManager(daoMock);
 
-		assertThat(highScoreEntries).hasSize(1);
-		assertThat(highScoreEntries).contains(highScoreEntry);
+		assertThat(scoreManager.highScoreEntries()).hasSize(1);
+		assertThat(scoreManager.highScoreEntries()).contains(highScoreEntry);
 	}
 
 	@Test
-	public void testScores(){
+	public void testScores() {
 		scoreManager.addScore("yoda", 100);
 		scoreManager.addScore("yoda", 213);
 		scoreManager.addScore("luke", 143);
 
-		assertThat(highScoreEntries).hasSize(3);
+		assertThat(scoreManager.highScoreEntries()).hasSize(3);
 
-		assertThat(extractProperty("points", Integer.class).from(highScoreEntries)).containsSequence(213,143,100);
-		assertThat(extractProperty("playername", String.class).from(highScoreEntries)).containsSequence("yoda","luke", "yoda");
+		assertThat(extractProperty("points", Integer.class).from(scoreManager.highScoreEntries()))
+				.containsSequence(213, 143, 100);
+		assertThat(extractProperty("playername", String.class).from(scoreManager.highScoreEntries()))
+				.containsSequence("yoda", "luke", "yoda");
 
 		scoreManager.addScore("jabba", 215);
 
-		assertThat(highScoreEntries).hasSize(3);
-		assertThat(extractProperty("points", Integer.class).from(highScoreEntries)).containsSequence(215, 213,143).doesNotContain(100);
-		assertThat(extractProperty("playername", String.class).from(highScoreEntries)).containsSequence("jabba","yoda","luke");
+		assertThat(scoreManager.highScoreEntries()).hasSize(3);
+		assertThat(extractProperty("points", Integer.class).from(scoreManager.highScoreEntries()))
+				.containsSequence(215, 213, 143).doesNotContain(100);
+		assertThat(extractProperty("playername", String.class).from(scoreManager.highScoreEntries()))
+				.containsSequence("jabba", "yoda", "luke");
 
-		verify(persistenceMock, times(4)).persistHighScores(highScoreEntries);
-
+		verify(daoMock, times(4)).persist(scoreManager.highScoreEntries());
 	}
 }
