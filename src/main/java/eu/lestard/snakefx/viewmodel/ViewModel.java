@@ -1,15 +1,11 @@
 package eu.lestard.snakefx.viewmodel;
 
-import static eu.lestard.snakefx.config.IntegerConfig.ROW_AND_COLUMN_COUNT;
-import javafx.animation.Animation.Status;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import eu.lestard.snakefx.core.Direction;
 import eu.lestard.snakefx.core.SpeedLevel;
+import javafx.animation.Animation.Status;
+import javafx.beans.property.*;
+
+import static eu.lestard.snakefx.config.Config.*;
 
 /**
  * This class is the central viewmodel that contains the current state of the

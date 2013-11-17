@@ -1,8 +1,9 @@
 package eu.lestard.snakefx.core;
 
-import javafx.animation.Animation.Status;
-import eu.lestard.snakefx.util.Function;
 import eu.lestard.snakefx.viewmodel.ViewModel;
+import javafx.animation.Animation.Status;
+
+import java.util.function.Consumer;
 
 /**
  * The purpose of this function is to start a new Game.
@@ -10,7 +11,7 @@ import eu.lestard.snakefx.viewmodel.ViewModel;
  * @author manuel.mauky
  * 
  */
-public class NewGameFunction implements Function {
+public class NewGameFunction implements Consumer<Void> {
 	private final ViewModel viewModel;
 	private final Grid grid;
 	private final Snake snake;
@@ -24,17 +25,17 @@ public class NewGameFunction implements Function {
 		this.foodGenerator = foodGenerator;
 	}
 
-	@Override
-	public void call() {
-		viewModel.gameloopStatus.set(Status.STOPPED);
+    @Override
+    public void accept(Void aVoid) {
+        viewModel.gameloopStatus.set(Status.STOPPED);
 
-		grid.newGame();
+        grid.newGame();
 
-		snake.newGame();
+        snake.newGame();
 
-		foodGenerator.generateFood();
+        foodGenerator.generateFood();
 
-		viewModel.gameloopStatus.set(Status.RUNNING);
-		viewModel.gameloopStatus.set(Status.PAUSED);
-	}
+        viewModel.gameloopStatus.set(Status.RUNNING);
+        viewModel.gameloopStatus.set(Status.PAUSED);
+    }
 }

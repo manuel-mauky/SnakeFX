@@ -1,10 +1,11 @@
 package eu.lestard.snakefx.view.presenter;
 
-import javafx.application.Platform;
-import javafx.fxml.FXML;
-import eu.lestard.snakefx.util.Function;
 import eu.lestard.snakefx.view.FXMLFile;
 import eu.lestard.snakefx.viewmodel.ViewModel;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+
+import java.util.function.Consumer;
 
 /**
  * UI-Controller for the fxml file {@link FXMLFile#MENU}. This presenter
@@ -16,16 +17,16 @@ import eu.lestard.snakefx.viewmodel.ViewModel;
 public class MenuPresenter {
 
 	private final ViewModel viewModel;
-	private final Function newGameFunction;
+	private final Consumer<?> newGameFunction;
 
-	public MenuPresenter(final ViewModel viewModel, final Function newGameFunction) {
+	public MenuPresenter(final ViewModel viewModel, final Consumer<?> newGameFunction) {
 		this.viewModel = viewModel;
 		this.newGameFunction = newGameFunction;
 	}
 
 	@FXML
 	public void newGame() {
-		newGameFunction.call();
+		newGameFunction.accept(null);
 	}
 
 	@FXML

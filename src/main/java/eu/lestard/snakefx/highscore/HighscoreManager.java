@@ -1,21 +1,18 @@
 package eu.lestard.snakefx.highscore;
 
-import static eu.lestard.snakefx.config.IntegerConfig.MAX_SCORE_COUNT;
-
-import java.util.ArrayList;
-
+import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 
-import com.sun.javafx.collections.ObservableListWrapper;
+import java.util.ArrayList;
 
-import eu.lestard.snakefx.config.IntegerConfig;
+import static eu.lestard.snakefx.config.Config.*;
 
 /**
  * The purpose of the HighscoreManager is to add new highscore entries and to
  * verify that there are only as many entries in the highscore list as defined
- * in {@link IntegerConfig#MAX_SCORE_COUNT}.
+ * in {@link eu.lestard.snakefx.config.Config#MAX_SCORE_COUNT}.
  * 
  * @author manuel.mauky
  * 

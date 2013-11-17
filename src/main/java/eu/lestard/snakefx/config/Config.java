@@ -1,17 +1,11 @@
 package eu.lestard.snakefx.config;
 
 /**
- * This enum represents configuration parameters of type integer.
+ * This enum represents configuration parameters.
  * 
  * @author manuel.mauky
  */
-public enum IntegerConfig {
-
-	/**
-	 * The default value that is used by the injection mechanism when no other
-	 * key is specified.
-	 */
-	DEFAULT(0),
+public enum Config {
 
 	/**
 	 * The number of rows and columns of the grid. In this game the grid is a
@@ -43,12 +37,12 @@ public enum IntegerConfig {
 
 	private Integer value;
 
-	private IntegerConfig(final Integer value) {
+	private Config(final Integer value) {
 		this.value = value;
 	}
 
 	/**
-	 * @return the specified default value of the key.
+	 * @return the configuration value of this enum constant.
 	 */
 	public Integer get() {
 		return value;

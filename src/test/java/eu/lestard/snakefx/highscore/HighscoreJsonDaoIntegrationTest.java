@@ -1,7 +1,10 @@
 package eu.lestard.snakefx.highscore;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.internal.util.reflection.Whitebox;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -9,10 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.internal.util.reflection.Whitebox;
+import static org.assertj.core.api.Assertions.*;
 
 public class HighscoreJsonDaoIntegrationTest {
 

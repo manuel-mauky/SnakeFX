@@ -1,15 +1,14 @@
 package eu.lestard.snakefx.core;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 import javafx.animation.Animation.Status;
 import javafx.animation.Timeline;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import static org.assertj.core.api.Assertions.*;
 
 public class GameLoopTest {
 

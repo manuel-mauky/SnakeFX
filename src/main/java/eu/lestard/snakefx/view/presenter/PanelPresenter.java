@@ -1,15 +1,13 @@
 package eu.lestard.snakefx.view.presenter;
 
+import eu.lestard.snakefx.core.SpeedLevel;
+import eu.lestard.snakefx.view.FXMLFile;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 import javafx.animation.Animation.Status;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import eu.lestard.snakefx.core.SpeedLevel;
-import eu.lestard.snakefx.view.FXMLFile;
-import eu.lestard.snakefx.viewmodel.ViewModel;
 
 /**
  * UI-Controller class for the fxml file {@link FXMLFile#PANEL}. This presenter
@@ -50,15 +48,11 @@ public class PanelPresenter {
 
 		playPause.disableProperty().bind(viewModel.collision);
 
-		viewModel.gameloopStatus.addListener(new ChangeListener<Status>() {
-			@Override
-			public void changed(final ObservableValue<? extends Status> arg0, final Status oldStatus,
-					final Status newStatus) {
-				if (Status.STOPPED.equals(newStatus)) {
-					playPause.textProperty().set(LABEL_START);
-				}
-			}
-		});
+		viewModel.gameloopStatus.addListener((observable, oldStatus, newStatus) -> {
+            if (Status.STOPPED.equals(newStatus)) {
+                playPause.textProperty().set(LABEL_START);
+            }
+        });
 	}
 
 	@FXML

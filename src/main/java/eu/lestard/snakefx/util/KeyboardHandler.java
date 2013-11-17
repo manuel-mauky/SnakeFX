@@ -1,10 +1,10 @@
 package eu.lestard.snakefx.util;
 
+import eu.lestard.snakefx.core.Direction;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import eu.lestard.snakefx.core.Direction;
-import eu.lestard.snakefx.viewmodel.ViewModel;
 
 /**
  * This class handles the input of the user.

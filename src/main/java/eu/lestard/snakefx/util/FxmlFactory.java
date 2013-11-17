@@ -1,11 +1,11 @@
 package eu.lestard.snakefx.util;
 
-import java.io.IOException;
-
+import eu.lestard.snakefx.view.FXMLFile;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import eu.lestard.snakefx.view.FXMLFile;
 import javafx.util.Callback;
+
+import java.io.IOException;
 
 /**
  * This factory can be used to load FXML documents and get the root element of

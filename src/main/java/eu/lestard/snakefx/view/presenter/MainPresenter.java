@@ -1,11 +1,11 @@
 package eu.lestard.snakefx.view.presenter;
 
+import eu.lestard.snakefx.core.Grid;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
-import eu.lestard.snakefx.core.Field;
-import eu.lestard.snakefx.core.Grid;
-import eu.lestard.snakefx.core.NewGameFunction;
-import eu.lestard.snakefx.viewmodel.ViewModel;
+
+import java.util.function.Consumer;
 
 /**
  * Presenter class for the main.fxml file.
@@ -22,10 +22,10 @@ public class MainPresenter {
 
 	private final ViewModel viewModel;
 
-	private final NewGameFunction newGameFunction;
+	private final Consumer<?> newGameFunction;
 
 
-	public MainPresenter(final ViewModel viewModel, final Grid grid, final NewGameFunction newGameFunction) {
+	public MainPresenter(final ViewModel viewModel, final Grid grid, final Consumer<?> newGameFunction) {
 		this.viewModel = viewModel;
 		this.grid = grid;
 		this.newGameFunction = newGameFunction;
@@ -36,11 +36,11 @@ public class MainPresenter {
 	public void initialize() {
 		grid.init();
 
-		for (final Field f : grid.getFields()) {
-			gridContainer.getChildren().add(f.getRectangle());
-		}
+        grid.getFields().forEach(field -> {
+            gridContainer.getChildren().add(field.getRectangle());
+        });
 
-		newGameFunction.call();
+		newGameFunction.accept(null);
 	}
 
 }

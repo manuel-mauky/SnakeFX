@@ -38,7 +38,7 @@
                         text="SnakeFX"/>
                 <Label
                         style=""
-                        text="© 2012, Manuel Mauky"
+                        text="© 2013, Manuel Mauky"
                         textFill="BLACK"/>
                 <Hyperlink
                         fx:id="homepageLink"

@@ -1,18 +1,14 @@
 package eu.lestard.snakefx.core;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.List;
-
+import eu.lestard.snakefx.viewmodel.ViewModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class SnakeTest {
 	private Snake snake;

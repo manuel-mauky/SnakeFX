@@ -2,14 +2,12 @@ package eu.lestard.snakefx;
 
 import eu.lestard.snakefx.inject.DependencyInjector;
 import eu.lestard.snakefx.util.FxmlFactory;
+import eu.lestard.snakefx.util.KeyboardHandler;
 import eu.lestard.snakefx.util.PopupDialogHelper;
 import eu.lestard.snakefx.view.FXMLFile;
-import eu.lestard.snakefx.util.KeyboardHandler;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 import javafx.application.Application;
-import javafx.beans.property.BooleanProperty;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Launcher extends Application {

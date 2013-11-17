@@ -1,6 +1,5 @@
 package eu.lestard.snakefx.highscore;
 
-import eu.lestard.snakefx.config.StringConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.codehaus.jackson.map.type.TypeFactory;
@@ -18,12 +17,14 @@ import java.util.List;
  */
 public class HighscoreJsonDao implements HighscoreDao {
 
+    private static final String HIGHSCORE_FILENAME = "highscores.json";
+
     private final Path filepath;
     private final ObjectMapper mapper;
     private final TypeFactory typeFactory;
 
     public HighscoreJsonDao() {
-        filepath = Paths.get(StringConfig.HIGH_SCORE_FILEPATH.get());
+        filepath = Paths.get(HIGHSCORE_FILENAME);
         mapper = new ObjectMapper();
         mapper.configure(Feature.INDENT_OUTPUT, true);
         typeFactory = TypeFactory.defaultInstance();

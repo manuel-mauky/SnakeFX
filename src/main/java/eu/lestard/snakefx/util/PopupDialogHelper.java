@@ -1,7 +1,6 @@
 package eu.lestard.snakefx.util;
 
 import eu.lestard.snakefx.view.FXMLFile;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.Scene;
 import javafx.stage.Modality;

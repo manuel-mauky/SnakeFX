@@ -1,168 +1,152 @@
 package eu.lestard.snakefx.core;
 
-import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_X;
-import static eu.lestard.snakefx.config.IntegerConfig.SNAKE_START_Y;
+import eu.lestard.snakefx.viewmodel.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-
-import eu.lestard.snakefx.util.Function;
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import static eu.lestard.snakefx.config.Config.*;
 
 /**
  * This class represents the snake.
- * 
+ *
  * @author manuel.mauky
- * 
  */
 public class Snake {
 
-	private Field head;
+    private Field head;
 
-	private final Grid grid;
+    private final Grid grid;
 
-	private final int x;
-	private final int y;
+    private final int x;
+    private final int y;
 
-	private Direction currentDirection;
+    private Direction currentDirection;
 
-	private Direction nextDirection;
+    private Direction nextDirection;
 
-	private final List<Field> tail;
-
-
-	private final ViewModel viewModel;
+    private final List<Field> tail;
 
 
-	/**
-	 * @param grid
-	 *            the grid on which the snake is created
-	 * @param points
-	 *            the property for the points
-	 */
-	public Snake(final ViewModel viewModel, final Grid grid, final GameLoop gameLoop) {
-		this.viewModel = viewModel;
-		this.grid = grid;
-		x = SNAKE_START_X.get();
-		y = SNAKE_START_Y.get();
+    private final ViewModel viewModel;
 
-		tail = new ArrayList<Field>();
 
-		gameLoop.addActions(new Function() {
-			@Override
-			public void call() {
-				move();
-			}
-		});
+    /**
+     * @param viewModel the viewModel
+     * @param grid      the grid on which the snake is created
+     * @param gameLoop  the gameloop that is used for the movement of the snake
+     */
+    public Snake(final ViewModel viewModel, final Grid grid, final GameLoop gameLoop) {
+        this.viewModel = viewModel;
+        this.grid = grid;
+        x = SNAKE_START_X.get();
+        y = SNAKE_START_Y.get();
 
-		viewModel.snakeDirection.addListener(new ChangeListener<Direction>() {
-			@Override
-			public void changed(final ObservableValue<? extends Direction> arg0, final Direction oldDirection,
-					final Direction newDirection) {
-				Snake.this.changeDirection(newDirection);
-			}
-		});
-	}
+        tail = new ArrayList<Field>();
 
-	/**
-	 * Initalizes the fields of the snake.
-	 */
-	public void init() {
-		setHead(grid.getXY(x, y));
+        gameLoop.addActions(x -> {
+            move();
+        });
 
-		viewModel.collision.set(false);
+        viewModel.snakeDirection.addListener( (observable,oldDirection,newDirection) -> {
+            Snake.this.changeDirection(newDirection);
+        });
+    }
 
-		viewModel.points.set(0);
+    /**
+     * Initalizes the fields of the snake.
+     */
+    public void init() {
+        setHead(grid.getXY(x, y));
 
-		currentDirection = Direction.UP;
-		nextDirection = Direction.UP;
-	}
+        viewModel.collision.set(false);
 
-	/**
-	 * Change the direction of the snake. The direction is only changed when the
-	 * new direction has <bold>not</bold> the same orientation as the old one.
-	 * 
-	 * For example, when the snake currently has the direction UP and the new
-	 * direction should be DOWN, nothing will happend because both directions
-	 * are vertical.
-	 * 
-	 * This is to prevent the snake from moving directly into its own tail.
-	 * 
-	 * @param newDirection
-	 */
-	private void changeDirection(final Direction newDirection) {
-		if (!newDirection.hasSameOrientation(currentDirection)) {
-			nextDirection = newDirection;
-		}
-	}
+        viewModel.points.set(0);
 
-	/**
-	 * Move the snake by one field.
-	 */
-	void move() {
-		currentDirection = nextDirection;
+        currentDirection = Direction.UP;
+        nextDirection = Direction.UP;
+    }
 
-		final Field newHead = grid.getFromDirection(head, currentDirection);
+    /**
+     * Change the direction of the snake. The direction is only changed when the new direction has <bold>not</bold> the
+     * same orientation as the old one.
+     * <p/>
+     * For example, when the snake currently has the direction UP and the new direction should be DOWN, nothing will
+     * happend because both directions are vertical.
+     * <p/>
+     * This is to prevent the snake from moving directly into its own tail.
+     *
+     * @param newDirection
+     */
+    private void changeDirection(final Direction newDirection) {
+        if (!newDirection.hasSameOrientation(currentDirection)) {
+            nextDirection = newDirection;
+        }
+    }
 
-		if (newHead.getState().equals(State.TAIL)) {
-			viewModel.collision.set(true);
-			return;
-		}
+    /**
+     * Move the snake by one field.
+     */
+    void move() {
+        currentDirection = nextDirection;
 
-		boolean grow = false;
-		if (newHead.getState().equals(State.FOOD)) {
-			grow = true;
-		}
+        final Field newHead = grid.getFromDirection(head, currentDirection);
 
-		Field lastField = head;
+        if (newHead.getState().equals(State.TAIL)) {
+            viewModel.collision.set(true);
+            return;
+        }
 
-		for (int i = 0; i < tail.size(); i++) {
-			final Field f = tail.get(i);
+        boolean grow = false;
+        if (newHead.getState().equals(State.FOOD)) {
+            grow = true;
+        }
 
-			lastField.changeState(State.TAIL);
-			tail.set(i, lastField);
+        Field lastField = head;
 
-			lastField = f;
-		}
+        for (int i = 0; i < tail.size(); i++) {
+            final Field f = tail.get(i);
 
-		if (grow) {
-			grow(lastField);
-			addPoints();
-		} else {
-			lastField.changeState(State.EMPTY);
-		}
+            lastField.changeState(State.TAIL);
+            tail.set(i, lastField);
 
-		setHead(newHead);
-	}
+            lastField = f;
+        }
 
-	public void newGame() {
-		tail.clear();
-		init();
-	}
+        if (grow) {
+            grow(lastField);
+            addPoints();
+        } else {
+            lastField.changeState(State.EMPTY);
+        }
 
-	private void setHead(final Field head) {
-		this.head = head;
-		head.changeState(State.HEAD);
-	}
+        setHead(newHead);
+    }
 
-	/**
-	 * The given field is added to the tail of the snake and gets the state
-	 * TAIL.
-	 * 
-	 * @param field
-	 */
-	private void grow(final Field field) {
-		field.changeState(State.TAIL);
-		tail.add(field);
-	}
+    public void newGame() {
+        tail.clear();
+        init();
+    }
 
-	private void addPoints() {
-		final int current = viewModel.points.get();
-		viewModel.points.set(current + 1);
-	}
+    private void setHead(final Field head) {
+        this.head = head;
+        head.changeState(State.HEAD);
+    }
+
+    /**
+     * The given field is added to the tail of the snake and gets the state TAIL.
+     *
+     * @param field
+     */
+    private void grow(final Field field) {
+        field.changeState(State.TAIL);
+        tail.add(field);
+    }
+
+    private void addPoints() {
+        final int current = viewModel.points.get();
+        viewModel.points.set(current + 1);
+    }
 
 
 }

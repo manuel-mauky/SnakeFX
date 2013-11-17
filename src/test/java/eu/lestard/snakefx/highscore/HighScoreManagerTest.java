@@ -1,21 +1,16 @@
 package eu.lestard.snakefx.highscore;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.extractProperty;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import eu.lestard.snakefx.config.Config;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
 
-import eu.lestard.snakefx.config.IntegerConfig;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class HighScoreManagerTest {
 	private HighscoreManager scoreManager;
@@ -29,7 +24,7 @@ public class HighScoreManagerTest {
 		scoreManager = new HighscoreManager(daoMock);
 
 		// Change the config value to 3 for easier testing.
-		Whitebox.setInternalState(IntegerConfig.MAX_SCORE_COUNT, "value", 3);
+		Whitebox.setInternalState(Config.MAX_SCORE_COUNT, "value", 3);
 	}
 
 	@Test

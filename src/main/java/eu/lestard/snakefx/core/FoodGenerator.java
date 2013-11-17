@@ -1,7 +1,5 @@
 package eu.lestard.snakefx.core;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import eu.lestard.snakefx.viewmodel.ViewModel;
 
 
@@ -22,15 +20,11 @@ public class FoodGenerator {
 	public FoodGenerator(final ViewModel viewModel, final Grid grid) {
 		this.grid = grid;
 
-		viewModel.points.addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(final ObservableValue<? extends Number> arg0, final Number oldValue,
-					final Number newValue) {
-				if (oldValue.intValue() < newValue.intValue()) {
-					generateFood();
-				}
-			}
-		});
+        viewModel.points.addListener((observable, oldValue, newValue) -> {
+            if (oldValue.intValue() < newValue.intValue()) {
+                generateFood();
+            }
+        });
 	}
 
 	/**

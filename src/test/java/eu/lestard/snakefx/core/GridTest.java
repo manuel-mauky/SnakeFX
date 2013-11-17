@@ -1,15 +1,14 @@
 package eu.lestard.snakefx.core;
 
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
+import eu.lestard.snakefx.viewmodel.ViewModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.*;
 
 public class GridTest {
 
@@ -43,10 +42,10 @@ public class GridTest {
 
 		// first check the calculated Size for all Fields
 
-		for (final Field f : fields) {
-			assertThat(f.getRectangle().getWidth()).isEqualTo(GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
-			assertThat(f.getRectangle().getHeight()).isEqualTo(GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
-		}
+        fields.forEach(field->{
+			assertThat(field.getRectangle().getWidth()).isEqualTo(GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
+			assertThat(field.getRectangle().getHeight()).isEqualTo(GRID_SIZE_IN_PIXEL / ROW_AND_COLUMN_COUNT);
+        });
 
 		// choose some sample fields and check there x and y values
 		/*
@@ -178,9 +177,9 @@ public class GridTest {
 
 		// All other fields must be empty too
 		final List<Field> fields = grid.getFields();
-		for (final Field field : fields) {
-			assertThat(field.getState()).isEqualTo(State.EMPTY);
-		}
 
+        fields.forEach(field -> {
+            assertThat(field.getState()).isEqualTo(State.EMPTY);
+        });
 	}
 }
