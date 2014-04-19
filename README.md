@@ -11,5 +11,9 @@ The project is based on the build system [gradle](http://http://www.gradle.org/)
 
 To build the project type `gradle build`. To run the application you can type `gradle run`.
 
-I'm planning to add configurations to build executables of the game.
+
+### Create Executables
+
+To create an executable for the game you need to run the command `gradle jfxDeploy`.
+After that the executables are located in the subdirectory `build/distributions/bundles`.
 

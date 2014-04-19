@@ -1,23 +1,21 @@
 apply plugin: "java"
 apply plugin: "application"
+apply from: "javafx.plugin"
 
 sourceCompatibility= 1.8
 
 mainClassName = "eu.lestard.snakefx.Launcher"
 manifest.mainAttributes("Main-Class" : mainClassName)
 
-
-
-// Creates the initial directory structure
-task "create-dirs" << {
-    sourceSets*.java.srcDirs*.each { it.mkdirs() }
-    sourceSets*.resources.srcDirs*.each { it.mkdir()}
+javafx {
+    mainClass = mainClassName
 }
+
 
 repositories {
+    mavenLocal();
 	mavenCentral()
 }
-
 
 
 // Bugfix for "failed to read class file" bug when using gradle with Java 8 ea.
