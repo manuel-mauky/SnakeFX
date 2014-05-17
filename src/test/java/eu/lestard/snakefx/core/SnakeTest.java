@@ -1,6 +1,6 @@
 package eu.lestard.snakefx.core;
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
@@ -20,14 +20,14 @@ public class SnakeTest {
 	private static final int X = 4;
 	private static final int Y = 2;
 
-	private ViewModel viewModel;
+	private CentralViewModel viewModel;
 
 	@Before
 	public void setUp() {
 		gridMock = mock(Grid.class);
 		gameLoopMock = mock(GameLoop.class);
 
-		viewModel = new ViewModel();
+		viewModel = new CentralViewModel();
 
 		snake = new Snake(viewModel, gridMock, gameLoopMock);
 		Whitebox.setInternalState(snake, "x", X);

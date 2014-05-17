@@ -1,6 +1,6 @@
 package eu.lestard.snakefx.core;
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.animation.Animation.Status;
 
 import java.util.function.Consumer;
@@ -12,12 +12,12 @@ import java.util.function.Consumer;
  * 
  */
 public class NewGameFunction implements Consumer<Void> {
-	private final ViewModel viewModel;
+	private final CentralViewModel viewModel;
 	private final Grid grid;
 	private final Snake snake;
 	private final FoodGenerator foodGenerator;
 
-	public NewGameFunction(final ViewModel viewModel, final Grid grid, final Snake snake,
+	public NewGameFunction(final CentralViewModel viewModel, final Grid grid, final Snake snake,
 			final FoodGenerator foodGenerator) {
 		this.viewModel = viewModel;
 		this.grid = grid;

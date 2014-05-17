@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.core;
 
 import com.sun.javafx.collections.ObservableListWrapper;
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
@@ -25,20 +25,20 @@ public class Grid {
 
 	private final ObservableList<Field> fields = new ObservableListWrapper<>(new ArrayList<>());
 
-	private final ViewModel viewModel;
+	private final CentralViewModel viewModel;
 
 	/**
 	 * @param viewModel
 	 *            the viewModel instance.
 	 */
-	public Grid(final ViewModel viewModel) {
+	public Grid(final CentralViewModel viewModel) {
 		this.viewModel = viewModel;
 		gridSizeInPixel = GRID_SIZE_IN_PIXEL.get();
 	}
 
 	/**
 	 * This method initializes the grid. According to the
-	 * {@link ViewModel#gridSize} the fields ({@link Field}) are
+	 * {@link eu.lestard.snakefx.viewmodel.CentralViewModel#gridSize} the fields ({@link Field}) are
 	 * created with the coordinates and the size that is calculated with the
 	 * value of {@link eu.lestard.snakefx.config.Config#GRID_SIZE_IN_PIXEL}.
 	 * 

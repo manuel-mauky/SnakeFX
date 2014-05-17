@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.core;
 
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.reflection.Whitebox;
@@ -16,11 +16,11 @@ public class GridTest {
 	private static final int GRID_SIZE_IN_PIXEL = 300;
 
 	private Grid grid;
-	private ViewModel viewModel;
+	private CentralViewModel viewModel;
 
 	@Before
 	public void setUp() {
-		viewModel = new ViewModel();
+		viewModel = new CentralViewModel();
 		viewModel.gridSize.set(ROW_AND_COLUMN_COUNT);
 		grid = new Grid(viewModel);
 		Whitebox.setInternalState(grid, "gridSizeInPixel", GRID_SIZE_IN_PIXEL);

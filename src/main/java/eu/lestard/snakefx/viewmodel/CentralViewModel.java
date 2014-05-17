@@ -14,7 +14,7 @@ import static eu.lestard.snakefx.config.Config.*;
  * @author manuel.mauky
  * 
  */
-public class ViewModel {
+public class CentralViewModel {
 
 	public final IntegerProperty points = new SimpleIntegerProperty(0);
 

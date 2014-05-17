@@ -5,7 +5,7 @@ import java.net.URL;
 public enum FXMLFile {
 
 
-	MAIN("main.fxml"),
+	MAIN("Main.fxml"),
 
 	MENU("menu.fxml"),
 
@@ -19,7 +19,7 @@ public enum FXMLFile {
 
 	;
 
-	private static final String BASE_DIR = "fxml";
+	private static final String BASE_DIR = "eu/lestard/snakefx/view";
 
 	private String filename;
 

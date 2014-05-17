@@ -2,7 +2,7 @@ package eu.lestard.snakefx.view.presenter;
 
 import eu.lestard.snakefx.core.SpeedLevel;
 import eu.lestard.snakefx.view.FXMLFile;
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.animation.Animation.Status;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -31,9 +31,9 @@ public class PanelPresenter {
 	@FXML
 	private Button playPause;
 
-	private final ViewModel viewModel;
+	private final CentralViewModel viewModel;
 
-	public PanelPresenter(final ViewModel viewModel) {
+	public PanelPresenter(final CentralViewModel viewModel) {
 		this.viewModel = viewModel;
 	}
 

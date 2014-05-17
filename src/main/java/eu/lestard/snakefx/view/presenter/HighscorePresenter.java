@@ -2,7 +2,7 @@ package eu.lestard.snakefx.view.presenter;
 
 import eu.lestard.snakefx.highscore.HighScoreEntry;
 import eu.lestard.snakefx.highscore.HighscoreManager;
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.fxml.FXML;
@@ -17,9 +17,9 @@ public class HighscorePresenter {
 
     private final ListProperty<HighScoreEntry> highScoreEntries = new SimpleListProperty<>();
 
-    private ViewModel viewModel;
+    private CentralViewModel viewModel;
 
-    public HighscorePresenter(ViewModel viewModel, HighscoreManager highscoreManager) {
+    public HighscorePresenter(CentralViewModel viewModel, HighscoreManager highscoreManager) {
         this.viewModel = viewModel;
         viewModel.collision.addListener((observable, oldValue, collisionHappend) -> {
             if (collisionHappend) {

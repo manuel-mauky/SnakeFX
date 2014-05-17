@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.core;
 
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,12 +14,12 @@ public class FoodGeneratorTest {
 
 	private Grid gridMock;
 
-	private ViewModel viewModel;
+	private CentralViewModel viewModel;
 
 	@Before
 	public void setup() {
 		gridMock = mock(Grid.class);
-		viewModel = new ViewModel();
+		viewModel = new CentralViewModel();
 		foodGenerator = new FoodGenerator(viewModel, gridMock);
 	}
 

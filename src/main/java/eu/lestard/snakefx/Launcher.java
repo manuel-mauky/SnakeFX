@@ -1,11 +1,16 @@
 package eu.lestard.snakefx;
 
+import de.saxsys.jfx.mvvm.api.MvvmFX;
+import de.saxsys.jfx.mvvm.viewloader.ViewLoader;
+import de.saxsys.jfx.mvvm.viewloader.ViewTuple;
 import eu.lestard.snakefx.inject.DependencyInjector;
 import eu.lestard.snakefx.util.FxmlFactory;
 import eu.lestard.snakefx.util.KeyboardHandler;
 import eu.lestard.snakefx.util.PopupDialogHelper;
 import eu.lestard.snakefx.view.FXMLFile;
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.view.Main;
+import eu.lestard.snakefx.view.viewmodels.MainViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -21,15 +26,22 @@ public class Launcher extends Application {
     public void start(final Stage primaryStage) {
         DependencyInjector dependencyInjector = new DependencyInjector();
 
-        FxmlFactory fxmlFactory = new FxmlFactory(dependencyInjector);
-        Scene scene = new Scene(fxmlFactory.getFxmlRoot(FXMLFile.MAIN));
+        MvvmFX.setCustomDependencyInjector(dependencyInjector);
+
+        ViewLoader viewLoader = new ViewLoader();
+
+        final ViewTuple<MainViewModel> viewTuple = viewLoader.loadViewTuple(Main.class);
+
+
+        Scene scene = new Scene(viewTuple.getView());
         scene.setOnKeyPressed(dependencyInjector.get(KeyboardHandler.class));
 
 
+        FxmlFactory fxmlFactory = new FxmlFactory(dependencyInjector);
         PopupDialogHelper popupDialogHelper = new PopupDialogHelper(fxmlFactory);
 
 
-        ViewModel viewModel = dependencyInjector.get(ViewModel.class);
+        CentralViewModel viewModel = dependencyInjector.get(CentralViewModel.class);
 
         Stage aboutStage = popupDialogHelper.createModalDialog(viewModel.aboutWindowOpen, primaryStage, FXMLFile.ABOUT);
 

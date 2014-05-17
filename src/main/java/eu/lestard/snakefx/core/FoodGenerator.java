@@ -1,6 +1,6 @@
 package eu.lestard.snakefx.core;
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 
 
 /**
@@ -17,7 +17,7 @@ public class FoodGenerator {
 
 	private final Grid grid;
 
-	public FoodGenerator(final ViewModel viewModel, final Grid grid) {
+	public FoodGenerator(final CentralViewModel viewModel, final Grid grid) {
 		this.grid = grid;
 
         viewModel.points.addListener((observable, oldValue, newValue) -> {

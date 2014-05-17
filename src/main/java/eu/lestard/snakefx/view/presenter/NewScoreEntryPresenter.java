@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.view.presenter;
 
 import eu.lestard.snakefx.highscore.HighscoreManager;
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -18,9 +18,9 @@ public class NewScoreEntryPresenter {
 	private Label points;
 
 	private final HighscoreManager highScoreManager;
-    private ViewModel viewModel;
+    private CentralViewModel viewModel;
 
-	public NewScoreEntryPresenter(final HighscoreManager highScoreManager, ViewModel viewModel) {
+	public NewScoreEntryPresenter(final HighscoreManager highScoreManager, CentralViewModel viewModel) {
 		this.highScoreManager = highScoreManager;
         this.viewModel = viewModel;
 	}

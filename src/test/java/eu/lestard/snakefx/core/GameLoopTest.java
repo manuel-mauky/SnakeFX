@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.core;
 
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.animation.Animation.Status;
 import javafx.animation.Timeline;
 import org.junit.Before;
@@ -13,12 +13,12 @@ import static org.assertj.core.api.Assertions.*;
 public class GameLoopTest {
 
 	private GameLoop gameLoop;
-	private ViewModel viewModel;
+	private CentralViewModel viewModel;
 
 
 	@Before
 	public void setup() {
-		viewModel = new ViewModel();
+		viewModel = new CentralViewModel();
 		viewModel.speed.set(SpeedLevel.SLOW);
 		gameLoop = new GameLoop(viewModel);
 	}

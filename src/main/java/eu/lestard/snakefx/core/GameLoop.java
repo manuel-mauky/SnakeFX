@@ -1,6 +1,6 @@
 package eu.lestard.snakefx.core;
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.animation.Animation;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -28,9 +28,9 @@ public class GameLoop {
 
     private final List<Consumer<?>> actions = new ArrayList<>();
 
-    private final ViewModel viewModel;
+    private final CentralViewModel viewModel;
 
-    public GameLoop(final ViewModel viewModel) {
+    public GameLoop(final CentralViewModel viewModel) {
         this.viewModel = viewModel;
         viewModel.collision.addListener(new CollisionListener());
         viewModel.speed.addListener(new SpeedChangeListener());

@@ -1,6 +1,6 @@
 package eu.lestard.snakefx.core;
 
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class Snake {
     private final List<Field> tail;
 
 
-    private final ViewModel viewModel;
+    private final CentralViewModel viewModel;
 
 
     /**
@@ -36,7 +36,7 @@ public class Snake {
      * @param grid      the grid on which the snake is created
      * @param gameLoop  the gameloop that is used for the movement of the snake
      */
-    public Snake(final ViewModel viewModel, final Grid grid, final GameLoop gameLoop) {
+    public Snake(final CentralViewModel viewModel, final Grid grid, final GameLoop gameLoop) {
         this.viewModel = viewModel;
         this.grid = grid;
         x = SNAKE_START_X.get();

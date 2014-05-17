@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.util;
 
 import eu.lestard.snakefx.core.Direction;
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -13,9 +13,9 @@ import javafx.scene.input.KeyEvent;
  */
 public class KeyboardHandler implements EventHandler<KeyEvent> {
 
-	private final ViewModel viewModel;
+	private final CentralViewModel viewModel;
 
-	public KeyboardHandler(final ViewModel viewModel) {
+	public KeyboardHandler(final CentralViewModel viewModel) {
 		this.viewModel = viewModel;
 	}
 

@@ -6,7 +6,8 @@ import eu.lestard.snakefx.highscore.HighscoreJsonDao;
 import eu.lestard.snakefx.highscore.HighscoreManager;
 import eu.lestard.snakefx.util.KeyboardHandler;
 import eu.lestard.snakefx.view.presenter.*;
-import eu.lestard.snakefx.viewmodel.ViewModel;
+import eu.lestard.snakefx.view.viewmodels.MainViewModel;
+import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.util.Callback;
 
 import java.util.HashMap;
@@ -25,14 +26,14 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
     }
 
     private void injectCore() {
-        final ViewModel viewModel = new ViewModel();
+        final CentralViewModel viewModel = new CentralViewModel();
         final Grid grid = new Grid(viewModel);
         final GameLoop gameLoop = new GameLoop(viewModel);
         final Snake snake = new Snake(viewModel, grid, gameLoop);
         final FoodGenerator foodGenerator = new FoodGenerator(viewModel, grid);
         final NewGameFunction newGameFunction = new NewGameFunction(viewModel, grid, snake, foodGenerator);
 
-        put(ViewModel.class, viewModel);
+        put(CentralViewModel.class, viewModel);
         put(Grid.class, grid);
         put(GameLoop.class, gameLoop);
         put(Snake.class, snake);
@@ -41,28 +42,26 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
     }
 
     private void injectPresenter() {
-        final ViewModel viewModel = get(ViewModel.class);
+        final CentralViewModel viewModel = get(CentralViewModel.class);
 
-        final MainPresenter mainPresenter = new MainPresenter(viewModel, get(Grid.class),
+        final MainViewModel mainViewModel = new MainViewModel(viewModel, get(Grid.class),
                 get(NewGameFunction.class));
         final MenuPresenter menuPresenter = new MenuPresenter(viewModel, get(NewGameFunction.class));
         final PanelPresenter panelPresenter = new PanelPresenter(viewModel);
 
-        final AboutPresenter aboutPresenter = new AboutPresenter();
         final HighscorePresenter highscorePresenter = new HighscorePresenter(viewModel, get(HighscoreManager.class));
 
         final NewScoreEntryPresenter newScoreEntryPresenter = new NewScoreEntryPresenter(get(HighscoreManager.class), viewModel);
 
-        put(MainPresenter.class, mainPresenter);
+        put(MainViewModel.class, mainViewModel);
         put(MenuPresenter.class, menuPresenter);
         put(PanelPresenter.class, panelPresenter);
-        put(AboutPresenter.class, aboutPresenter);
         put(HighscorePresenter.class, highscorePresenter);
         put(NewScoreEntryPresenter.class, newScoreEntryPresenter);
     }
 
     private void injectOthers() {
-        final KeyboardHandler keyboardHandler = new KeyboardHandler(get(ViewModel.class));
+        final KeyboardHandler keyboardHandler = new KeyboardHandler(get(CentralViewModel.class));
         final HighscoreDao highscoreDao = new HighscoreJsonDao();
         final HighscoreManager highscoreManager = new HighscoreManager(highscoreDao);
 
@@ -77,11 +76,22 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
     }
 
     public <T> T get(Class<T> clazz) {
-        return (T) instances.get(clazz);
+        if(instances.containsKey(clazz)){
+            return (T) instances.get(clazz);
+        }else{
+            try{
+                System.out.println("newInstance");
+                return clazz.newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException(
+                    "Can't inject instance of type [" + clazz.getName() + "]. " +
+                        "There is no injector mapping and it can't be created with class.newInstance()",e);
+            }
+        }
     }
 
     @Override
     public Object call(Class<?> clazz) {
-        return instances.get(clazz);
+        return this.get(clazz);
     }
 }
