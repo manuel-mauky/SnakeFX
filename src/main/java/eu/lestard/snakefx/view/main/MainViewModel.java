@@ -1,6 +1,6 @@
-package eu.lestard.snakefx.view.viewmodels;
+package eu.lestard.snakefx.view.main;
 
-import de.saxsys.jfx.mvvm.base.viewmodel.ViewModel;
+import de.saxsys.jfx.mvvm.api.ViewModel;
 import eu.lestard.snakefx.core.Field;
 import eu.lestard.snakefx.core.Grid;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;

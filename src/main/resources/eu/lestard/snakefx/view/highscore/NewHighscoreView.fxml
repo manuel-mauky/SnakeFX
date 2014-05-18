@@ -9,10 +9,10 @@
         xmlns:fx="http://javafx.com/fxml"
         spacing="5"
         alignment="CENTER"
-        fx:controller="eu.lestard.snakefx.view.presenter.NewScoreEntryPresenter">
+        fx:controller="eu.lestard.snakefx.view.highscore.NewHighscoreView">
 
     <stylesheets>
-        <URL value="@newScoreEntry.css"/>
+        <URL value="@newHighscore.css"/>
     </stylesheets>
 
     <padding>

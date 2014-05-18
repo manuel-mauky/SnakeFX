@@ -5,8 +5,11 @@ import eu.lestard.snakefx.highscore.HighscoreDao;
 import eu.lestard.snakefx.highscore.HighscoreJsonDao;
 import eu.lestard.snakefx.highscore.HighscoreManager;
 import eu.lestard.snakefx.util.KeyboardHandler;
-import eu.lestard.snakefx.view.presenter.*;
-import eu.lestard.snakefx.view.viewmodels.MainViewModel;
+import eu.lestard.snakefx.view.highscore.HighscoreViewModel;
+import eu.lestard.snakefx.view.highscore.NewHighscoreViewModel;
+import eu.lestard.snakefx.view.main.MainViewModel;
+import eu.lestard.snakefx.view.menu.MenuViewModel;
+import eu.lestard.snakefx.view.panel.PanelViewModel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.util.Callback;
 
@@ -22,7 +25,7 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
 
         injectOthers();
 
-        injectPresenter();
+        injectViewModels();
     }
 
     private void injectCore() {
@@ -41,23 +44,24 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
         put(NewGameFunction.class, newGameFunction);
     }
 
-    private void injectPresenter() {
-        final CentralViewModel viewModel = get(CentralViewModel.class);
+    private void injectViewModels() {
+        final CentralViewModel centralViewModel = get(CentralViewModel.class);
 
-        final MainViewModel mainViewModel = new MainViewModel(viewModel, get(Grid.class),
+        final MainViewModel mainViewModel = new MainViewModel(centralViewModel, get(Grid.class),
                 get(NewGameFunction.class));
-        final MenuPresenter menuPresenter = new MenuPresenter(viewModel, get(NewGameFunction.class));
-        final PanelPresenter panelPresenter = new PanelPresenter(viewModel);
+        final MenuViewModel menuViewModel = new MenuViewModel(centralViewModel, get(NewGameFunction.class));
 
-        final HighscorePresenter highscorePresenter = new HighscorePresenter(viewModel, get(HighscoreManager.class));
+        final PanelViewModel panelViewModel = new PanelViewModel(centralViewModel);
 
-        final NewScoreEntryPresenter newScoreEntryPresenter = new NewScoreEntryPresenter(get(HighscoreManager.class), viewModel);
+        final HighscoreViewModel highscoreViewModel = new HighscoreViewModel(centralViewModel, get(HighscoreManager.class));
+
+        final NewHighscoreViewModel newHighscoreViewModel = new NewHighscoreViewModel(centralViewModel, get(HighscoreManager.class));
 
         put(MainViewModel.class, mainViewModel);
-        put(MenuPresenter.class, menuPresenter);
-        put(PanelPresenter.class, panelPresenter);
-        put(HighscorePresenter.class, highscorePresenter);
-        put(NewScoreEntryPresenter.class, newScoreEntryPresenter);
+        put(MenuViewModel.class, menuViewModel);
+        put(PanelViewModel.class, panelViewModel);
+        put(HighscoreViewModel.class, highscoreViewModel);
+        put(NewHighscoreViewModel.class, newHighscoreViewModel);
     }
 
     private void injectOthers() {
@@ -80,7 +84,6 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
             return (T) instances.get(clazz);
         }else{
             try{
-                System.out.println("newInstance");
                 return clazz.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException(

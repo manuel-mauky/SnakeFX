@@ -4,12 +4,12 @@ import de.saxsys.jfx.mvvm.api.MvvmFX;
 import de.saxsys.jfx.mvvm.viewloader.ViewLoader;
 import de.saxsys.jfx.mvvm.viewloader.ViewTuple;
 import eu.lestard.snakefx.inject.DependencyInjector;
-import eu.lestard.snakefx.util.FxmlFactory;
 import eu.lestard.snakefx.util.KeyboardHandler;
-import eu.lestard.snakefx.util.PopupDialogHelper;
-import eu.lestard.snakefx.view.FXMLFile;
-import eu.lestard.snakefx.view.Main;
-import eu.lestard.snakefx.view.viewmodels.MainViewModel;
+import eu.lestard.snakefx.util.TriggerablePopup;
+import eu.lestard.snakefx.view.highscore.HighscoreView;
+import eu.lestard.snakefx.view.highscore.NewHighscoreView;
+import eu.lestard.snakefx.view.main.MainView;
+import eu.lestard.snakefx.view.main.MainViewModel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -30,24 +30,18 @@ public class Launcher extends Application {
 
         ViewLoader viewLoader = new ViewLoader();
 
-        final ViewTuple<MainViewModel> viewTuple = viewLoader.loadViewTuple(Main.class);
-
+        final ViewTuple<MainView, MainViewModel> viewTuple = viewLoader.loadViewTuple(MainView.class);
 
         Scene scene = new Scene(viewTuple.getView());
         scene.setOnKeyPressed(dependencyInjector.get(KeyboardHandler.class));
 
-
-        FxmlFactory fxmlFactory = new FxmlFactory(dependencyInjector);
-        PopupDialogHelper popupDialogHelper = new PopupDialogHelper(fxmlFactory);
-
-
         CentralViewModel viewModel = dependencyInjector.get(CentralViewModel.class);
 
-        Stage aboutStage = popupDialogHelper.createModalDialog(viewModel.aboutWindowOpen, primaryStage, FXMLFile.ABOUT);
+        TriggerablePopup highscorePopup = new TriggerablePopup(HighscoreView.class, primaryStage);
+        highscorePopup.trigger().bindBidirectional(viewModel.highscoreWindowOpen);
 
-        Stage highScoreStage = popupDialogHelper.createModalDialog(viewModel.highscoreWindowOpen, primaryStage, FXMLFile.HIGHSCORE);
-
-        popupDialogHelper.createModalDialog(viewModel.newHighscoreWindowOpen, highScoreStage, FXMLFile.NEW_HIGHSCORE);
+        TriggerablePopup newHighscorePopup = new TriggerablePopup(NewHighscoreView.class, highscorePopup.getStage());
+        newHighscorePopup.trigger().bindBidirectional(viewModel.newHighscoreWindowOpen);
 
 
         primaryStage.setTitle("SnakeFX");

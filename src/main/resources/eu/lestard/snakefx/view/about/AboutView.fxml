@@ -15,7 +15,7 @@
         prefHeight="300.0"
         prefWidth="400.0"
 
-        fx:controller="eu.lestard.snakefx.view.presenter.AboutPresenter">
+        fx:controller="eu.lestard.snakefx.view.about.AboutView">
 
     <stylesheets>
         <URL value="@about.css"/>
