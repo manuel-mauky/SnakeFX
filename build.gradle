@@ -15,10 +15,6 @@ javafx {
 repositories {
     mavenLocal();
 	mavenCentral()
-
-    maven {
-        url "https://oss.sonatype.org/content/groups/public/"
-    }
 }
 
 
@@ -35,7 +31,7 @@ dependencies {
 
     compile 'ch.qos.logback:logback-classic:1.1.2'
 
-    compile 'de.saxsys:mvvmFX:0.2.0-SNAPSHOT'
+    compile 'de.saxsys:mvvmFX:0.2.0'
 
     // testing
     testCompile "junit:junit:4.11"

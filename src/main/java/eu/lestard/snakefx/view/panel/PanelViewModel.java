@@ -5,10 +5,10 @@ import de.saxsys.jfx.mvvm.api.ViewModel;
 import eu.lestard.snakefx.core.SpeedLevel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.animation.Animation;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -71,7 +71,7 @@ public class PanelViewModel implements ViewModel {
         return centralViewModel.collision;
     }
 
-    public ObservableObjectValue<SpeedLevel> selectedSpeedLevel(){
+    public ObjectProperty<SpeedLevel> selectedSpeedLevel(){
         return centralViewModel.speed;
     }
 }

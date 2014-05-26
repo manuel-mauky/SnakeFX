@@ -36,7 +36,7 @@ public class PanelView implements FxmlView<PanelViewModel>, Initializable {
 
         speed.getItems().addAll(viewModel.speedLevels());
 
-        speed.valueProperty().bind(viewModel.selectedSpeedLevel());
+        speed.valueProperty().bindBidirectional(viewModel.selectedSpeedLevel());
 
         speed.getSelectionModel().selectFirst();
     }
