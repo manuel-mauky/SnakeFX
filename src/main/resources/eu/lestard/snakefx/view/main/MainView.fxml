@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
 
-<BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml" fx:controller="eu.lestard.snakefx.view.main.MainView">
-  <center>
-    <Pane fx:id="gridContainer" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color:grey;" BorderPane.alignment="CENTER" />
-  </center>
+<BorderPane id="BorderPane" fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="800" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="eu.lestard.snakefx.view.main.MainView">
   <left>
     <fx:include source="../panel/PanelView.fxml" />
   </left>
   <top>
-    <fx:include source="../menu/MenuView.fxml" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefWidth="-1.0" BorderPane.alignment="TOP_LEFT" />
+    <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefWidth="-1.0" source="../menu/MenuView.fxml" BorderPane.alignment="TOP_LEFT" />
   </top>
 </BorderPane>

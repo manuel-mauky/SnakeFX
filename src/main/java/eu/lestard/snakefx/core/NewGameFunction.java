@@ -1,5 +1,6 @@
 package eu.lestard.snakefx.core;
 
+import eu.lestard.grid.GridModel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.animation.Animation.Status;
 
@@ -13,15 +14,15 @@ import java.util.function.Consumer;
  */
 public class NewGameFunction implements Consumer<Void> {
 	private final CentralViewModel viewModel;
-	private final Grid grid;
-	private final Snake snake;
+    private final GridModel<State> gridModel;
+    private final Snake snake;
 	private final FoodGenerator foodGenerator;
 
-	public NewGameFunction(final CentralViewModel viewModel, final Grid grid, final Snake snake,
+	public NewGameFunction(final CentralViewModel viewModel, final GridModel<State> gridModel, final Snake snake,
 			final FoodGenerator foodGenerator) {
 		this.viewModel = viewModel;
-		this.grid = grid;
-		this.snake = snake;
+      this.gridModel = gridModel;
+      this.snake = snake;
 		this.foodGenerator = foodGenerator;
 	}
 
@@ -29,7 +30,7 @@ public class NewGameFunction implements Consumer<Void> {
     public void accept(Void aVoid) {
         viewModel.gameloopStatus.set(Status.STOPPED);
 
-        grid.newGame();
+        gridModel.getCells().forEach(cell -> cell.changeState(State.EMPTY));
 
         snake.newGame();
 

@@ -46,7 +46,6 @@ public class Launcher extends Application {
 
         primaryStage.setTitle("SnakeFX");
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }

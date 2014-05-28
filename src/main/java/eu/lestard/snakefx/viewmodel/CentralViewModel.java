@@ -30,7 +30,5 @@ public class CentralViewModel {
 
 	public final BooleanProperty newHighscoreWindowOpen = new SimpleBooleanProperty(false);
 
-	public final BooleanProperty aboutWindowOpen = new SimpleBooleanProperty(false);
-
 	public final ObjectProperty<Direction> snakeDirection = new SimpleObjectProperty<>(Direction.UP);
 }

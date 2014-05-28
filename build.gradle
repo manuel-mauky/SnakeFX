@@ -33,6 +33,8 @@ dependencies {
 
     compile 'de.saxsys:mvvmFX:0.2.0'
 
+    compile 'eu.lestard:grid:0.1.0'
+
     // testing
     testCompile "junit:junit:4.11"
     testCompile "org.assertj:assertj-core:1.3.0"

@@ -1,5 +1,6 @@
 package eu.lestard.snakefx.inject;
 
+import eu.lestard.grid.GridModel;
 import eu.lestard.snakefx.core.*;
 import eu.lestard.snakefx.highscore.HighscoreDao;
 import eu.lestard.snakefx.highscore.HighscoreJsonDao;
@@ -29,15 +30,16 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
     }
 
     private void injectCore() {
-        final CentralViewModel viewModel = new CentralViewModel();
-        final Grid grid = new Grid(viewModel);
-        final GameLoop gameLoop = new GameLoop(viewModel);
-        final Snake snake = new Snake(viewModel, grid, gameLoop);
-        final FoodGenerator foodGenerator = new FoodGenerator(viewModel, grid);
-        final NewGameFunction newGameFunction = new NewGameFunction(viewModel, grid, snake, foodGenerator);
+        final GridModel<State> gridModel = new GridModel<>();
 
+        final CentralViewModel viewModel = new CentralViewModel();
+        final GameLoop gameLoop = new GameLoop(viewModel);
+        final Snake snake = new Snake(viewModel, gridModel, gameLoop);
+        final FoodGenerator foodGenerator = new FoodGenerator(viewModel, gridModel);
+        final NewGameFunction newGameFunction = new NewGameFunction(viewModel, gridModel, snake, foodGenerator);
+
+        put(GridModel.class, gridModel);
         put(CentralViewModel.class, viewModel);
-        put(Grid.class, grid);
         put(GameLoop.class, gameLoop);
         put(Snake.class, snake);
         put(FoodGenerator.class, foodGenerator);
@@ -47,8 +49,7 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
     private void injectViewModels() {
         final CentralViewModel centralViewModel = get(CentralViewModel.class);
 
-        final MainViewModel mainViewModel = new MainViewModel(centralViewModel, get(Grid.class),
-                get(NewGameFunction.class));
+        final MainViewModel mainViewModel = new MainViewModel(get(GridModel.class), get(NewGameFunction.class));
         final MenuViewModel menuViewModel = new MenuViewModel(centralViewModel, get(NewGameFunction.class));
 
         final PanelViewModel panelViewModel = new PanelViewModel(centralViewModel);

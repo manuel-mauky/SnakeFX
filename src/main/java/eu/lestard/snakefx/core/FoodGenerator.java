@@ -1,6 +1,11 @@
 package eu.lestard.snakefx.core;
 
+import eu.lestard.grid.Cell;
+import eu.lestard.grid.GridModel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
+
+import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -15,10 +20,10 @@ import eu.lestard.snakefx.viewmodel.CentralViewModel;
  */
 public class FoodGenerator {
 
-	private final Grid grid;
+    private final GridModel<State> gridModel;
 
-	public FoodGenerator(final CentralViewModel viewModel, final Grid grid) {
-		this.grid = grid;
+    public FoodGenerator(final CentralViewModel viewModel, final GridModel<State> gridModel) {
+        this.gridModel = gridModel;
 
         viewModel.points.addListener((observable, oldValue, newValue) -> {
             if (oldValue.intValue() < newValue.intValue()) {
@@ -31,8 +36,13 @@ public class FoodGenerator {
 	 * Generates new food.
 	 */
 	public void generateFood() {
-		final Field field = grid.getRandomEmptyField();
+      final List<Cell<State>> emptyCells = gridModel.getCellsWithState(State.EMPTY);
 
-		field.changeState(State.FOOD);
+      if(!emptyCells.isEmpty()){
+          final int nextInt = new Random().nextInt(emptyCells.size());
+          Cell<State> nextFoodCell = emptyCells.get(nextInt);
+
+          nextFoodCell.changeState(State.FOOD);
+      }
 	}
 }

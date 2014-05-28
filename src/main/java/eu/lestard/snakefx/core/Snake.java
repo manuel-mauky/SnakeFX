@@ -1,5 +1,7 @@
 package eu.lestard.snakefx.core;
 
+import eu.lestard.grid.Cell;
+import eu.lestard.grid.GridModel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 
 import java.util.ArrayList;
@@ -14,39 +16,35 @@ import static eu.lestard.snakefx.config.Config.*;
  */
 public class Snake {
 
-    private Field head;
-
-    private final Grid grid;
 
     private final int x;
     private final int y;
 
-    private Direction currentDirection;
+    Direction currentDirection;
 
-    private Direction nextDirection;
+    Direction nextDirection;
 
-    private final List<Field> tail;
+    Cell<State> head;
+    final List<Cell<State>> tail;
 
 
     private final CentralViewModel viewModel;
-
+    private final GridModel<State> gridModel;
 
     /**
      * @param viewModel the viewModel
-     * @param grid      the grid on which the snake is created
+     * @param gridModel      the grid on which the snake is created
      * @param gameLoop  the gameloop that is used for the movement of the snake
      */
-    public Snake(final CentralViewModel viewModel, final Grid grid, final GameLoop gameLoop) {
+    public Snake(final CentralViewModel viewModel, final GridModel<State> gridModel, final GameLoop gameLoop) {
         this.viewModel = viewModel;
-        this.grid = grid;
+        this.gridModel = gridModel;
         x = SNAKE_START_X.get();
         y = SNAKE_START_Y.get();
 
-        tail = new ArrayList<Field>();
+        tail = new ArrayList<>();
 
-        gameLoop.addActions(x -> {
-            move();
-        });
+        gameLoop.addActions(x -> move());
 
         viewModel.snakeDirection.addListener( (observable,oldDirection,newDirection) -> {
             Snake.this.changeDirection(newDirection);
@@ -57,7 +55,7 @@ public class Snake {
      * Initalizes the fields of the snake.
      */
     public void init() {
-        setHead(grid.getXY(x, y));
+        setHead(gridModel.getCell(x, y));
 
         viewModel.collision.set(false);
 
@@ -90,7 +88,7 @@ public class Snake {
     void move() {
         currentDirection = nextDirection;
 
-        final Field newHead = grid.getFromDirection(head, currentDirection);
+        final Cell<State> newHead = getFromDirection(head, currentDirection);
 
         if (newHead.getState().equals(State.TAIL)) {
             viewModel.collision.set(true);
@@ -102,10 +100,10 @@ public class Snake {
             grow = true;
         }
 
-        Field lastField = head;
+        Cell<State> lastField = head;
 
         for (int i = 0; i < tail.size(); i++) {
-            final Field f = tail.get(i);
+            final Cell<State>  f = tail.get(i);
 
             lastField.changeState(State.TAIL);
             tail.set(i, lastField);
@@ -123,12 +121,48 @@ public class Snake {
         setHead(newHead);
     }
 
+    /**
+     * returns the cell that is located next to the given cell in the given
+     * direction.
+     *
+     * @param cell
+     * @param direction
+     * @return the cell in the given direction
+     */
+    Cell<State> getFromDirection(Cell<State> cell, Direction direction) {
+        int column = cell.getColumn();
+        int row = cell.getRow();
+
+        switch(direction){
+        case UP:
+            row -= 1;
+            break;
+        case DOWN:
+            row += 1;
+            break;
+        case LEFT:
+            column -= 1;
+            break;
+        case RIGHT:
+            column += 1;
+            break;
+        }
+
+        column += gridModel.getNumberOfColumns();
+        column = column % gridModel.getNumberOfColumns();
+
+        row += gridModel.getNumberOfRows();
+        row = row % gridModel.getNumberOfRows();
+
+        return gridModel.getCell(column, row);
+    }
+
     public void newGame() {
         tail.clear();
         init();
     }
 
-    private void setHead(final Field head) {
+    private void setHead(final Cell<State> head) {
         this.head = head;
         head.changeState(State.HEAD);
     }
@@ -138,7 +172,7 @@ public class Snake {
      *
      * @param field
      */
-    private void grow(final Field field) {
+    private void grow(final Cell<State> field) {
         field.changeState(State.TAIL);
         tail.add(field);
     }

@@ -1,33 +1,27 @@
 package eu.lestard.snakefx.view.main;
 
 import de.saxsys.jfx.mvvm.api.ViewModel;
-import eu.lestard.snakefx.core.Field;
-import eu.lestard.snakefx.core.Grid;
-import eu.lestard.snakefx.viewmodel.CentralViewModel;
-
-import java.util.List;
-import java.util.function.Consumer;
+import eu.lestard.grid.GridModel;
+import eu.lestard.snakefx.config.Config;
+import eu.lestard.snakefx.core.NewGameFunction;
+import eu.lestard.snakefx.core.State;
 
 public class MainViewModel implements ViewModel {
 
-    private final Grid grid;
+    private final GridModel<State> gridModel;
 
-    private final CentralViewModel viewModel;
+    public MainViewModel( final GridModel<State> gridModel, NewGameFunction newGame) {
+        this.gridModel = gridModel;
 
-    private final Consumer<?> newGameFunction;
+        gridModel.setDefaultState(State.EMPTY);
+        gridModel.setNumberOfColumns(Config.ROW_AND_COLUMN_COUNT.get());
+        gridModel.setNumberOfRows(Config.ROW_AND_COLUMN_COUNT.get());
 
-
-    public MainViewModel(final CentralViewModel viewModel, final Grid grid, final Consumer<?> newGameFunction) {
-        this.viewModel = viewModel;
-        this.grid = grid;
-        this.newGameFunction = newGameFunction;
-
-        grid.init();
-        newGameFunction.accept(null);
+        newGame.accept(null);
     }
 
-    public List<Field> getFields(){
-        return grid.getFields();
+    public GridModel<State> getGridModel(){
+        return gridModel;
     }
 
 }
