@@ -3,11 +3,13 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane id="BorderPane" fx:id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="800" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="eu.lestard.snakefx.view.main.MainView">
+<BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eu.lestard.snakefx.view.main.MainView">
   <left>
     <fx:include source="../panel/PanelView.fxml" />
   </left>
   <top>
-    <fx:include maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefWidth="-1.0" source="../menu/MenuView.fxml" BorderPane.alignment="TOP_LEFT" />
+    <fx:include maxWidth="Infinity" source="../menu/MenuView.fxml" BorderPane.alignment="TOP_LEFT" />
   </top>
+<center><AnchorPane fx:id="mainContainer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+</center>
 </BorderPane>

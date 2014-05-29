@@ -7,7 +7,7 @@ import eu.lestard.grid.GridView;
 import eu.lestard.snakefx.core.State;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
 public class MainView implements FxmlView<MainViewModel>, Initializable {
 
     @FXML
-    private BorderPane mainContainer;
+    private AnchorPane mainContainer;
 
     @InjectViewModel
     private MainViewModel viewModel;
@@ -41,7 +41,13 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
 
         gridView.setGridModel(viewModel.getGridModel());
 
-        mainContainer.setCenter(gridView);
+        mainContainer.getChildren().add(gridView);
+
+        AnchorPane.setLeftAnchor(gridView,0.0);
+        AnchorPane.setRightAnchor(gridView,0.0);
+        AnchorPane.setTopAnchor(gridView,0.0);
+        AnchorPane.setBottomAnchor(gridView,0.0);
+
     }
 
 
