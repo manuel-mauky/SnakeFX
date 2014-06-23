@@ -1,16 +1,18 @@
 apply plugin: "java"
 apply plugin: "application"
-apply from: 'https://repository-javafx-gradle-plugin.forge.cloudbees.com/snapshot/javafx.plugin'
+apply plugin: 'com.github.johnrengelman.shadow'
 
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:0.9.0-M3'
+    }
+}
 
 sourceCompatibility= 1.8
 
 mainClassName = "eu.lestard.snakefx.Launcher"
 manifest.mainAttributes("Main-Class" : mainClassName)
-
-javafx {
-    mainClass = mainClassName
-}
 
 
 

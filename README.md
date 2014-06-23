@@ -14,6 +14,5 @@ To build the project type `gradle build`. To run the application you can type `g
 
 ### Create Executables
 
-To create an executable for the game you need to run the command `gradle jfxDeploy`.
-After that the executables are located in the subdirectory `build/distributions/bundles`.
+A runnable JAR can be created with `gradle shadowJar`. The JAR file is then located under `build/libs/colorpuzzlefx-all.jar`. 
 
