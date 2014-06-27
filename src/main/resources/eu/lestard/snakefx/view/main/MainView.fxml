@@ -3,13 +3,15 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane id="BorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eu.lestard.snakefx.view.main.MainView">
-  <left>
-    <fx:include source="../panel/PanelView.fxml" />
-  </left>
-  <top>
-    <fx:include maxWidth="Infinity" source="../menu/MenuView.fxml" BorderPane.alignment="TOP_LEFT" />
-  </top>
-<center><AnchorPane fx:id="mainContainer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-</center>
-</BorderPane>
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eu.lestard.snakefx.view.main.MainView">
+    <children>
+        <BorderPane id="BorderPane" fx:id="rootBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <left>
+            <fx:include source="../panel/PanelView.fxml" />
+          </left>
+          <top>
+            <fx:include maxWidth="Infinity" source="../menu/MenuView.fxml" BorderPane.alignment="TOP_LEFT" />
+          </top>
+        </BorderPane>
+    </children>
+</AnchorPane>

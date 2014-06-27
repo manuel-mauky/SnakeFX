@@ -43,7 +43,6 @@ public class Launcher extends Application {
         TriggerablePopup newHighscorePopup = new TriggerablePopup(NewHighscoreView.class, highscorePopup.getStage());
         newHighscorePopup.trigger().bindBidirectional(viewModel.newHighscoreWindowOpen);
 
-
         primaryStage.setTitle("SnakeFX");
         primaryStage.setScene(scene);
         primaryStage.show();
