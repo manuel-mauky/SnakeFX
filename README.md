@@ -17,5 +17,4 @@ To build the project type `gradle build`. To run the application you can type `g
 
 ### Create Executables
 
-A runnable JAR can be created with `gradle shadowJar`. The JAR file is then located under `build/libs/colorpuzzlefx-all.jar`. 
-
+A runnable JAR can be created with `gradle shadowJar`. The JAR file is then located under `build/libs/snakefx-all.jar`
