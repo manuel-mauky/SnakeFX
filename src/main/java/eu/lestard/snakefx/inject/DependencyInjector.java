@@ -6,12 +6,14 @@ import eu.lestard.snakefx.highscore.HighscoreDao;
 import eu.lestard.snakefx.highscore.HighscoreJsonDao;
 import eu.lestard.snakefx.highscore.HighscoreManager;
 import eu.lestard.snakefx.util.KeyboardHandler;
+import eu.lestard.snakefx.view.about.AboutViewModel;
 import eu.lestard.snakefx.view.highscore.HighscoreViewModel;
 import eu.lestard.snakefx.view.highscore.NewHighscoreViewModel;
 import eu.lestard.snakefx.view.main.MainViewModel;
 import eu.lestard.snakefx.view.menu.MenuViewModel;
 import eu.lestard.snakefx.view.panel.PanelViewModel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
+import javafx.application.HostServices;
 import javafx.util.Callback;
 
 import java.util.HashMap;
@@ -21,7 +23,16 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
 
     private final Map<Class<?>, Object> instances = new HashMap<>();
 
-    public DependencyInjector() {
+    /**
+     * Create a new Instance of the Dependency Injector.
+     * This initializes all instances that are handled by this class.
+     *
+     * @param hostServices the HostServices instance is a dependency that only the JavaFX application root can obtain.
+     *                     Therefore it needs to be passes as argument to the DependencyInjector.
+     */
+    public DependencyInjector(HostServices hostServices) {
+        put(HostServices.class, hostServices);
+
         injectCore();
 
         injectOthers();
@@ -58,11 +69,14 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
 
         final NewHighscoreViewModel newHighscoreViewModel = new NewHighscoreViewModel(centralViewModel, get(HighscoreManager.class));
 
+        final AboutViewModel aboutViewModel = new AboutViewModel(get(HostServices.class));
+
         put(MainViewModel.class, mainViewModel);
         put(MenuViewModel.class, menuViewModel);
         put(PanelViewModel.class, panelViewModel);
         put(HighscoreViewModel.class, highscoreViewModel);
         put(NewHighscoreViewModel.class, newHighscoreViewModel);
+        put(AboutViewModel.class, aboutViewModel);
     }
 
     private void injectOthers() {
@@ -81,15 +95,17 @@ public class DependencyInjector implements Callback<Class<?>, Object> {
     }
 
     public <T> T get(Class<T> clazz) {
-        if(instances.containsKey(clazz)){
+        if (instances.containsKey(clazz)) {
             return (T) instances.get(clazz);
-        }else{
-            try{
-                return clazz.newInstance();
+        } else {
+            try {
+                final T newInstance = clazz.newInstance();
+                put(clazz, newInstance);
+                return newInstance;
             } catch (InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException(
                     "Can't inject instance of type [" + clazz.getName() + "]. " +
-                        "There is no injector mapping and it can't be created with class.newInstance()",e);
+                        "There is no injector mapping and it can't be created with class.newInstance()", e);
             }
         }
     }

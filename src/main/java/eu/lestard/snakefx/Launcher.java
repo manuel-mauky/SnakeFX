@@ -24,7 +24,7 @@ public class Launcher extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
-        DependencyInjector dependencyInjector = new DependencyInjector();
+        DependencyInjector dependencyInjector = new DependencyInjector(getHostServices());
 
         MvvmFX.setCustomDependencyInjector(dependencyInjector);
 
