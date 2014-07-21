@@ -82,7 +82,7 @@ public class SnakeTest {
 
         viewModel.snakeDirection.set(Direction.LEFT);
         // the nextDirection is now changed...
-        assertThat(snake.nextDirection).isEqualToComparingFieldByField(Direction.LEFT);
+        assertThat(snake.nextDirection).isEqualTo(Direction.LEFT);
         // ... the currentDirection is still the old one. It is only changed
         // when the snake moves.
         assertThat(snake.currentDirection).isEqualTo(Direction.UP);
@@ -98,6 +98,23 @@ public class SnakeTest {
         assertThat(snake.nextDirection).isEqualTo(Direction.LEFT);
         // now the currentDirection has changed.
         assertThat(snake.currentDirection).isEqualTo(Direction.LEFT);
+
+
+        viewModel.snakeDirection.set(Direction.DOWN);
+
+        assertThat(snake.nextDirection).isEqualTo(Direction.DOWN);
+
+        // this direction is not valid because the snake haven't moved yet. RIGHT would mean a 180 degree turn-around.
+        viewModel.snakeDirection.set(Direction.RIGHT);
+
+        // the next direction has to be still DOWN as this was the last valid direction change.
+        assertThat(snake.nextDirection).isEqualTo(Direction.DOWN);
+
+        // this is also valid. When the snake haven't moved yet you can change the direction as often as you like as long as the new direction is valid.
+        viewModel.snakeDirection.set(Direction.UP);
+
+        assertThat(snake.nextDirection).isEqualTo(Direction.UP);
+
     }
 
     @Test
@@ -126,6 +143,12 @@ public class SnakeTest {
         field2.changeState(State.FOOD);
         // field3 is above field2
         final Cell<State> field3 = gridModel.getCell(X, Y - 2);
+        assertThat(field3.getState()).isEqualTo(State.EMPTY);
+
+        // field4 is on the right of field3
+        final Cell<State> field4 = gridModel.getCell(X+1, Y -2);
+        assertThat(field4.getState()).isEqualTo(State.EMPTY);
+
 
         snake.init();
 
@@ -136,24 +159,47 @@ public class SnakeTest {
 
         // field1 is now a part of the tail
         assertThat(field1.getState()).isEqualTo(State.TAIL);
+        assertThat(snake.tail).containsOnly(field1);
 
         // One Point has to be added.
         assertThat(viewModel.points.get()).isEqualTo(1);
 
+
+        // in our test the new food is generated on field4
+        field4.changeState(State.FOOD);
+
+
         // Now the snake is moving another field forward. This time the new
         // field (field3)
         // is empty.
-
         snake.move();
 
         // field3 becomes the new head
         assertThat(snake.head).isEqualTo(field3);
 
-        // field2 becomes the tail
+        // field2 becomes part of the tail
         assertThat(field2.getState()).isEqualTo(State.TAIL);
+        assertThat(snake.tail).containsOnly(field2);
+
 
         // field1 is now empty
         assertThat(field1.getState()).isEqualTo(State.EMPTY);
+
+        // change the direction to right so that we land on field4
+        viewModel.snakeDirection.set(Direction.RIGHT);
+
+        snake.move();
+
+        assertThat(snake.head).isEqualTo(field4);
+
+        assertThat(field4.getState()).isEqualTo(State.HEAD);
+        assertThat(field3.getState()).isEqualTo(State.TAIL);
+        assertThat(field2.getState()).isEqualTo(State.TAIL);
+        assertThat(field1.getState()).isEqualTo(State.EMPTY);
+
+        assertThat(snake.tail).containsOnly(field3, field2);
+
+
     }
 
     @Test

@@ -79,6 +79,8 @@ public class Snake {
     private void changeDirection(final Direction newDirection) {
         if (!newDirection.hasSameOrientation(currentDirection)) {
             nextDirection = newDirection;
+        }else{
+            viewModel.snakeDirection.setValue(nextDirection);
         }
     }
 
