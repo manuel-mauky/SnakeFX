@@ -61,8 +61,8 @@ public class HighscoreJsonDaoIntegrationTest {
 		final List<HighScoreEntry> loadedEntries = dao.load();
 
 		assertThat(loadedEntries).hasSize(3);
-		assertThat(loadedEntries.get(0)).isEqualsToByComparingFields(new HighScoreEntry(1, "yoda", 402));
-		assertThat(loadedEntries.get(1)).isEqualsToByComparingFields(new HighScoreEntry(2, "luke", 212));
-		assertThat(loadedEntries.get(2)).isEqualsToByComparingFields(new HighScoreEntry(3, "jabba", 123));
+		assertThat(loadedEntries.get(0)).isEqualToComparingFieldByField(new HighScoreEntry(1, "yoda", 402));
+		assertThat(loadedEntries.get(1)).isEqualToComparingFieldByField(new HighScoreEntry(2, "luke", 212));
+		assertThat(loadedEntries.get(2)).isEqualToComparingFieldByField(new HighScoreEntry(3, "jabba", 123));
 	}
 }
