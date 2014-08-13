@@ -1,9 +1,9 @@
 package eu.lestard.snakefx.util;
 
-import de.saxsys.jfx.mvvm.api.ViewModel;
-import de.saxsys.jfx.mvvm.base.view.View;
-import de.saxsys.jfx.mvvm.viewloader.ViewLoader;
-import de.saxsys.jfx.mvvm.viewloader.ViewTuple;
+import de.saxsys.mvvmfx.FluentViewLoader;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.ViewModel;
+import de.saxsys.mvvmfx.ViewTuple;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Scene;
@@ -16,17 +16,16 @@ public class TriggerablePopup {
 
     private BooleanProperty trigger = new SimpleBooleanProperty();
 
-    public TriggerablePopup(Class<? extends View<? extends ViewModel>> contentViewType, Stage parent){
+    public TriggerablePopup(Class<? extends FxmlView<? extends ViewModel>> contentViewType, Stage parent){
         this(contentViewType);
         stage.initOwner(parent);
     }
 
-    public TriggerablePopup(Class<? extends View<? extends ViewModel>> contentViewType){
+
+    public TriggerablePopup(Class<? extends FxmlView<? extends ViewModel>> contentViewType){
         stage = new Stage();
 
-        ViewLoader viewLoader = new ViewLoader();
-
-        final ViewTuple<View<ViewModel>, ViewModel> viewTuple = viewLoader.loadViewTuple((Class<? extends View<ViewModel>>) contentViewType);
+        final ViewTuple<FxmlView<? extends ViewModel>, ViewModel> viewTuple = FluentViewLoader.fxmlView(contentViewType).load();
 
         stage.setScene(new Scene(viewTuple.getView()));
         stage.initModality(Modality.WINDOW_MODAL);

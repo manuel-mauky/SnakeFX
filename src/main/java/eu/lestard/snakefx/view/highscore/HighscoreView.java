@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.view.highscore;
 
-import de.saxsys.jfx.mvvm.api.FxmlView;
-import de.saxsys.jfx.mvvm.api.InjectViewModel;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
 import eu.lestard.snakefx.highscore.HighScoreEntry;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

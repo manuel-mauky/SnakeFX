@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.view.about;
 
 
-import de.saxsys.jfx.mvvm.api.ViewModel;
+import de.saxsys.mvvmfx.ViewModel;
 import javafx.application.HostServices;
 
 public class AboutViewModel implements ViewModel {

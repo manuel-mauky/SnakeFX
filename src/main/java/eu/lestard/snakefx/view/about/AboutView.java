@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.view.about;
 
-import de.saxsys.jfx.mvvm.api.FxmlView;
-import de.saxsys.jfx.mvvm.api.InjectViewModel;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
 import javafx.fxml.FXML;
 
 public class AboutView implements FxmlView<AboutViewModel> {

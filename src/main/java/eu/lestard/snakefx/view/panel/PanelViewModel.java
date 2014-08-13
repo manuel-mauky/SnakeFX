@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.view.panel;
 
 
-import de.saxsys.jfx.mvvm.api.ViewModel;
+import de.saxsys.mvvmfx.ViewModel;
 import eu.lestard.snakefx.core.SpeedLevel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.animation.Animation;

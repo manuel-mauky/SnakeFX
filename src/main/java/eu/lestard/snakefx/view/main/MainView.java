@@ -1,8 +1,8 @@
 package eu.lestard.snakefx.view.main;
 
 
-import de.saxsys.jfx.mvvm.api.FxmlView;
-import de.saxsys.jfx.mvvm.api.InjectViewModel;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
 import eu.lestard.grid.GridView;
 import eu.lestard.snakefx.core.State;
 import javafx.fxml.FXML;

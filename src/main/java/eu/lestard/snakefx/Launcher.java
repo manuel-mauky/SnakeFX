@@ -1,8 +1,8 @@
 package eu.lestard.snakefx;
 
-import de.saxsys.jfx.mvvm.api.MvvmFX;
-import de.saxsys.jfx.mvvm.viewloader.ViewLoader;
-import de.saxsys.jfx.mvvm.viewloader.ViewTuple;
+import de.saxsys.mvvmfx.FluentViewLoader;
+import de.saxsys.mvvmfx.MvvmFX;
+import de.saxsys.mvvmfx.ViewTuple;
 import eu.lestard.snakefx.inject.DependencyInjector;
 import eu.lestard.snakefx.util.KeyboardHandler;
 import eu.lestard.snakefx.util.TriggerablePopup;
@@ -21,16 +21,13 @@ public class Launcher extends Application {
         Application.launch(Launcher.class, args);
     }
 
-
     @Override
     public void start(final Stage primaryStage) {
         DependencyInjector dependencyInjector = new DependencyInjector(getHostServices());
 
         MvvmFX.setCustomDependencyInjector(dependencyInjector);
 
-        ViewLoader viewLoader = new ViewLoader();
-
-        final ViewTuple<MainView, MainViewModel> viewTuple = viewLoader.loadViewTuple(MainView.class);
+        final ViewTuple<MainView, MainViewModel> viewTuple = FluentViewLoader.fxmlView(MainView.class).load();
 
         Scene scene = new Scene(viewTuple.getView());
         scene.setOnKeyPressed(dependencyInjector.get(KeyboardHandler.class));

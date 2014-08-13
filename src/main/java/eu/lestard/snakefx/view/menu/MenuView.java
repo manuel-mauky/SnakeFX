@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.view.menu;
 
-import de.saxsys.jfx.mvvm.api.FxmlView;
-import de.saxsys.jfx.mvvm.api.InjectViewModel;
+import de.saxsys.mvvmfx.FxmlView;
+import de.saxsys.mvvmfx.InjectViewModel;
 import eu.lestard.snakefx.util.TriggerablePopup;
 import eu.lestard.snakefx.view.about.AboutView;
 import javafx.fxml.FXML;

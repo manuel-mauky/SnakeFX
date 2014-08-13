@@ -12,9 +12,7 @@ buildscript {
 sourceCompatibility= 1.8
 
 mainClassName = "eu.lestard.snakefx.Launcher"
-manifest.mainAttributes("Main-Class" : mainClassName)
-
-
+jar.manifest.attributes("Main-Class" : mainClassName)
 
 repositories {
     mavenCentral()
@@ -39,7 +37,7 @@ dependencies {
 
     compile 'ch.qos.logback:logback-classic:1.1.2'
 
-    compile 'de.saxsys:mvvmFX:0.2.0'
+    compile 'de.saxsys:mvvmFX:0.3.0'
 
     compile 'eu.lestard:grid:0.1.0-SNAPSHOT'
 

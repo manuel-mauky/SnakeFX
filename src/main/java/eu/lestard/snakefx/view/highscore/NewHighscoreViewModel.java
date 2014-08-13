@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.view.highscore;
 
 
-import de.saxsys.jfx.mvvm.api.ViewModel;
+import de.saxsys.mvvmfx.ViewModel;
 import eu.lestard.snakefx.highscore.HighscoreManager;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.beans.property.BooleanProperty;

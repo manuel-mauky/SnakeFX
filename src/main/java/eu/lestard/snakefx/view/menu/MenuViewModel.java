@@ -1,7 +1,7 @@
 package eu.lestard.snakefx.view.menu;
 
 
-import de.saxsys.jfx.mvvm.api.ViewModel;
+import de.saxsys.mvvmfx.ViewModel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;

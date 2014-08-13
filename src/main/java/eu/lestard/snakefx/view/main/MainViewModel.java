@@ -1,6 +1,6 @@
 package eu.lestard.snakefx.view.main;
 
-import de.saxsys.jfx.mvvm.api.ViewModel;
+import de.saxsys.mvvmfx.ViewModel;
 import eu.lestard.grid.GridModel;
 import eu.lestard.snakefx.config.Config;
 import eu.lestard.snakefx.core.NewGameFunction;
