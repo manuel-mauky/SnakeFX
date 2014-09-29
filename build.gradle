@@ -15,6 +15,7 @@ mainClassName = "eu.lestard.snakefx.Launcher"
 jar.manifest.attributes("Main-Class" : mainClassName)
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven{
         url "https://oss.sonatype.org/content/repositories/snapshots/"
@@ -39,7 +40,9 @@ dependencies {
 
     compile 'de.saxsys:mvvmFX:0.3.0'
 
-    compile 'eu.lestard:grid:0.1.0-SNAPSHOT'
+    compile 'eu.lestard:grid:0.2.0-SNAPSHOT'
+
+    compile 'eu.lestard:easy-di:0.1.0-SNAPSHOT'
 
     // testing
     testCompile "junit:junit:4.11"

@@ -9,6 +9,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.util.Duration;
 
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.function.Consumer;
  *
  * @author manuel.mauky
  */
+@Singleton
 public class GameLoop {
 
     private static final int ONE_SECOND = 1000;

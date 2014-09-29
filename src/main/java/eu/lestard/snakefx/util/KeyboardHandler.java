@@ -6,11 +6,14 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import javax.inject.Singleton;
+
 /**
  * This class handles the input of the user.
  * 
  * @author manuel.mauky
  */
+@Singleton
 public class KeyboardHandler implements EventHandler<KeyEvent> {
 
 	private final CentralViewModel viewModel;

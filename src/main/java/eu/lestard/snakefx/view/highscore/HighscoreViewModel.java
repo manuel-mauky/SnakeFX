@@ -9,8 +9,11 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.ObservableList;
 
+import javax.inject.Singleton;
+
 import static eu.lestard.snakefx.config.Config.MAX_SCORE_COUNT;
 
+@Singleton
 public class HighscoreViewModel implements ViewModel {
 
     private final CentralViewModel centralViewModel;

@@ -5,6 +5,8 @@ import eu.lestard.snakefx.core.SpeedLevel;
 import javafx.animation.Animation.Status;
 import javafx.beans.property.*;
 
+import javax.inject.Singleton;
+
 import static eu.lestard.snakefx.config.Config.*;
 
 /**
@@ -14,6 +16,7 @@ import static eu.lestard.snakefx.config.Config.*;
  * @author manuel.mauky
  * 
  */
+@Singleton
 public class CentralViewModel {
 
 	public final IntegerProperty points = new SimpleIntegerProperty(0);

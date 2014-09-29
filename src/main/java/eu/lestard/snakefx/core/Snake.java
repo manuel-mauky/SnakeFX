@@ -4,6 +4,7 @@ import eu.lestard.grid.Cell;
 import eu.lestard.grid.GridModel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 
+import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import static eu.lestard.snakefx.config.Config.*;
  *
  * @author manuel.mauky
  */
+@Singleton
 public class Snake {
 
 

@@ -4,6 +4,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.codehaus.jackson.map.type.TypeFactory;
 
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,6 +16,7 @@ import java.util.List;
  *
  * @author manuel.mauky
  */
+@Singleton
 public class HighscoreJsonDao implements HighscoreDao {
 
     private static final String HIGHSCORE_FILENAME = "highscores.json";

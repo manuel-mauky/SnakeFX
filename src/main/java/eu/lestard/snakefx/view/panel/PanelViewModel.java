@@ -13,6 +13,9 @@ import javafx.beans.value.ObservableStringValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class PanelViewModel implements ViewModel {
 
     private static final String LABEL_START = "Start";

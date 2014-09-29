@@ -6,6 +6,9 @@ import eu.lestard.snakefx.config.Config;
 import eu.lestard.snakefx.core.NewGameFunction;
 import eu.lestard.snakefx.core.State;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class MainViewModel implements ViewModel {
 
     private final GridModel<State> gridModel;

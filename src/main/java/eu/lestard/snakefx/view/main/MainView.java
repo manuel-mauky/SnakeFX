@@ -35,7 +35,7 @@ public class MainView implements FxmlView<MainViewModel>, Initializable {
         gridView.addColorMapping(State.TAIL, Color.FORESTGREEN);
         gridView.addColorMapping(State.FOOD, Color.BLACK);
 
-        gridView.strokeWidthProperty().set(0.5);
+        gridView.cellBorderWidthProperty().set(0.5);
 
         gridView.setGridModel(viewModel.getGridModel());
 

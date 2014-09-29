@@ -11,6 +11,9 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableStringValue;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class NewHighscoreViewModel implements ViewModel {
 
     private final HighscoreManager highscoreManager;

@@ -2,13 +2,16 @@ package eu.lestard.snakefx.view.menu;
 
 
 import de.saxsys.mvvmfx.ViewModel;
+import eu.lestard.snakefx.core.NewGameFunction;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
+import javax.inject.Singleton;
 import java.util.function.Consumer;
 
+@Singleton
 public class MenuViewModel implements ViewModel {
 
     private final CentralViewModel centralViewModel;
@@ -16,7 +19,7 @@ public class MenuViewModel implements ViewModel {
 
     private BooleanProperty aboutPopupVisible = new SimpleBooleanProperty();
 
-    public MenuViewModel(final CentralViewModel centralViewModel, final Consumer<?> newGameFunction) {
+    public MenuViewModel(final CentralViewModel centralViewModel, final NewGameFunction newGameFunction) {
         this.centralViewModel = centralViewModel;
         this.newGameFunction = newGameFunction;
     }

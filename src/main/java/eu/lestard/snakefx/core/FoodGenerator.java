@@ -4,6 +4,7 @@ import eu.lestard.grid.Cell;
 import eu.lestard.grid.GridModel;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.Random;
 
@@ -18,6 +19,7 @@ import java.util.Random;
  * @author manuel.mauky
  * 
  */
+@Singleton
 public class FoodGenerator {
 
     private final GridModel<State> gridModel;
