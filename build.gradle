@@ -38,7 +38,7 @@ dependencies {
 
     compile 'ch.qos.logback:logback-classic:1.1.2'
 
-    compile 'de.saxsys:mvvmFX:0.3.0'
+    compile 'de.saxsys:mvvmFX:0.4.0'
 
     compile 'eu.lestard:grid:0.2.0-SNAPSHOT'
 
