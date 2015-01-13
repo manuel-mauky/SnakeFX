@@ -38,7 +38,7 @@ public class Launcher extends Application {
 
         easyDI.markAsSingleton(GridModel.class);
 
-        MvvmFX.setCustomDependencyInjector(type->easyDI.getInstance(type));
+        MvvmFX.setCustomDependencyInjector(easyDI::getInstance);
 
         final ViewTuple<MainView, MainViewModel> viewTuple = FluentViewLoader.fxmlView(MainView.class).load();
 
