@@ -19,7 +19,7 @@ import java.util.List;
 @Singleton
 public class HighscoreJsonDao implements HighscoreDao {
 
-    private static final String HIGHSCORE_FILENAME = "highscores.json";
+    private static final String HIGHSCORE_FILENAME = "snakefx_highscores.json";
 
     private final Path filepath;
     private final ObjectMapper mapper;

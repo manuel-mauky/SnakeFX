@@ -24,7 +24,7 @@ public class HighscoreJsonDaoIntegrationTest {
 
 	@Before
 	public void setup() {
-		filepath = Paths.get("build/tmp", filename);
+		filepath = Paths.get("build", "tmp", filename);
 
 		dao = new HighscoreJsonDao();
 

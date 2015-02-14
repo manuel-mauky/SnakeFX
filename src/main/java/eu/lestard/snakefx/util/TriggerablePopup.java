@@ -31,7 +31,6 @@ public class TriggerablePopup {
         stage.initModality(Modality.WINDOW_MODAL);
 
         trigger.addListener((observable, oldValue, open) -> {
-            System.out.println(">" + open);
             if (open) {
                 stage.show();
             } else {

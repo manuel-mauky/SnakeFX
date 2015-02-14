@@ -1,51 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
-<VBox
-        xmlns:fx="http://javafx.com/fxml"
-        spacing="5"
-        alignment="CENTER"
-        fx:controller="eu.lestard.snakefx.view.highscore.NewHighscoreView">
+
+<VBox alignment="CENTER" spacing="5" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="eu.lestard.snakefx.view.highscore.NewHighscoreView">
 
     <stylesheets>
-        <URL value="@newHighscore.css"/>
+        <URL value="@newHighscore.css" />
     </stylesheets>
 
     <padding>
-        <Insets
-                top="5"
-                right="5"
-                bottom="5"
-                left="5"/>
+        <Insets bottom="5" left="5" right="5" top="5" />
     </padding>
-    <HBox
-            alignment="CENTER"
-            id="newEntryPointsLabel">
-        <Label
-                fx:id="points"
-                text="0"/>
-        <Label text=" Points"/>
-    </HBox>
-
-    <Label text="Please Enter your Name"/>
-    <TextField
-            fx:id="playername"
-            promptText="Your Name"/>
-
-    <Label
-            id="errorMessage"
-            fx:id="errorMessage"
-            maxWidth="150"
-            wrapText="true"
-            text="Invalid Name. Must not be empty or contain ',' or ';'"
-            visible="false"/>
-
-    <Button
-            text="OK"
-            onAction="#addEntry"/>
+   <children>
+       <HBox id="newEntryPointsLabel" alignment="CENTER">
+          <children>
+              <Label fx:id="points" text="0" />
+              <Label text=" Points" />
+          </children>
+       </HBox>
+   
+       <Label text="Please Enter your Name" />
+       <TextField fx:id="playername" promptText="Your Name" />
+   
+       <Label id="errorMessage" fx:id="errorMessage" maxWidth="150" text="Invalid Name. Must not be empty or contain ',' or ';'" visible="false" wrapText="true" />
+   
+       <Button defaultButton="true" onAction="#addEntry" text="OK" />
+   </children>
 
 </VBox>

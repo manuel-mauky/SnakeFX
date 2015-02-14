@@ -9,6 +9,7 @@
 
 # the highscore file should not be commited
 highscores.json
+snakefx_highscores.json
 
 # backup files from SceneBuilder
 *.bak
