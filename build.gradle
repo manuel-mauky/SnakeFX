@@ -1,18 +1,12 @@
-apply plugin: "java"
-apply plugin: "application"
-apply plugin: 'com.github.johnrengelman.shadow'
-
-buildscript {
-    repositories { jcenter() }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.1.1'
-    }
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '1.2.0'
 }
 
 sourceCompatibility= 1.8
 
 mainClassName = "eu.lestard.snakefx.Launcher"
-jar.manifest.attributes("Main-Class" : mainClassName)
 
 repositories {
     mavenLocal()
@@ -22,32 +16,27 @@ repositories {
     }
 }
 
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:deprecation"
-        }
-    }
-}
-
 
 dependencies {
-    
-    compile "javax.validation:validation-api:1.0.0.GA"
-    compile "org.codehaus.jackson:jackson-mapper-asl:1.9.12"
+    compile "org.codehaus.jackson:jackson-mapper-asl:1.9.13"
 
     compile 'ch.qos.logback:logback-classic:1.1.2'
 
     compile 'de.saxsys:mvvmfx:1.0.0'
 
-    compile 'eu.lestard:grid:0.2.0-SNAPSHOT'
+    compile 'eu.lestard:grid:0.2.0'
 
-    compile 'eu.lestard:easy-di:0.1.0'
+    compile 'eu.lestard:easy-di:0.2.0'
 
     // testing
-    testCompile "junit:junit:4.11"
+    testCompile "junit:junit:4.12"
     testCompile "org.assertj:assertj-core:1.6.1"
-    testCompile "org.mockito:mockito-all:1.9.5"
+    testCompile "org.mockito:mockito-all:1.10.19"
 
 
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}
+
