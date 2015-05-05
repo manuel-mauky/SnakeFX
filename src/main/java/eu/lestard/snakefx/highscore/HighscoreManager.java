@@ -35,12 +35,14 @@ public class HighscoreManager {
         return highScoreEntries;
     }
 
-    public void addScore(final String name, final int points) {
+    public HighScoreEntry addScore(final String name, final int points) {
         final HighScoreEntry entry = new HighScoreEntry(1, name, points);
 
         highScoreEntries.add(entry);
 
         updateList();
+
+        return entry;
     }
 
     private void updateList() {

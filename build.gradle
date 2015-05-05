@@ -22,11 +22,13 @@ dependencies {
 
     compile 'ch.qos.logback:logback-classic:1.1.2'
 
-    compile 'de.saxsys:mvvmfx:1.0.0'
+    compile 'de.saxsys:mvvmfx:1.2.0'
 
     compile 'eu.lestard:grid:0.2.0'
 
-    compile 'eu.lestard:easy-di:0.2.0'
+    compile 'eu.lestard:easy-di:0.3.0'
+
+    compile 'eu.lestard:advanced-bindings:0.4.0'
 
     // testing
     testCompile "junit:junit:4.12"
@@ -37,6 +39,6 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.2.1'
+    gradleVersion = '2.3'
 }
 

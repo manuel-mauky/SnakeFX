@@ -5,7 +5,6 @@ import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.animation.Animation.Status;
 
 import javax.inject.Singleton;
-import java.util.function.Consumer;
 
 /**
  * The purpose of this function is to start a new Game.
@@ -13,7 +12,8 @@ import java.util.function.Consumer;
  * @author manuel.mauky
  */
 @Singleton
-public class NewGameFunction implements Consumer<Void> {
+public class NewGameFunction implements Runnable {
+
     private final CentralViewModel viewModel;
     private final GridModel<State> gridModel;
     private final Snake snake;
@@ -28,7 +28,7 @@ public class NewGameFunction implements Consumer<Void> {
     }
 
     @Override
-    public void accept(Void aVoid) {
+    public void run() {
         viewModel.gameloopStatus.set(Status.STOPPED);
 
         gridModel.getCells().forEach(cell -> cell.changeState(State.EMPTY));

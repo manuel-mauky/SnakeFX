@@ -22,5 +22,9 @@ public class HighscoreView implements FxmlView<HighscoreViewModel>, Initializabl
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tableView.setItems(viewModel.highScoreEntries());
+
+        viewModel.selectedEntry().addListener((observable, oldValue, newValue) -> {
+           tableView.getSelectionModel().select(newValue);
+        });
     }
 }

@@ -11,12 +11,7 @@ public enum Config {
 	 * The number of rows and columns of the grid. In this game the grid is a
 	 * square and so the number of rows and columns are equal.
 	 */
-	ROW_AND_COLUMN_COUNT(20),
-
-	/**
-	 * The size of the grid in pixel.
-	 */
-	GRID_SIZE_IN_PIXEL(500),
+	ROW_AND_COLUMN_COUNT(25),
 
 	/**
 	 * The x coordinate of the starting point of the snake
@@ -37,7 +32,7 @@ public enum Config {
 
 	private Integer value;
 
-	private Config(final Integer value) {
+	Config(final Integer value) {
 		this.value = value;
 	}
 

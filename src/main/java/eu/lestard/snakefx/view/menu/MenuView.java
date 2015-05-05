@@ -6,11 +6,13 @@ import eu.lestard.snakefx.util.TriggerablePopup;
 import eu.lestard.snakefx.view.about.AboutView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MenuView implements FxmlView<MenuViewModel>, Initializable {
@@ -36,6 +38,20 @@ public class MenuView implements FxmlView<MenuViewModel>, Initializable {
 
     @FXML
     public void newGame() {
+
+        ChoiceDialog<Integer> sizeChoiceDialog = new ChoiceDialog<>();
+
+        sizeChoiceDialog.setHeaderText("Enter the Size of the new Game");
+        sizeChoiceDialog.setTitle("New Game");
+        sizeChoiceDialog.setContentText("Size:");
+
+        sizeChoiceDialog.getItems().addAll(viewModel.sizeOptions());
+        sizeChoiceDialog.setSelectedItem(viewModel.newSize().get());
+
+        final Optional<Integer> newSizeOptional = sizeChoiceDialog.showAndWait();
+
+        newSizeOptional.ifPresent(viewModel.newSize()::setValue);
+
         viewModel.newGame();
     }
 

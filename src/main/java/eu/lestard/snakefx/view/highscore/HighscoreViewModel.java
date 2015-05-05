@@ -6,7 +6,9 @@ import eu.lestard.snakefx.highscore.HighScoreEntry;
 import eu.lestard.snakefx.highscore.HighscoreManager;
 import eu.lestard.snakefx.viewmodel.CentralViewModel;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 
 import javax.inject.Singleton;
@@ -18,6 +20,8 @@ public class HighscoreViewModel implements ViewModel {
 
     private final CentralViewModel centralViewModel;
     private ListProperty<HighScoreEntry> highScoreEntries = new SimpleListProperty<>();
+
+    private ObjectProperty<HighScoreEntry> selectedEntry = new SimpleObjectProperty<>();
 
     public HighscoreViewModel(CentralViewModel centralViewModel, HighscoreManager highscoreManager) {
         this.centralViewModel = centralViewModel;
@@ -50,5 +54,9 @@ public class HighscoreViewModel implements ViewModel {
 
     public ObservableList<HighScoreEntry> highScoreEntries(){
         return highScoreEntries;
+    }
+
+    public ObjectProperty<HighScoreEntry> selectedEntry() {
+        return selectedEntry;
     }
 }

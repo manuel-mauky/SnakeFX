@@ -11,9 +11,7 @@ import javafx.util.Duration;
 
 import javax.inject.Singleton;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * This class is the game loop of the game.
@@ -28,7 +26,7 @@ public class GameLoop {
     private Timeline timeline;
 
 
-    private final List<Consumer<?>> actions = new ArrayList<>();
+    private final List<Runnable> actions = new ArrayList<>();
 
     private final CentralViewModel viewModel;
 
@@ -45,10 +43,10 @@ public class GameLoop {
     /**
      * Added Actions are called on every keyframe of the GameLoop. The order of invocation is not guaranteed.
      *
-     * @param actions the action that gets called.
+     * @param action the action that gets called.
      */
-    public void addActions(final Consumer<?>... actions) {
-        this.actions.addAll(Arrays.asList(actions));
+    public void addAction(final Runnable action) {
+        this.actions.add(action);
     }
 
     /**
@@ -60,10 +58,8 @@ public class GameLoop {
 
         // in this place we can't use a direct binding as the ViewModel property
         // can also be changed in other places.
-        timeline.statusProperty().addListener((observable, oldStatus,
-                                               newStatus) -> {
-            viewModel.gameloopStatus.set(newStatus);
-        });
+        timeline.statusProperty().addListener((observable, oldStatus, newStatus) ->
+            viewModel.gameloopStatus.set(newStatus));
     }
 
     /**
@@ -74,13 +70,8 @@ public class GameLoop {
         final int fps = viewModel.speed.get().getFps();
         final Duration duration = Duration.millis(ONE_SECOND / fps);
 
-        final KeyFrame frame = new KeyFrame(duration, event -> {
-            actions.forEach(consumer -> {
-                consumer.accept(null);
-            });
-        });
-
-        return frame;
+        return new KeyFrame(duration, event ->
+            actions.forEach(Runnable::run));
     }
 
 

@@ -46,11 +46,10 @@ public class Snake {
 
         tail = new ArrayList<>();
 
-        gameLoop.addActions(x -> move());
+        gameLoop.addAction(this::move);
 
-        viewModel.snakeDirection.addListener( (observable,oldDirection,newDirection) -> {
-            Snake.this.changeDirection(newDirection);
-        });
+        viewModel.snakeDirection.addListener((observable,oldDirection,newDirection) ->
+                Snake.this.changeDirection(newDirection));
     }
 
     /**
@@ -79,10 +78,10 @@ public class Snake {
      * @param newDirection
      */
     private void changeDirection(final Direction newDirection) {
-        if (!newDirection.hasSameOrientation(currentDirection)) {
-            nextDirection = newDirection;
-        }else{
+        if (newDirection.hasSameOrientation(currentDirection)) {
             viewModel.snakeDirection.setValue(nextDirection);
+        } else {
+            nextDirection = newDirection;
         }
     }
 
@@ -99,9 +98,9 @@ public class Snake {
             return;
         }
 
-        boolean grow = false;
+        boolean snakeWillGrow = false;
         if (newHead.getState().equals(State.FOOD)) {
-            grow = true;
+            snakeWillGrow = true;
         }
 
         Cell<State> lastField = head;
@@ -115,7 +114,7 @@ public class Snake {
             lastField = f;
         }
 
-        if (grow) {
+        if (snakeWillGrow) {
             grow(lastField);
             addPoints();
         } else {
