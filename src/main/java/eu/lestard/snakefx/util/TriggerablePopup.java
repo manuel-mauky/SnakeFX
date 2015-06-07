@@ -4,6 +4,7 @@ import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.FxmlView;
 import de.saxsys.mvvmfx.ViewModel;
 import de.saxsys.mvvmfx.ViewTuple;
+import eu.lestard.fxzeug.usability.Scaling;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.Scene;
@@ -27,7 +28,11 @@ public class TriggerablePopup {
 
         final ViewTuple<FxmlView<? extends ViewModel>, ViewModel> viewTuple = FluentViewLoader.fxmlView(contentViewType).load();
 
-        stage.setScene(new Scene(viewTuple.getView()));
+        final Scene scene = new Scene(viewTuple.getView());
+
+        Scaling.enableScaling(scene);
+
+        stage.setScene(scene);
         stage.initModality(Modality.WINDOW_MODAL);
 
         trigger.addListener((observable, oldValue, open) -> {

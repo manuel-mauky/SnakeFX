@@ -30,6 +30,8 @@ dependencies {
 
     compile 'eu.lestard:advanced-bindings:0.4.0'
 
+    compile 'eu.lestard:fx-zeug:0.1-SNAPSHOT'
+
     // testing
     testCompile "junit:junit:4.12"
     testCompile "org.assertj:assertj-core:1.6.1"

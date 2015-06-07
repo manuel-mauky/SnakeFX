@@ -4,6 +4,7 @@ import de.saxsys.mvvmfx.FluentViewLoader;
 import de.saxsys.mvvmfx.MvvmFX;
 import de.saxsys.mvvmfx.ViewTuple;
 import eu.lestard.easydi.EasyDI;
+import eu.lestard.fxzeug.usability.Scaling;
 import eu.lestard.grid.GridModel;
 import eu.lestard.snakefx.highscore.HighscoreDao;
 import eu.lestard.snakefx.highscore.HighscoreJsonDao;
@@ -42,7 +43,16 @@ public class Launcher extends Application {
 
         final ViewTuple<MainView, MainViewModel> viewTuple = FluentViewLoader.fxmlView(MainView.class).load();
 
-        Scene scene = new Scene(viewTuple.getView());
+
+
+        Scaling.detectDefaultScaling();
+
+        final int fontSize = Scaling.getFontSize();
+
+        Scene scene = new Scene(viewTuple.getView(), fontSize*60, fontSize*50);
+        Scaling.enableScaling(scene);
+
+
         scene.setOnKeyPressed(easyDI.getInstance(KeyboardHandler.class));
 
 
@@ -55,8 +65,12 @@ public class Launcher extends Application {
         newHighscorePopup = new TriggerablePopup(NewHighscoreView.class, highscorePopup.getStage());
         newHighscorePopup.trigger().bindBidirectional(viewModel.newHighscoreWindowOpen);
 
+
+
+
         primaryStage.setTitle("SnakeFX");
         primaryStage.setScene(scene);
+        primaryStage.sizeToScene();
         primaryStage.show();
     }
 }
